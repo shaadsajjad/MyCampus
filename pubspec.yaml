@@ -33,3 +33,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/translations/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter.ttf
