@@ -1,4 +1,9 @@
+export 'light_theme.dart';
+export 'dark_theme.dart';
+
 import 'package:flutter/material.dart';
+import 'package:mycampus/core/theme/dark_theme.dart';
+import 'package:mycampus/core/theme/light_theme.dart';
 import 'app_colors.dart';
 
 /// App theme configuration based on the MyCampus design system.
@@ -23,7 +28,3 @@ class AppTheme {
   static ThemeData get light => LightTheme.theme;
   static ThemeData get dark => DarkTheme.theme;
 }
-
-// Re-exports for convenience
-export 'light_theme.dart';
-export 'dark_theme.dart';
