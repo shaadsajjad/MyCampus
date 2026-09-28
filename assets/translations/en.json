@@ -1,0 +1,99 @@
+{
+  "app": {
+    "name": "MyCampus",
+    "tagline": "Your Campus, Connected"
+  },
+  "common": {
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Full Name",
+    "phone": "Phone",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "approve": "Approve",
+    "reject": "Reject",
+    "save": "Save",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "success": "Success",
+    "welcome": "Welcome",
+    "profile": "Profile",
+    "settings": "Settings",
+    "scan": "Scan QR Code",
+    "view": "View QR Code"
+  },
+  "roles": {
+    "selectRole": "Select your role",
+    "superAdmin": "Super Admin",
+    "superAdminDesc": "Create & manage your university",
+    "student": "Student",
+    "studentDesc": "Join your university & access services",
+    "teacher": "Teacher",
+    "teacherDesc": "Join your university & manage classes"
+  },
+  "auth": {
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to continue",
+    "registerTitle": "Create Account",
+    "registerSubtitle": "Fill in your details to get started",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "forgotPassword": "Forgot Password?"
+  },
+  "student": {
+    "studentId": "Student ID",
+    "department": "Department",
+    "batch": "Batch / Year",
+    "dashboard": "Student Dashboard",
+    "services": "Services",
+    "notices": "Notices",
+    "routine": "Class Routine",
+    "attendance": "Attendance",
+    "results": "Results",
+    "assignments": "Assignments",
+    "events": "Events"
+  },
+  "teacher": {
+    "teacherId": "Teacher ID",
+    "designation": "Designation",
+    "dashboard": "Teacher Dashboard",
+    "postNotice": "Post Notice",
+    "markAttendance": "Mark Attendance",
+    "uploadResults": "Upload Results"
+  },
+  "admin": {
+    "dashboard": "Super Admin Panel",
+    "universityInfo": "University Information",
+    "adminInfo": "Admin Information",
+    "universityName": "University Name",
+    "universityShort": "Short Name",
+    "universityType": "Type",
+    "universityCity": "City",
+    "universityCountry": "Country",
+    "establishedYear": "Established Year",
+    "joinRequests": "Join Requests",
+    "noPendingRequests": "No pending requests",
+    "qrInstructions": "Students and teachers can scan this QR code to request access to your university"
+  },
+  "university": {
+    "createTitle": "Create University",
+    "createdSuccess": "University created successfully",
+    "id": "University ID",
+    "typePublic": "Public",
+    "typePrivate": "Private",
+    "typeInternational": "International"
+  },
+  "status": {
+    "pending": "Pending Approval",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "enrolled": "Enrolled",
+    "active": "Active",
+    "notEnrolled": "Not Enrolled",
+    "waitingApproval": "Waiting for admin approval"
+  }
+}
