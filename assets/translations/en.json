@@ -1,6 +1,7 @@
 {
   "app": {
     "name": "MyCampus",
+    "fullName": "My Campus",
     "tagline": "Your Campus, Connected"
   },
   "common": {
@@ -24,16 +25,35 @@
     "profile": "Profile",
     "settings": "Settings",
     "scan": "Scan QR Code",
-    "view": "View QR Code"
+    "view": "View QR Code",
+    "continue": "Continue"
   },
   "roles": {
-    "selectRole": "Select your role",
+    "selectRole": "Select Your Role",
     "superAdmin": "Super Admin",
-    "superAdminDesc": "Create & manage your university",
+    "superAdminDesc": "Register institution, generate QR pass & manage all approvals",
+    "faculty": "Faculty Member",
+    "facultyDesc": "Post department notices, record attendance & submit grades",
     "student": "Student",
-    "studentDesc": "Join your university & access services",
-    "teacher": "Teacher",
-    "teacherDesc": "Join your university & manage classes"
+    "studentDesc": "Scan campus QR, access routine, track attendance & notices"
+  },
+  "splash": {
+    "description": "Synchronized institutional credentials, real-time routines, and academic verification in one unified network.",
+    "officialBadge": "Official University Ecosystem Platform",
+    "mostPopular": "Most Popular",
+    "stepOf": "Step 1 of 2",
+    "chooseAccess": "Choose how you are accessing the campus network today",
+    "alreadyRegistered": "Already registered in your university database?",
+    "joiningFirstTime": "Joining the campus directory for the first time?",
+    "newEnrollment": "New Enrollment",
+    "institutionalAuthority": "Institutional Authority",
+    "adminKeyRequired": "Administrative Key Required",
+    "academicStaff": "Academic Staff",
+    "facultyIdSync": "Faculty ID Sync",
+    "campusStudent": "Campus Student",
+    "instantPass": "Instant Digital Pass",
+    "encryptedSecurity": "Encrypted Campus Security • ISO 27001 Certified",
+    "ssoProtection": "Protected by Federated University Single Sign-On (SSO) & Biometric Tokenization"
   },
   "auth": {
     "loginTitle": "Welcome Back",

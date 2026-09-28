@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mycampus/features/splash/presentation/pages/splash_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -9,9 +10,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: '/',
-        builder: (context, state) => const Scaffold(
-          body: Center(child: Text('Home Screen')),
-        ),
+        builder: (context, state) => const SplashPage(),
       ),
     ],
   );
