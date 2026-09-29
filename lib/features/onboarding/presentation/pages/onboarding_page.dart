@@ -1,10 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mycampus/core/domain/entities/user_role.dart';
+import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
+import 'package:mycampus/core/widgets/primary_action_button.dart';
 import 'package:mycampus/features/onboarding/domain/entities/auth_mode.dart';
-import 'package:mycampus/features/onboarding/domain/entities/user_role.dart';
 import 'package:mycampus/features/onboarding/presentation/cubit/onboarding_cubit.dart';
 import 'package:mycampus/features/onboarding/presentation/models/role_option.dart';
 import 'package:mycampus/features/onboarding/presentation/widgets/auth_toggle.dart';
@@ -117,35 +120,17 @@ class OnboardingView extends StatelessWidget {
   Widget _buildContinueButton(BuildContext context) {
     return BlocBuilder<OnboardingCubit, OnboardingState>(
       builder: (context, state) {
-        final roleName = _getRoleName(state.selectedRole);
+        final roleName = state.selectedRole.labelKey.tr();
         final action = state.authMode == AuthMode.login
             ? 'common.continue'.tr()
             : 'common.register'.tr();
-        return ElevatedButton(
-          onPressed: () {
-            // TODO(auth): navigate to the login/register page for the role.
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('$action $roleName'),
-              const SizedBox(width: AppTheme.spaceSm),
-              const Icon(Icons.arrow_forward, size: 20),
-            ],
-          ),
+        return PrimaryActionButton(
+          label: '$action $roleName',
+          onPressed: () => state.authMode == AuthMode.login
+              ? context.push(AppRoute.loginPathFor(state.selectedRole))
+              : context.push(AppRoute.registerPathFor(state.selectedRole)),
         );
       },
     );
-  }
-
-  String _getRoleName(UserRole role) {
-    switch (role) {
-      case UserRole.superAdmin:
-        return 'roles.superAdmin'.tr();
-      case UserRole.faculty:
-        return 'roles.faculty'.tr();
-      case UserRole.student:
-        return 'roles.student'.tr();
-    }
   }
 }

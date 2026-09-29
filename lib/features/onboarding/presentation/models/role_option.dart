@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
-import 'package:mycampus/features/onboarding/domain/entities/user_role.dart';
 
 /// Icon + its container color for a `RoleCard`.
 class RoleIconStyle {

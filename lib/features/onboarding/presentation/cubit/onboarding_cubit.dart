@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/features/onboarding/domain/entities/auth_mode.dart';
-import 'package:mycampus/features/onboarding/domain/entities/user_role.dart';
 
 class OnboardingState {
   const OnboardingState({
