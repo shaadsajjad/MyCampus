@@ -1,10 +1,9 @@
-export 'light_theme.dart';
-export 'dark_theme.dart';
-
 import 'package:flutter/material.dart';
 import 'package:mycampus/core/theme/dark_theme.dart';
 import 'package:mycampus/core/theme/light_theme.dart';
-import 'app_colors.dart';
+
+export 'dark_theme.dart';
+export 'light_theme.dart';
 
 /// App theme configuration based on the MyCampus design system.
 class AppTheme {
@@ -23,6 +22,10 @@ class AppTheme {
   static const double spaceMd = 16;
   static const double spaceLg = 24;
   static const double spaceXl = 32;
+
+  // ── Motion ────────────────────────────────────────────────────
+  /// Duration for small interactive state changes (selection, toggles).
+  static const Duration durationFast = Duration(milliseconds: 200);
 
   // ── Theme Data ────────────────────────────────────────────────
   static ThemeData get light => LightTheme.theme;

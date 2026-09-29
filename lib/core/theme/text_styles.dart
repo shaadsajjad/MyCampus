@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
 
 /// Typography scale based on the MyCampus design system.
-/// Font family: Inter
+///
+/// These are pure type-scale definitions (size/weight/height/spacing) with
+/// no baked-in color, so the same scale can be tinted differently for light
+/// and dark themes. `AppTheme.light` / `AppTheme.dark` fold this scale into
+/// a `TextTheme` — prefer `Theme.of(context).textTheme` in UI code over
+/// referencing these constants directly.
 class AppTextStyles {
   AppTextStyles._();
 
@@ -15,7 +19,6 @@ class AppTextStyles {
     fontWeight: FontWeight.w700,
     height: 44 / 36,
     letterSpacing: -0.02,
-    color: AppColors.onSurface,
   );
 
   static const TextStyle headlineLg = TextStyle(
@@ -24,7 +27,6 @@ class AppTextStyles {
     fontWeight: FontWeight.w700,
     height: 38 / 30,
     letterSpacing: -0.02,
-    color: AppColors.onSurface,
   );
 
   static const TextStyle headlineLgMobile = TextStyle(
@@ -33,7 +35,6 @@ class AppTextStyles {
     fontWeight: FontWeight.w700,
     height: 32 / 24,
     letterSpacing: -0.02,
-    color: AppColors.onSurface,
   );
 
   static const TextStyle headlineMd = TextStyle(
@@ -41,7 +42,6 @@ class AppTextStyles {
     fontSize: 20,
     fontWeight: FontWeight.w600,
     height: 28 / 20,
-    color: AppColors.onSurface,
   );
 
   static const TextStyle headlineSm = TextStyle(
@@ -49,7 +49,6 @@ class AppTextStyles {
     fontSize: 18,
     fontWeight: FontWeight.w600,
     height: 26 / 18,
-    color: AppColors.onSurface,
   );
 
   // ── Titles ────────────────────────────────────────────────────
@@ -58,7 +57,6 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w600,
     height: 24 / 16,
-    color: AppColors.onSurface,
   );
 
   // ── Body ──────────────────────────────────────────────────────
@@ -67,7 +65,6 @@ class AppTextStyles {
     fontSize: 16,
     fontWeight: FontWeight.w400,
     height: 24 / 16,
-    color: AppColors.onSurfaceVariant,
   );
 
   static const TextStyle bodyMd = TextStyle(
@@ -75,7 +72,6 @@ class AppTextStyles {
     fontSize: 14,
     fontWeight: FontWeight.w400,
     height: 20 / 14,
-    color: AppColors.onSurfaceVariant,
   );
 
   static const TextStyle bodySm = TextStyle(
@@ -83,7 +79,6 @@ class AppTextStyles {
     fontSize: 12,
     fontWeight: FontWeight.w400,
     height: 18 / 12,
-    color: AppColors.onSurfaceVariant,
   );
 
   // ── Labels ────────────────────────────────────────────────────
@@ -93,7 +88,6 @@ class AppTextStyles {
     fontWeight: FontWeight.w600,
     height: 20 / 14,
     letterSpacing: 0.01,
-    color: AppColors.onSurface,
   );
 
   static const TextStyle labelMd = TextStyle(
@@ -102,7 +96,6 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     height: 16 / 12,
     letterSpacing: 0.01,
-    color: AppColors.onSurface,
   );
 
   static const TextStyle labelSm = TextStyle(
@@ -111,6 +104,5 @@ class AppTextStyles {
     fontWeight: FontWeight.w600,
     height: 14 / 11,
     letterSpacing: 0.02,
-    color: AppColors.onSurface,
   );
 }

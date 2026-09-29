@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../cubit/splash_cubit.dart';
-import '../widgets/initial_splash.dart';
-import 'onboarding_page.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mycampus/core/router/app_router.dart';
+import 'package:mycampus/features/splash/presentation/cubit/splash_cubit.dart';
+import 'package:mycampus/features/splash/presentation/widgets/initial_splash.dart';
 
 class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
@@ -21,15 +22,13 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SplashCubit, SplashState>(
-      builder: (context, state) {
-        switch (state.phase) {
-          case SplashPhase.initial:
-            return const InitialSplash();
-          case SplashPhase.onboarding:
-            return const OnboardingPage();
+    return BlocListener<SplashCubit, SplashStatus>(
+      listener: (context, status) {
+        if (status == SplashStatus.ready) {
+          context.go(AppRoute.onboarding);
         }
       },
+      child: const InitialSplash(),
     );
   }
 }

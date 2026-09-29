@@ -1,52 +1,19 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:async';
 
-enum UserRole { superAdmin, faculty, student }
+import 'package:bloc/bloc.dart';
 
-enum AuthMode { login, register }
+enum SplashStatus { loading, ready }
 
-enum SplashPhase { initial, onboarding }
-
-class SplashState {
-  final SplashPhase phase;
-  final UserRole selectedRole;
-  final AuthMode authMode;
-
-  const SplashState({
-    this.phase = SplashPhase.initial,
-    this.selectedRole = UserRole.student,
-    this.authMode = AuthMode.login,
-  });
-
-  SplashState copyWith({
-    SplashPhase? phase,
-    UserRole? selectedRole,
-    AuthMode? authMode,
-  }) {
-    return SplashState(
-      phase: phase ?? this.phase,
-      selectedRole: selectedRole ?? this.selectedRole,
-      authMode: authMode ?? this.authMode,
-    );
-  }
-}
-
-class SplashCubit extends Cubit<SplashState> {
-  SplashCubit() : super(const SplashState()) {
-    _init();
+class SplashCubit extends Cubit<SplashStatus> {
+  SplashCubit({Duration duration = const Duration(seconds: 3)})
+      : super(SplashStatus.loading) {
+    unawaited(_init(duration));
   }
 
-  Future<void> _init() async {
-    await Future.delayed(const Duration(seconds: 5));
+  Future<void> _init(Duration duration) async {
+    await Future<void>.delayed(duration);
     if (!isClosed) {
-      emit(state.copyWith(phase: SplashPhase.onboarding));
+      emit(SplashStatus.ready);
     }
-  }
-
-  void selectRole(UserRole role) {
-    emit(state.copyWith(selectedRole: role));
-  }
-
-  void toggleAuthMode(AuthMode mode) {
-    emit(state.copyWith(authMode: mode));
   }
 }

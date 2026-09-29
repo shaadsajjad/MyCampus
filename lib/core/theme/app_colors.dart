@@ -39,22 +39,13 @@ class AppColors {
   static const Color warning = Color(0xFFD97706);
   static const Color info = Color(0xFF2563EB);
 
-  // ── Role Badges ───────────────────────────────────────────────
-  static const Color adminBadgeBg = Color(0xFFFEF2F2);
-  static const Color adminBadgeText = Color(0xFFDC2626);
-  static const Color adminBadgeBorder = Color(0xFFFECACA);
+  // ── Onboarding Brand Accents ──────────────────────────────────
+  /// Pale blue tint behind the brand header and a selected role card.
+  static const Color brandTint = Color(0xFFEFF4FF);
 
-  static const Color teacherBadgeBg = Color(0xFFEEF2FF);
-  static const Color teacherBadgeText = Color(0xFF1E3A8A);
-  static const Color teacherBadgeBorder = Color(0xFFC7D2FE);
-
-  static const Color studentBadgeBg = Color(0xFFECFDF5);
-  static const Color studentBadgeText = Color(0xFF059669);
-  static const Color studentBadgeBorder = Color(0xFFA7F3D0);
-
-  static const Color honorsBadgeBg = Color(0xFFFFFBEB);
-  static const Color honorsBadgeText = Color(0xFFD97706);
-  static const Color honorsBadgeBorder = Color(0xFFFDE68A);
+  /// Deep indigo text used on [brandTint] badges (official badge, step
+  /// indicator, and the super-admin/student role badges).
+  static const Color brandAccentText = Color(0xFF264191);
 
   // ── Elevation Shadows ─────────────────────────────────────────
   static List<BoxShadow> get shadowSm => [
