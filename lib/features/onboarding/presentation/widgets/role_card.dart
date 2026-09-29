@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
-import 'package:mycampus/features/onboarding/domain/entities/user_role.dart';
 import 'package:mycampus/features/onboarding/presentation/models/role_option.dart';
 
 class RoleCard extends StatelessWidget {

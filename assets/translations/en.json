@@ -26,7 +26,17 @@
     "settings": "Settings",
     "scan": "Scan QR Code",
     "view": "View QR Code",
-    "continue": "Continue"
+    "continue": "Continue",
+    "department": "Department",
+    "selectOption": "Select an option",
+    "selectMonthYear": "Select Month & Year",
+    "emailHint": "you@example.com",
+    "phoneHint": "e.g. +1 555 123 4567",
+    "fullNameHint": "Enter your full name",
+    "profilePhoto": "Profile Photo",
+    "takePhoto": "Take Photo",
+    "chooseFromGallery": "Choose from Gallery",
+    "removePhoto": "Remove Photo"
   },
   "roles": {
     "selectRole": "Select Your Role",
@@ -62,12 +72,20 @@
     "registerSubtitle": "Fill in your details to get started",
     "noAccount": "Don't have an account?",
     "hasAccount": "Already have an account?",
-    "forgotPassword": "Forgot Password?"
+    "forgotPassword": "Forgot Password?",
+    "personalInfo": "Personal Information",
+    "personalInfoDesc": "Your contact and login details",
+    "loginPasswordHint": "Enter your password",
+    "newPasswordHint": "At least 8 characters",
+    "confirmPasswordHint": "Re-enter your password"
   },
   "student": {
-    "studentId": "Student ID",
-    "department": "Department",
+    "studentId": "Student ID / Roll Number",
+    "studentIdHint": "e.g. STU-2025-0142",
+    "academicInfo": "Academic Information",
+    "academicInfoDesc": "Your enrollment and department details",
     "batch": "Batch / Year",
+    "batchHint": "e.g. 2025 or Batch A",
     "dashboard": "Student Dashboard",
     "services": "Services",
     "notices": "Notices",
@@ -78,8 +96,15 @@
     "events": "Events"
   },
   "teacher": {
-    "teacherId": "Teacher ID",
+    "teacherId": "Teacher ID / Staff ID",
+    "teacherIdHint": "e.g. FAC-2025-0087",
     "designation": "Designation",
+    "designationProfessor": "Professor",
+    "designationAssociateProfessor": "Associate Professor",
+    "designationAssistantProfessor": "Assistant Professor",
+    "designationLecturer": "Lecturer",
+    "professionalInfo": "Professional Information",
+    "professionalInfoDesc": "Your department and academic rank",
     "dashboard": "Teacher Dashboard",
     "postNotice": "Post Notice",
     "markAttendance": "Mark Attendance",
@@ -88,19 +113,28 @@
   "admin": {
     "dashboard": "Super Admin Panel",
     "universityInfo": "University Information",
+    "universityInfoDesc": "Legal name, type and location of your institution",
     "adminInfo": "Admin Information",
+    "adminInfoDesc": "Your personal login credentials as the institution's super admin",
+    "universityLogo": "University Logo",
     "universityName": "University Name",
+    "universityNameHint": "e.g. Apex Metropolitan University",
     "universityShort": "Short Name",
+    "universityShortHint": "e.g. AMU",
     "universityType": "Type",
     "universityCity": "City",
+    "universityCityHint": "e.g. Cambridge",
     "universityCountry": "Country",
+    "universityCountryHint": "e.g. United States",
     "establishedYear": "Established Year",
+    "establishedYearHint": "Tap to select",
     "joinRequests": "Join Requests",
     "noPendingRequests": "No pending requests",
     "qrInstructions": "Students and teachers can scan this QR code to request access to your university"
   },
   "university": {
     "createTitle": "Create University",
+    "createSubtitle": "Set up your institution and get a Super Admin account",
     "createdSuccess": "University created successfully",
     "id": "University ID",
     "typePublic": "Public",
@@ -115,5 +149,12 @@
     "active": "Active",
     "notEnrolled": "Not Enrolled",
     "waitingApproval": "Waiting for admin approval"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Enter a valid email address",
+    "invalidPhone": "Enter a valid phone number",
+    "passwordTooShort": "Password must be at least 8 characters",
+    "passwordMismatch": "Passwords do not match"
   }
 }
