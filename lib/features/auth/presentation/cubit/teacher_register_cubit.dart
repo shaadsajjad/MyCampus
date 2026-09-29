@@ -2,7 +2,11 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/auth/domain/entities/teacher_designation.dart';
+import 'package:mycampus/features/auth/domain/exceptions/auth_exception.dart';
+import 'package:mycampus/features/auth/domain/repositories/auth_repository.dart';
+import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
 
 class TeacherRegisterState {
   const TeacherRegisterState({
@@ -17,6 +21,8 @@ class TeacherRegisterState {
     this.designation,
     this.obscurePassword = true,
     this.obscureConfirmPassword = true,
+    this.status = SubmissionStatus.idle,
+    this.errorMessage,
   });
 
   final String fullName;
@@ -32,6 +38,8 @@ class TeacherRegisterState {
   final TeacherDesignation? designation;
   final bool obscurePassword;
   final bool obscureConfirmPassword;
+  final SubmissionStatus status;
+  final String? errorMessage;
 
   TeacherRegisterState copyWith({
     String? fullName,
@@ -46,6 +54,9 @@ class TeacherRegisterState {
     TeacherDesignation? designation,
     bool? obscurePassword,
     bool? obscureConfirmPassword,
+    SubmissionStatus? status,
+    String? errorMessage,
+    bool clearError = false,
   }) {
     return TeacherRegisterState(
       fullName: fullName ?? this.fullName,
@@ -60,13 +71,18 @@ class TeacherRegisterState {
       obscurePassword: obscurePassword ?? this.obscurePassword,
       obscureConfirmPassword:
           obscureConfirmPassword ?? this.obscureConfirmPassword,
+      status: status ?? this.status,
+      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }
 }
 
 class TeacherRegisterCubit extends Cubit<TeacherRegisterState> {
-  TeacherRegisterCubit() : super(const TeacherRegisterState());
+  TeacherRegisterCubit({AuthRepository? authRepository})
+    : _authRepository = authRepository ?? DI.authRepository,
+      super(const TeacherRegisterState());
 
+  final AuthRepository _authRepository;
   final formKey = GlobalKey<FormState>();
 
   void fullNameChanged(String v) => emit(state.copyWith(fullName: v));
@@ -80,8 +96,7 @@ class TeacherRegisterCubit extends Cubit<TeacherRegisterState> {
   void confirmPasswordChanged(String v) =>
       emit(state.copyWith(confirmPassword: v));
 
-  void photoChanged(Uint8List bytes) =>
-      emit(state.copyWith(photoBytes: bytes));
+  void photoChanged(Uint8List bytes) => emit(state.copyWith(photoBytes: bytes));
 
   void removePhoto() => emit(state.copyWith(clearPhoto: true));
 
@@ -99,9 +114,29 @@ class TeacherRegisterCubit extends Cubit<TeacherRegisterState> {
     state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword),
   );
 
-  /// Placeholder until the PocketBase repository is wired in.
-  void submit() {
+  Future<void> submit() async {
     if (!formKey.currentState!.validate()) return;
-    // TODO(pocketbase): create the teacher account, pending admin approval.
+
+    emit(state.copyWith(status: SubmissionStatus.submitting, clearError: true));
+    try {
+      await _authRepository.registerTeacher(
+        fullName: state.fullName,
+        email: state.email,
+        phone: state.phone,
+        password: state.password,
+        teacherId: state.teacherId,
+        department: state.department!,
+        designation: state.designation!,
+        photoBytes: state.photoBytes,
+      );
+      emit(state.copyWith(status: SubmissionStatus.success));
+    } on AuthException catch (e) {
+      emit(
+        state.copyWith(
+          status: SubmissionStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
+    }
   }
 }

@@ -43,9 +43,7 @@ class Validators {
   }
 
   /// Validates a confirmation field against [password].
-  static String? Function(String?) confirmPassword(
-    String Function() password,
-  ) {
+  static String? Function(String?) confirmPassword(String Function() password) {
     return (value) {
       final requiredError = required(value);
       if (requiredError != null) return requiredError;

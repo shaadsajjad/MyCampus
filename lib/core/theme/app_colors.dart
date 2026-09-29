@@ -49,26 +49,26 @@ class AppColors {
 
   // ── Elevation Shadows ─────────────────────────────────────────
   static List<BoxShadow> get shadowSm => [
-        BoxShadow(
-          color: const Color(0xFF0F172A).withValues(alpha: 0.05),
-          blurRadius: 3,
-          offset: const Offset(0, 1),
-        ),
-      ];
+    BoxShadow(
+      color: const Color(0xFF0F172A).withValues(alpha: 0.05),
+      blurRadius: 3,
+      offset: const Offset(0, 1),
+    ),
+  ];
 
   static List<BoxShadow> get shadowMd => [
-        BoxShadow(
-          color: const Color(0xFF1E3A8A).withValues(alpha: 0.08),
-          blurRadius: 6,
-          offset: const Offset(0, 4),
-        ),
-      ];
+    BoxShadow(
+      color: const Color(0xFF1E3A8A).withValues(alpha: 0.08),
+      blurRadius: 6,
+      offset: const Offset(0, 4),
+    ),
+  ];
 
   static List<BoxShadow> get shadowLg => [
-        BoxShadow(
-          color: const Color(0xFF0F172A).withValues(alpha: 0.1),
-          blurRadius: 20,
-          offset: const Offset(0, 8),
-        ),
-      ];
+    BoxShadow(
+      color: const Color(0xFF0F172A).withValues(alpha: 0.1),
+      blurRadius: 20,
+      offset: const Offset(0, 8),
+    ),
+  ];
 }

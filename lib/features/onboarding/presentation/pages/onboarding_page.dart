@@ -102,9 +102,7 @@ class OnboardingView extends StatelessWidget {
                     option: option,
                     isSelected: state.selectedRole == option.role,
                     onTap: () =>
-                        context.read<OnboardingCubit>().selectRole(
-                          option.role,
-                        ),
+                        context.read<OnboardingCubit>().selectRole(option.role),
                   ),
                   if (option != kRoleOptions.last)
                     const SizedBox(height: AppTheme.spaceMd),

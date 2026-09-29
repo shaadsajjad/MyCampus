@@ -49,9 +49,7 @@ class AppImagePickerField extends StatelessWidget {
               const SizedBox(width: 2),
               Text(
                 '*',
-                style: textTheme.labelMedium?.copyWith(
-                  color: AppColors.error,
-                ),
+                style: textTheme.labelMedium?.copyWith(color: AppColors.error),
               ),
             ],
           ],

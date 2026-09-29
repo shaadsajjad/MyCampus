@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/core/router/app_router.dart';
+import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/utils/validators.dart';
 import 'package:mycampus/core/widgets/primary_action_button.dart';
 import 'package:mycampus/features/auth/presentation/cubit/login_cubit.dart';
+import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_password_field.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_text_field.dart';
 import 'package:mycampus/features/auth/presentation/widgets/auth_footer_link.dart';
@@ -40,62 +42,86 @@ class LoginView extends StatelessWidget {
     return AuthScaffold(
       title: 'auth.loginTitle'.tr(),
       subtitle: 'auth.loginSubtitle'.tr(),
-      child: Form(
-        key: cubit.formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Center(child: RoleContextChip(role: role)),
-            const SizedBox(height: AppTheme.spaceLg),
-            BlocBuilder<LoginCubit, LoginState>(
-              builder: (context, state) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    AppTextField(
-                      label: 'common.email'.tr(),
-                      icon: Icons.mail_outline,
-                      hint: 'common.emailHint'.tr(),
-                      initialValue: state.email,
-                      keyboardType: TextInputType.emailAddress,
-                      onChanged: cubit.emailChanged,
-                      validator: Validators.email,
-                    ),
-                    const SizedBox(height: AppTheme.spaceMd),
-                    AppPasswordField(
-                      label: 'common.password'.tr(),
-                      hint: 'auth.loginPasswordHint'.tr(),
-                      initialValue: state.password,
-                      onChanged: cubit.passwordChanged,
-                      obscureText: state.obscurePassword,
-                      onToggleObscure: cubit.toggleObscurePassword,
-                      validator: Validators.required,
-                    ),
-                  ],
-                );
-              },
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                // TODO(pocketbase): wire up the forgot-password flow.
-                onPressed: () {},
-                child: Text('auth.forgotPassword'.tr()),
+      child: BlocListener<LoginCubit, LoginState>(
+        listenWhen: (previous, current) => previous.status != current.status,
+        listener: (context, state) {
+          if (state.status == SubmissionStatus.success) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text('auth.loginSuccess'.tr())));
+            context.go(AppRoute.dashboard);
+          } else if (state.status == SubmissionStatus.failure &&
+              state.errorMessage != null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage!),
+                backgroundColor: AppColors.error,
               ),
-            ),
-            const SizedBox(height: AppTheme.spaceSm),
-            PrimaryActionButton(
-              label: 'common.login'.tr(),
-              onPressed: cubit.submit,
-            ),
-            const SizedBox(height: AppTheme.spaceLg),
-            AuthFooterLink(
-              promptKey: 'auth.noAccount',
-              actionKey: 'common.register',
-              onTap: () =>
-                  context.pushReplacement(AppRoute.registerPathFor(role)),
-            ),
-          ],
+            );
+          }
+        },
+        child: Form(
+          key: cubit.formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(child: RoleContextChip(role: role)),
+              const SizedBox(height: AppTheme.spaceLg),
+              BlocBuilder<LoginCubit, LoginState>(
+                builder: (context, state) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      AppTextField(
+                        label: 'common.email'.tr(),
+                        icon: Icons.mail_outline,
+                        hint: 'common.emailHint'.tr(),
+                        initialValue: state.email,
+                        keyboardType: TextInputType.emailAddress,
+                        onChanged: cubit.emailChanged,
+                        validator: Validators.email,
+                      ),
+                      const SizedBox(height: AppTheme.spaceMd),
+                      AppPasswordField(
+                        label: 'common.password'.tr(),
+                        hint: 'auth.loginPasswordHint'.tr(),
+                        initialValue: state.password,
+                        onChanged: cubit.passwordChanged,
+                        obscureText: state.obscurePassword,
+                        onToggleObscure: cubit.toggleObscurePassword,
+                        validator: Validators.required,
+                      ),
+                    ],
+                  );
+                },
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  // TODO(pocketbase): wire up the forgot-password flow.
+                  onPressed: () {},
+                  child: Text('auth.forgotPassword'.tr()),
+                ),
+              ),
+              const SizedBox(height: AppTheme.spaceSm),
+              BlocBuilder<LoginCubit, LoginState>(
+                builder: (context, state) {
+                  return PrimaryActionButton(
+                    label: 'common.login'.tr(),
+                    isLoading: state.status == SubmissionStatus.submitting,
+                    onPressed: cubit.submit,
+                  );
+                },
+              ),
+              const SizedBox(height: AppTheme.spaceLg),
+              AuthFooterLink(
+                promptKey: 'auth.noAccount',
+                actionKey: 'common.register',
+                onTap: () =>
+                    context.pushReplacement(AppRoute.registerPathFor(role)),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -27,6 +27,7 @@
     "scan": "Scan QR Code",
     "view": "View QR Code",
     "continue": "Continue",
+    "dashboard": "Dashboard",
     "department": "Department",
     "selectOption": "Select an option",
     "selectMonthYear": "Select Month & Year",
@@ -77,7 +78,9 @@
     "personalInfoDesc": "Your contact and login details",
     "loginPasswordHint": "Enter your password",
     "newPasswordHint": "At least 8 characters",
-    "confirmPasswordHint": "Re-enter your password"
+    "confirmPasswordHint": "Re-enter your password",
+    "loginSuccess": "Welcome back!",
+    "registerSuccessPending": "Account created — waiting for admin approval."
   },
   "student": {
     "studentId": "Student ID / Roll Number",
