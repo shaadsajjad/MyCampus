@@ -80,7 +80,11 @@
     "newPasswordHint": "At least 8 characters",
     "confirmPasswordHint": "Re-enter your password",
     "loginSuccess": "Welcome back!",
-    "registerSuccessPending": "Account created — waiting for admin approval."
+    "registerSuccessPending": "Account created — waiting for admin approval.",
+    "emailNotVerifiedTitle": "Email Not Verified",
+    "emailNotVerifiedDesc": "Please verify your email address before signing in.",
+    "resendVerification": "Resend Verification",
+    "goToVerification": "Go to Verification"
   },
   "student": {
     "studentId": "Student ID / Roll Number",
@@ -159,5 +163,15 @@
     "invalidPhone": "Enter a valid phone number",
     "passwordTooShort": "Password must be at least 8 characters",
     "passwordMismatch": "Passwords do not match"
+  },
+  "verification": {
+    "checkYourEmail": "Check Your Email",
+    "weSentEmail": "We've sent a verification email to {email}",
+    "openEmailApp": "Open your email app and click the verification link",
+    "resendEmail": "Resend Email",
+    "backToStart": "Back to Start",
+    "emailVerified": "Email verified successfully!",
+    "verificationFailed": "Verification failed. Please try again or request a new email.",
+    "invalidToken": "Invalid or expired verification link."
   }
 }

@@ -56,6 +56,25 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<!-- Allows plain-http calls to LAN/loopback addresses only (e.g. the
+		     development PocketBase server at http://<lan-ip>:8090) without
+		     weakening ATS for any other, non-local host. -->
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.mycampus.verification</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>mycampus</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

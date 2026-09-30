@@ -92,7 +92,6 @@ coverage/
 packages/**/pubspec.lock
 
 # Web related
-lib/generated_plugin_registrant.dart
 
 # Symbolication related
 app.*.symbols
@@ -115,3 +114,8 @@ app.*.map.json
 
 # Generated l10n files
 lib/l10n/gen/
+
+# PocketBase local runtime
+pocketbase/pocketbase
+pocketbase/pb_data/
+pocketbase/.superuser_credentials

@@ -9,8 +9,8 @@ import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/utils/validators.dart';
 import 'package:mycampus/core/widgets/app_image_picker_field.dart';
 import 'package:mycampus/core/widgets/primary_action_button.dart';
-import 'package:mycampus/features/auth/presentation/cubit/student_register_cubit.dart';
-import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
+import 'package:mycampus/features/auth/presentation/register/student_register_cubit.dart';
+import 'package:mycampus/features/auth/presentation/submission_status.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_dropdown_field.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_password_field.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_text_field.dart';
@@ -46,10 +46,11 @@ class StudentRegisterView extends StatelessWidget {
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
           if (state.status == SubmissionStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('auth.registerSuccessPending'.tr())),
+            // Navigate to verification page with the registered email
+            context.go(
+              AppRoute.verificationPath(state.email),
+              extra: state.password,
             );
-            context.go(AppRoute.dashboard);
           } else if (state.status == SubmissionStatus.failure &&
               state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(

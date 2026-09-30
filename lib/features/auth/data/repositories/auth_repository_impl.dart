@@ -61,6 +61,9 @@ class AuthRepositoryImpl implements AuthRepository {
         'batch': batch,
       });
 
+      // Send verification email after successful registration
+      await _remote.requestVerification(email);
+
       return _toAuthUser(user);
     });
   }
@@ -94,6 +97,9 @@ class AuthRepositoryImpl implements AuthRepository {
         'designation': designation.name,
       });
 
+      // Send verification email after successful registration
+      await _remote.requestVerification(email);
+
       return _toAuthUser(user);
     });
   }
@@ -123,6 +129,13 @@ class AuthRepositoryImpl implements AuthRepository {
         'status': AccountStatus.approved.name,
       });
 
+      // Creating a record doesn't establish a session, but the `users`
+      // collection only allows a record to update itself
+      // (`updateRule: id = @request.auth.id`) — without logging in first,
+      // the `updateUser` call below linking the university back would be
+      // rejected even though the account was just created successfully.
+      await _remote.login(email: adminEmail, password: adminPassword);
+
       final university = await _remote.createUniversity({
         'name': universityName,
         'shortName': shortName,
@@ -138,8 +151,21 @@ class AuthRepositoryImpl implements AuthRepository {
         'university': university.id,
       });
 
+      // Send verification email for super admin too
+      await _remote.requestVerification(adminEmail);
+
       return _toAuthUser(updated);
     });
+  }
+
+  @override
+  Future<void> requestVerification(String email) {
+    return _guard(() => _remote.requestVerification(email));
+  }
+
+  @override
+  Future<void> confirmVerification(String token) {
+    return _guard(() => _remote.confirmVerification(token));
   }
 
   @override
@@ -196,6 +222,7 @@ class AuthRepositoryImpl implements AuthRepository {
       email: user.email,
       role: _parseRole(user.role),
       status: _parseStatus(user.status),
+      verified: user.verified,
       name: user.name,
       universityId: user.universityId,
     );
