@@ -22,12 +22,16 @@ class NoticeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final authorName = notice.authorName.isEmpty
+        ? 'notices.unknownAuthor'.tr()
+        : notice.authorName;
 
     return Container(
       padding: const EdgeInsets.all(AppTheme.spaceMd),
       decoration: BoxDecoration(
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(AppTheme.radiusXl),
+        border: Border.all(color: colorScheme.outline),
         boxShadow: AppColors.shadowSm,
       ),
       child: Column(
@@ -39,31 +43,33 @@ class NoticeCard extends StatelessWidget {
               Expanded(
                 child: Text(
                   notice.title,
-                  style: textTheme.titleMedium,
+                  style: textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
+              const SizedBox(width: AppTheme.spaceSm),
               _AudienceBadge(audience: notice.audience),
             ],
           ),
-          const SizedBox(height: AppTheme.spaceXs),
-          Text(notice.body, style: textTheme.bodyMedium),
+          const SizedBox(height: AppTheme.spaceSm),
+          Text(
+            notice.body,
+            style: textTheme.bodyMedium?.copyWith(height: 1.4),
+          ),
+          const SizedBox(height: AppTheme.spaceMd),
+          Divider(height: 1, color: colorScheme.outline),
           const SizedBox(height: AppTheme.spaceSm),
           Row(
             children: [
-              Icon(
-                Icons.admin_panel_settings_outlined,
-                size: 14,
-                color: colorScheme.outline,
-              ),
-              const SizedBox(width: 4),
+              _AuthorAvatar(name: authorName),
+              const SizedBox(width: AppTheme.spaceXs),
               Expanded(
                 child: Text(
-                  notice.authorName.isEmpty
-                      ? 'notices.unknownAuthor'.tr()
-                      : notice.authorName,
-                  style: textTheme.labelSmall,
+                  authorName,
+                  style: textTheme.labelMedium,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -71,7 +77,7 @@ class NoticeCard extends StatelessWidget {
               Text(
                 _relativeTime(notice.createdAt),
                 style: textTheme.labelSmall?.copyWith(
-                  color: colorScheme.outline,
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
               if (canDelete) ...[
@@ -123,20 +129,64 @@ class _AudienceBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (label, color) = switch (audience) {
-      NoticeAudience.all => ('notices.audienceAll'.tr(), AppColors.primary),
-      NoticeAudience.students => ('roles.student'.tr(), AppColors.secondary),
-      NoticeAudience.faculty => ('roles.faculty'.tr(), AppColors.tertiary),
+    final (label, icon, color) = switch (audience) {
+      NoticeAudience.all => (
+        'notices.audienceAll'.tr(),
+        Icons.public,
+        AppColors.primary,
+      ),
+      NoticeAudience.students => (
+        'roles.student'.tr(),
+        Icons.school_outlined,
+        AppColors.secondary,
+      ),
+      NoticeAudience.faculty => (
+        'roles.faculty'.tr(),
+        Icons.badge_outlined,
+        AppColors.tertiary,
+      ),
     };
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.12),
         borderRadius: BorderRadius.circular(AppTheme.radiusFull),
       ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 12, color: color),
+          const SizedBox(width: 4),
+          Text(
+            label,
+            style: Theme.of(
+              context,
+            ).textTheme.labelSmall?.copyWith(color: color),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// A small circular initial avatar standing in for the author's photo.
+class _AuthorAvatar extends StatelessWidget {
+  const _AuthorAvatar({required this.name});
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    final initial = name.isEmpty ? '?' : name[0].toUpperCase();
+    return CircleAvatar(
+      radius: 10,
+      backgroundColor: AppColors.primary.withValues(alpha: 0.12),
       child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(color: color),
+        initial,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          color: AppColors.primary,
+          fontWeight: FontWeight.w700,
+        ),
       ),
     );
   }
