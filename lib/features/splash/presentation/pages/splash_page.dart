@@ -24,8 +24,13 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<SplashCubit, SplashStatus>(
       listener: (context, status) {
-        if (status == SplashStatus.ready) {
-          context.go(AppRoute.onboarding);
+        switch (status) {
+          case SplashStatus.readyAuthenticated:
+            context.go(AppRoute.dashboard);
+          case SplashStatus.readyUnauthenticated:
+            context.go(AppRoute.onboarding);
+          case SplashStatus.loading:
+            break;
         }
       },
       child: const InitialSplash(),

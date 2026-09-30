@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:mycampus/core/di/di.dart';
 
-enum SplashStatus { loading, ready }
+enum SplashStatus { loading, readyAuthenticated, readyUnauthenticated }
 
 class SplashCubit extends Cubit<SplashStatus> {
   SplashCubit({Duration duration = const Duration(seconds: 3)})
@@ -13,7 +14,11 @@ class SplashCubit extends Cubit<SplashStatus> {
   Future<void> _init(Duration duration) async {
     await Future<void>.delayed(duration);
     if (!isClosed) {
-      emit(SplashStatus.ready);
+      emit(
+        DI.pocketBase.authStore.isValid
+            ? SplashStatus.readyAuthenticated
+            : SplashStatus.readyUnauthenticated,
+      );
     }
   }
 }

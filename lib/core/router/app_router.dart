@@ -1,14 +1,14 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mycampus/core/domain/entities/user_role.dart';
-import 'package:mycampus/features/auth/presentation/login/login_page.dart';
-import 'package:mycampus/features/auth/presentation/register/student_register_page.dart';
-import 'package:mycampus/features/auth/presentation/register/super_admin_register_page.dart';
-import 'package:mycampus/features/auth/presentation/register/teacher_register_page.dart';
-import 'package:mycampus/features/auth/presentation/verification/verification_page.dart';
 import 'package:mycampus/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:mycampus/features/login/presentation/pages/login_page.dart';
 import 'package:mycampus/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:mycampus/features/register/presentation/pages/student_register_page.dart';
+import 'package:mycampus/features/register/presentation/pages/super_admin_register_page.dart';
+import 'package:mycampus/features/register/presentation/pages/teacher_register_page.dart';
 import 'package:mycampus/features/splash/presentation/pages/splash_page.dart';
+import 'package:mycampus/features/verification/presentation/pages/verification_page.dart';
 
 abstract class AppRoute {
   static const splash = '/';

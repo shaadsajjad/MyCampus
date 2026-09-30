@@ -5,8 +5,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/core/router/app_router.dart';
-import 'package:mycampus/features/auth/domain/exceptions/auth_exception.dart';
-import 'package:mycampus/features/auth/domain/repositories/auth_repository.dart';
+import 'package:mycampus/features/verification/domain/exceptions/verification_exception.dart';
+import 'package:mycampus/features/verification/domain/repositories/verification_repository.dart';
 
 /// Service that listens for incoming deep links (e.g., mycampus://verify?token=...)
 /// and routes them to the appropriate handler.
@@ -25,18 +25,22 @@ class DeepLinkService {
 
   final AppLinks _appLinks = AppLinks();
   StreamSubscription<Uri>? _sub;
-  AuthRepository? _authRepository;
+  VerificationRepository? _verificationRepository;
   void Function(String token)? _activeHandler;
 
   /// Initialize the deep link listener.
   /// Call this once during app startup (e.g., in bootstrap or main).
-  Future<void> init({AuthRepository? authRepository}) async {
-    _authRepository = authRepository ?? DI.authRepository;
+  Future<void> init({VerificationRepository? verificationRepository}) async {
+    _verificationRepository =
+        verificationRepository ?? DI.verificationRepository;
 
     // Handle links when the app is already running (foreground/background)
-    _sub = _appLinks.uriLinkStream.listen(_handleUri, onError: (err) {
-      // Ignore errors - usually just means no link was available
-    });
+    _sub = _appLinks.uriLinkStream.listen(
+      _handleUri,
+      onError: (err) {
+        // Ignore errors - usually just means no link was available
+      },
+    );
 
     // Handle the initial link if the app was cold-started via a deep link
     try {
@@ -84,10 +88,10 @@ class DeepLinkService {
   /// routing to login rather than the dashboard.
   Future<void> _confirmAndNavigate(String token) async {
     try {
-      await _authRepository?.confirmVerification(token);
+      await _verificationRepository?.confirmVerification(token);
       AppRouter.router.go(AppRoute.login);
       _showMessage('verification.emailVerified'.tr());
-    } on AuthException catch (e) {
+    } on VerificationException catch (e) {
       _showMessage(e.message);
     } catch (_) {
       _showMessage('verification.verificationFailed'.tr());
@@ -97,9 +101,8 @@ class DeepLinkService {
   void _showMessage(String message) {
     final context = AppRouter.navigatorKey.currentContext;
     if (context == null) return;
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   void dispose() {

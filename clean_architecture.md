@@ -38,6 +38,53 @@ the `onboarding` feature); the latter is a serialization DTO that only ever
 flows into a repository. Neither belongs in `domain/entities`, which must
 stay pure Dart.
 
+## Features own their data and domain — no cross-feature repositories
+
+Every feature that talks to PocketBase (`login`, `register`, `verification`,
+`dashboard`, `super_admin_dashboard`, `join_requests`,
+`super_admin_profile`, `notices`) has its **own**
+`domain/repositories` contract, its **own** `data/datasources` +
+`data/repositories` implementing it, and its **own** domain
+entities/exceptions — even where that means two
+features each define a small type for the same underlying concept (e.g.
+`login`, `verification`, `dashboard`, and `super_admin_dashboard` each read
+the same PocketBase `users` record, but none of them import a shared
+`AuthUser`; each just reads the handful of fields it actually needs off its
+own datasource). A widget in `dashboard/` never imports
+`login/domain/repositories/login_repository.dart`, and `register/` never
+reaches into `dashboard/`'s anything.
+
+This is a deliberate trade-off, not an oversight: a `_guard`/try-catch
+wrapper and a couple of DTO fields end up duplicated across features, but in
+exchange a feature can be read, tested, and changed on its own — no feature
+graph to trace through to know what `login` is allowed to touch. The one
+thing every feature's PocketBase-backed repository *does* share is the
+raw `PocketBase` client from `DI.pocketBase` (see below) — that has to be
+the same instance everywhere, or a session started by `login` wouldn't be
+visible to `dashboard`.
+
+Two things still belong in `core/` despite this:
+
+- A type genuinely used **the same way** by most of the app — `UserRole` is
+  the standing example: routing, the role chip, and every registration
+  screen all switch on the exact same three values. That's different from
+  "two features both happen to read a user's name," which each just does
+  locally.
+- Generic, non-feature-shaped logic — `core/utils/pocketbase_error.dart`
+  (`pocketBaseErrorMessage`) turns a PocketBase `ClientException` into a
+  message string; it's identical, mechanical parsing in every feature's
+  `_guard`, not a business rule any one feature owns, so it's shared code
+  rather than five copies of the same nine lines. Each feature still
+  defines its own exception *type* (`LoginException`, `RegisterException`,
+  ...) — only the string-extraction is shared.
+
+If you're unsure which side of the line something falls on, ask whether two
+features would ever disagree about it. `UserRole.superAdmin` means the same
+thing everywhere — promote it. "What a dashboard needs to know about the
+current user" is answered differently by `dashboard` (name/email/pending
+status) and `super_admin_dashboard` (name/email/university id) — keep it
+local to each.
+
 ## `lib/core/` — shared across features
 
 Anything more than one feature needs lives in `core/`, not inside whichever
@@ -45,24 +92,35 @@ feature happened to need it first:
 
 ```
 lib/core/
-  domain/entities/  # entities used by 2+ features (e.g. UserRole — both
-                     # onboarding and auth switch on it). A single-feature
-                     # entity stays in that feature's own domain/entities.
+  domain/entities/  # entities used the same way by most of the app (e.g.
+                     # UserRole — routing, the role chip, and every
+                     # registration screen all switch on it identically).
+                     # A single-feature entity stays in that feature's own
+                     # domain/entities — see "Features own their data and
+                     # domain" above for where this line is.
   di/               # dependency injection
   router/           # AppRouter, AppRoute
   theme/            # AppColors, AppTheme, AppTextStyles, light/dark ThemeData
-  utils/            # pure-Dart helpers (e.g. Validators)
-  widgets/          # generic, feature-agnostic UI chrome (e.g.
-                     # PrimaryActionButton) — not a place for feature-shaped
-                     # widgets; those stay in that feature's presentation/
-                     # widgets even if a second feature ends up copying a
-                     # small piece of one
+  utils/            # pure-Dart helpers (e.g. Validators,
+                     # pocketBaseErrorMessage)
+  widgets/          # generic, feature-agnostic UI chrome — either
+                     # feature-blind (PrimaryActionButton, AppImagePickerField)
+                     # or form-shaped widgets used by 2+ features
+                     # (AppTextField, AppPasswordField, FieldLabel,
+                     # AuthScaffold, AuthFooterLink, RoleContextChip — used
+                     # by both `login` and `register`). A widget only one
+                     # feature uses stays in that feature's own
+                     # presentation/widgets even if it looks generic
+                     # (AppDropdownField, AppMonthYearField, FormSectionCard
+                     # currently only serve `register`).
   constants/        # e.g. AppAssets — centralized asset paths
 ```
 
 If you're duplicating a `switch` over an enum, a color, a string literal,
 or a widget across two features, that's the signal to promote it to
-`core/`, not to import one feature's `presentation/` from another's.
+`core/`, not to import one feature's `presentation/` from another's. But
+promote the *type/widget*, not the feature's whole vocabulary around it —
+see "Features own their data and domain" above.
 
 **Not every feature needs all three layers.** A feature with no persistence
 or business rules beyond transient UI state (e.g. `splash`) only needs
@@ -79,6 +137,12 @@ Widgets never import a `data/` class directly.
 - All state is managed with `flutter_bloc` **Cubit**, never `Bloc` and never
   `StatefulWidget.setState`. If a widget needs local mutable state, that
   state belongs in a Cubit, even if it's UI-only (e.g. a toggle).
+- The same goes for any other state a widget would have to hold:
+  `TextEditingController`, `AnimationController`, a `GlobalKey` field.
+  Form keys live on the Cubit; fields bind via `initialValue` +
+  `onChanged`; anything that needs a rendered widget's pixels (e.g. an
+  exported image) is drawn in the data layer instead (see
+  `CampusPassImageRenderer`).
 - One Cubit per screen/feature slice. Cubits are provided at the page level
   with `BlocProvider` and read with `context.read<T>()` /
   `context.watch<T>()` / `BlocBuilder` / `BlocListener`.
@@ -91,7 +155,7 @@ Widgets never import a `data/` class directly.
   just to own one. A `Form`'s `GlobalKey<FormState>` is a plain final field
   on the Cubit (created in its constructor), so a `StatelessWidget` page can
   still call `cubit.formKey.currentState!.validate()` on submit. See
-  `LoginCubit` / `SuperAdminRegisterCubit` in the `auth` feature.
+  `LoginCubit` (in `login`) / `SuperAdminRegisterCubit` (in `register`).
 
 ## Routing: go_router
 
@@ -119,7 +183,10 @@ Widgets never import a `data/` class directly.
 ## Localization: `en.json` via easy_localization
 
 - All user-facing strings live in `assets/translations/en.json`, grouped by
-  feature/domain (`app`, `common`, `roles`, `splash`, `auth`, ...).
+  feature/domain (`app`, `common`, `roles`, `splash`, `login`, `register`,
+  ...) — a section doesn't have to map 1:1 to a `lib/features/` folder
+  (`student`/`teacher`/`admin` are grouped by role since both `register`
+  and, eventually, that role's dashboard use them).
 - In widgets, read strings with the `easy_localization` extension:
   `'roles.selectRole'.tr()`. Don't hardcode user-facing text in Dart.
 - Adding a new locale means adding `assets/translations/<locale>.json` and
@@ -158,21 +225,32 @@ Widgets never import a `data/` class directly.
   environments exist.
 - **`core/di/di.dart`** (`DI`) is a small manual service locator — no
   `get_it`/`injectable`, just static singletons built in `DI.init()`
-  (called once from `bootstrap()`, after `AppConfig.init()`). It wires the
-  `PocketBase` client (with a `SharedPreferences`-backed `AsyncAuthStore`
-  so login survives an app restart) into `AuthRepository`.
+  (called once from `bootstrap()`, after `AppConfig.init()`). It's the one
+  place in the app allowed to know about every feature's data layer at
+  once (that's what a composition root is for): it builds the single
+  shared `PocketBase` client (with a `SharedPreferences`-backed
+  `AsyncAuthStore` so login survives an app restart), then wires that same
+  client into each feature's own datasource + repository —
+  `loginRepository`, `registerRepository`, `verificationRepository`,
+  `dashboardRepository`, `superAdminDashboardRepository`. No feature reads
+  another feature's `DI.*Repository`.
 - A Cubit that needs a repository takes it as an **optional constructor
-  param defaulting to the `DI` singleton**:
+  param defaulting to the matching `DI` singleton**:
   ```dart
-  LoginCubit({AuthRepository? authRepository})
-      : _authRepository = authRepository ?? DI.authRepository,
+  LoginCubit({LoginRepository? loginRepository})
+      : _loginRepository = loginRepository ?? DI.loginRepository,
         super(const LoginState());
   ```
   Call sites stay simple (`LoginCubit()`), while tests can inject a fake.
-- **Data-layer errors**: a repository method wraps its PocketBase call in
-  a `try`/`on ClientException catch` (see `AuthRepositoryImpl._guard`) and
-  rethrows a domain-level `AuthException(message)` — the only failure type
-  a Cubit ever needs to catch. Cubits never import `package:pocketbase`.
+- **Data-layer errors**: a repository method wraps its PocketBase call in a
+  `try`/`on ClientException catch` (each feature's own private `_guard`)
+  and rethrows a domain-level, feature-owned exception (`LoginException`,
+  `RegisterException`, `VerificationException`, ...) — the only failure
+  type a Cubit in that feature ever needs to catch. Cubits never import
+  `package:pocketbase`. The `ClientException` → message text parsing itself
+  is identical everywhere, so it isn't copy-pasted: every `_guard` calls
+  the shared `pocketBaseErrorMessage()` (`core/utils/pocketbase_error.dart`)
+  and wraps the result in its own exception type.
 - **Form submission lifecycle**: `SubmissionStatus` (`idle` /
   `submitting` / `success` / `failure`) lives in a Cubit's state alongside
   an `errorMessage`. The page wraps its `Form` in a `BlocListener` that
@@ -188,43 +266,152 @@ Widgets never import a `data/` class directly.
   layer needed since it holds no business state.
 - `onboarding` — role selection + login/register toggle. Has a `domain`
   layer (`AuthMode` entity; `UserRole` itself lives in `core/domain` since
-  `auth` needs it too) because that vocabulary is shared across the
-  feature's widgets; no `data` layer yet since nothing is persisted — add
-  one (e.g. `OnboardingRepository` backed by `SharedPreferences`) if/when
-  onboarding needs to remember completion or the chosen role across
-  launches.
-- `auth` — login (one screen, all three roles) and registration (one
-  screen per role — `SuperAdminRegisterPage`, `StudentRegisterPage`,
-  `TeacherRegisterPage` — since the three forms share almost no fields).
-  Backed by PocketBase (see `pocketbase_schema.md` for the collections to
-  set up) through a full `data`/`domain` split — `AuthRepository` is the
-  contract the cubits call; `AuthRemoteDataSource` is the only file that
-  imports the `pocketbase` package or sees a `RecordModel`/
-  `ClientException`. `data/models` (`UserModel`, `StudentProfileModel`,
-  `TeacherProfileModel`, `UniversityModel`) are DTOs matching PocketBase's
-  wire format exactly (e.g. `role`/`status` stay raw strings); the
-  repository is what parses those into the domain-level `AuthUser`
-  (`UserRole`/`AccountStatus` enums) — a model never leaks past the data
-  layer. `domain/entities` also holds the two role-specific enums
-  (`UniversityType`, `TeacherDesignation`) plus `AccountStatus`
-  (pending/approved/rejected — students and teachers need a super admin's
-  approval; super admins are auto-approved since they create the
-  university). PocketBase collections mirror this split too: `users` holds
-  only basic account info (email, name, phone, role, status, university);
-  role-specific fields live in their own `students` / `teachers`
-  collections, linked back via a `user` relation — not crammed onto
-  `users`. Shared form UI (`AppTextField`, `AppPasswordField`,
-  `AppDropdownField`, `FormSectionCard`, `AuthScaffold`, `RoleContextChip`,
-  `AuthFooterLink`) lives in `presentation/widgets` since it's specific to
-  auth-shaped forms, not generic enough for `core/widgets`.
-- `dashboard` — placeholder landing page shown after a successful login or
-  registration (`context.go(AppRoute.dashboard)`, replacing the stack —
-  you shouldn't be able to back out to login). Presentation-only:
-  `DashboardCubit` just reads `AuthRepository.currentUser` (via `DI`) to
-  show who's logged in and a pending-approval banner if relevant, plus a
-  logout action. The real role-specific dashboards (attendance, notices,
-  approvals, ...) are separate, later features — this one only exists to
-  prove the auth round-trip works end-to-end.
+  `login`, `register`, and `dashboard` all switch on it too) because that
+  vocabulary is shared across the feature's widgets; no `data` layer yet
+  since nothing is persisted — add one (e.g. `OnboardingRepository` backed
+  by `SharedPreferences`) if/when onboarding needs to remember completion
+  or the chosen role across launches.
+- `login` — the one login screen serving all three roles. Its
+  `LoginRepository` is deliberately tiny: `login()` and
+  `requestVerification()` (for the "resend" action when login fails
+  because the account isn't verified) — the cubit never needs the
+  resulting user back, so `LoginRemoteDataSource`/`LoginRepositoryImpl`
+  don't parse a `RecordModel` into anything, they just call PocketBase and
+  translate failures into `LoginException`.
+- `register` — one feature, one screen per role (`SuperAdminRegisterPage`,
+  `StudentRegisterPage`, `TeacherRegisterPage` — the three forms share
+  almost no fields, so they don't share a screen, but they do share this
+  feature's `RegisterRepository`/`RegisterException`/widgets). `domain/
+  entities` holds `AccountStatus` (pending/approved/rejected — students
+  and teachers need a super admin's approval; super admins are
+  auto-approved since they create the university) and the two
+  role-specific enums `UniversityType`/`TeacherDesignation`. `data/
+  datasources/register_remote_datasource.dart` is the only file that
+  imports `pocketbase`/sees a `RecordModel` — its methods return just the
+  new record's id (or nothing), since that's all `RegisterRepositoryImpl`
+  ever needs back to link a `students`/`teachers`/`universities` record to
+  its `users` record. PocketBase collections mirror the role split too:
+  `users` holds only basic account info (email, name, phone, role, status,
+  university); role-specific fields live in their own `students` /
+  `teachers` collections, linked back via a `user` relation — not crammed
+  onto `users`. `presentation/widgets` (`AppDropdownField`,
+  `AppMonthYearField`, `FormSectionCard`, `department_options.dart`) are
+  specific to this feature's longer forms; `AppTextField`,
+  `AppPasswordField`, `AuthScaffold`, `AuthFooterLink`, `RoleContextChip`
+  are shared with `login` instead, so they live in `core/widgets`.
+- `verification` — the "check your email" screen reached after
+  registering, plus the deep-link confirmation flow. `VerificationRepository`
+  is shaped around exactly two call sites: `confirmVerification`/
+  `requestVerification`, and `loginIfVerified` — logs in, reports the
+  account's `verified` flag, and logs back out again itself if it's still
+  `false`, so the cubit's polling fallback (`checkVerificationStatus`,
+  since PocketBase has no "check verified" endpoint that doesn't also
+  authenticate) never has to remember to clean up a half-verified session.
+  `core/services/deep_link_service.dart` also depends on this feature's
+  repository (as a fallback for confirming a token when no
+  `VerificationCubit` is on screen to claim it) — the one `core/` → feature
+  dependency in the app, predating this doc's "features own their data"
+  rule; left as-is rather than inverted for a single call site.
+- `dashboard` — landing page shown after a successful login or registration
+  (`context.go(AppRoute.dashboard)`, replacing the stack — you shouldn't be
+  able to back out to login). `DashboardPage` is a router, not a screen: it
+  provides `DashboardCubit` and a `BlocSelector` on its `role` hands super
+  admins off to `SuperAdminDashboardPage` (the widget never reads a
+  repository itself); faculty/student still fall back to the
+  presentation-only placeholder `DashboardView`. Its own
+  `DashboardRepository` is deliberately minimal — role, name, email, and
+  whether the account is still pending, plus `logout()` — just enough for
+  this placeholder; it does not grow a field the moment some other feature
+  wants one (see `super_admin_dashboard` below). Their real dashboards
+  (attendance, notices, ...) are separate, later features — the
+  placeholder only exists to prove the login round-trip works end-to-end.
+- `super_admin_dashboard` — the super admin's home screen: their
+  university's identity, a scannable join-code QR (`qr_flutter`), live
+  student/faculty/pending-request counts, and a join-requests banner. Has
+  its own full `domain`/`data` split — `University`/`UniversityStats`/
+  `UniversityType` entities, `SuperAdminDashboardRepository`
+  (name/email/university id for the signed-in admin, plus
+  `getUniversity`/`getUniversityStats`), its own datasource and DTO
+  (`data/models/university_model.dart`) — none of it shared with
+  `dashboard` or `register`, even though `register` also has a
+  `UniversityType` and momentarily creates a `universities` record:
+  each feature's copy only needs to agree with PocketBase's schema, not
+  with each other's Dart types — same `_guard`/`SuperAdminDashboardException`
+  pattern as every other feature's repository, translating PocketBase's
+  `ClientException` before it reaches the Cubit. `SuperAdminDashboardCubit` loads
+  university + stats once on construction and again on pull-to-refresh,
+  degrading to placeholders (`—`, no banner) instead of erroring if either
+  call fails — notably if `users.listRule` hasn't been migrated yet to let
+  a super admin list their own university's accounts (see
+  `pocketbase_schema.md`). Its bottom nav holds three real tabs (`home`,
+  `requests`, `profile` — `SuperAdminDashboardTab` in the cubit's state;
+  the other two are separate features embedded as tab bodies) plus two
+  "coming soon" stubs (Pass/Notices). Saving/sharing the campus pass goes
+  through its own `CampusPassRepository` + `CampusPassCubit` (a second
+  repository in this feature, with no PocketBase behind it):
+  `data/datasources/campus_pass_image_renderer.dart` draws the pass
+  off-screen with `QrPainter` + `TextPainter` straight to a print-resolution
+  PNG (so export never depends on the on-screen widget or a `GlobalKey`),
+  and `campus_pass_export_datasource.dart` is the only file touching `gal`
+  (save to Photos) and `share_plus` (share sheet). Every failure — denied
+  photo permission, unsupported platform, or a `MissingPluginException`
+  from an app not rebuilt after the plugins were added — becomes a
+  `CampusPassException`, which the Cubit turns into a `CampusPassOutcome`
+  that the page shows via `BlocListener`. The widget itself only dispatches
+  and reads the busy state.
+- `join_requests` — the dashboard's "Requests" tab (embedded as a tab body,
+  not a separate route — see `super_admin_dashboard_page.dart`): the
+  pending queue of students/faculty awaiting approval for this admin's
+  university, plus an archive of already-decided accounts. Its own full
+  `domain`/`data` split, independent of `super_admin_dashboard` and
+  `register` even though all three eventually touch the same `users`
+  fields. `JoinRequestsRepository.getMembers` fetches every member
+  regardless of status in one call (`users.listRule`, widened the same way
+  as for the dashboard) with `expand: 'students_via_user,teachers_via_user'`
+  to pull each person's role-specific id/department/batch-or-designation
+  in the same round trip; the cubit derives the pending/students/faculty/
+  archived counts and the visible list from that one list rather than
+  making four queries. `approve`/`reject` just flip `status` — this needed
+  its own migration widening `users.updateRule` the same way `listRule`/
+  `viewRule` were widened for the dashboard (see `pocketbase_schema.md`).
+- `super_admin_profile` — the dashboard's "Profile" tab (embedded like
+  `join_requests`): the admin's identity (avatar/initials, name, email,
+  verification badge), the institution they own (logo, type, location,
+  established date, copyable campus id), account details, a dark-mode
+  switch (drives the app-wide `ThemeCubit` in `core/theme`), a
+  password-reset action, and logout. Its own `domain`/`data` split
+  (`SuperAdminProfile`/`ProfileUniversity` entities, its own
+  `UniversityType` copy). `SuperAdminProfileRepository.cachedProfile` reads
+  the persisted session so the tab renders immediately; `refresh()` uses
+  `authRefresh(expand: 'university')` — one round trip for both records,
+  and it re-saves the fresh record into the shared auth store. Editing the
+  display name uses a bottom sheet that shares the page's Cubit via
+  `BlocProvider.value`, with the form key on the Cubit and the field bound
+  via `initialValue` + `onChanged` — same form convention as `login`/
+  `register`, no controller. One-shot results (`ProfileOutcome`) drive
+  SnackBars, closing the sheet, and navigating away after logout, all
+  through `BlocListener`.
+- `notices` — the dashboard's "Notices" tab (embedded like
+  `join_requests`/`super_admin_profile`): a super admin composes
+  title/body/audience announcements for their own university; anyone
+  reading the tab sees the ones they authored and can delete them. Unlike
+  `join_requests` (which reuses `users.status`), a notice is genuinely new
+  data with nothing to piggyback on, so it's the first feature with its own
+  PocketBase collection (`notices` — see `pocketbase_schema.md`) rather
+  than reading/writing fields on an existing one. Two Cubits, not one:
+  `NoticesCubit` owns the list (load/delete, lives for the whole tab) and
+  `ComposeNoticeCubit` owns the "new notice" sheet's form (title/body/
+  audience, `SubmissionStatus`, the form key) — a fresh instance per sheet
+  open, discarded when it closes, since composing isn't state the list
+  needs to carry. The sheet resolves its `Future<bool?>` to `true` on
+  success; the page only reloads the list when it sees that, rather than
+  the two Cubits knowing about each other directly. `notices.createRule`
+  requires the requester to be a same-university super admin *and* the
+  record's own `author`/`university` fields to already match them — a
+  student's or teacher's own screen for reading these doesn't exist yet
+  (see `dashboard`), and per the university-linking gap noted in
+  `pocketbase_schema.md`, couldn't see anything scoped by university even
+  if it did.
 
 ## Adding a new feature — checklist
 
@@ -235,3 +422,6 @@ Widgets never import a `data/` class directly.
 4. Add strings to `assets/translations/en.json`, reference them via `.tr()`.
 5. Use `Theme.of(context).textTheme` / `colorScheme` for all styling.
 6. State lives in a `Cubit`; no `setState`.
+7. If the feature needs a repository, define its own — don't import
+   another feature's `domain`/`data` (see "Features own their data and
+   domain" above). Wire the new repository into `DI` alongside the others.

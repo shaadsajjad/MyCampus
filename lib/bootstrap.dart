@@ -35,7 +35,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   await DI.init();
 
   // Initialize deep link handling for email verification
-  await DeepLinkService.instance.init(authRepository: DI.authRepository);
+  await DeepLinkService.instance.init(
+    verificationRepository: DI.verificationRepository,
+  );
 
   runApp(await builder());
 }

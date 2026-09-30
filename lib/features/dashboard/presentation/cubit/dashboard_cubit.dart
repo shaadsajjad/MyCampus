@@ -1,25 +1,41 @@
 import 'package:bloc/bloc.dart';
 import 'package:mycampus/core/di/di.dart';
-import 'package:mycampus/features/auth/domain/entities/auth_user.dart';
-import 'package:mycampus/features/auth/domain/repositories/auth_repository.dart';
+import 'package:mycampus/core/domain/entities/user_role.dart';
+import 'package:mycampus/features/dashboard/domain/repositories/dashboard_repository.dart';
 
 class DashboardState {
-  const DashboardState({this.user});
+  const DashboardState({
+    this.role,
+    this.name,
+    this.email,
+    this.isPending = false,
+  });
 
-  final AuthUser? user;
+  /// Decides which role-specific dashboard `DashboardPage` shows.
+  final UserRole? role;
+  final String? name;
+  final String? email;
+  final bool isPending;
 }
 
 class DashboardCubit extends Cubit<DashboardState> {
-  DashboardCubit({AuthRepository? authRepository})
-    : _authRepository = authRepository ?? DI.authRepository,
+  DashboardCubit({DashboardRepository? dashboardRepository})
+    : _dashboardRepository = dashboardRepository ?? DI.dashboardRepository,
       super(const DashboardState()) {
-    emit(DashboardState(user: _authRepository.currentUser));
+    emit(
+      DashboardState(
+        role: _dashboardRepository.currentUserRole,
+        name: _dashboardRepository.currentUserName,
+        email: _dashboardRepository.currentUserEmail,
+        isPending: _dashboardRepository.isCurrentUserPending,
+      ),
+    );
   }
 
-  final AuthRepository _authRepository;
+  final DashboardRepository _dashboardRepository;
 
   Future<void> logout() async {
-    await _authRepository.logout();
+    await _dashboardRepository.logout();
     emit(const DashboardState());
   }
 }

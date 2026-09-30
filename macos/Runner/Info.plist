@@ -30,5 +30,9 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>MyCampus needs permission to save the campus pass QR code to your photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>MyCampus needs access to your photo library to save the campus pass QR code.</string>
 </dict>
 </plist>
