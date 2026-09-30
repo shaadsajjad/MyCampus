@@ -2,7 +2,11 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/auth/domain/entities/university_type.dart';
+import 'package:mycampus/features/auth/domain/exceptions/auth_exception.dart';
+import 'package:mycampus/features/auth/domain/repositories/auth_repository.dart';
+import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
 
 class SuperAdminRegisterState {
   const SuperAdminRegisterState({
@@ -19,6 +23,8 @@ class SuperAdminRegisterState {
     this.confirmPassword = '',
     this.obscurePassword = true,
     this.obscureConfirmPassword = true,
+    this.status = SubmissionStatus.idle,
+    this.errorMessage,
   });
 
   final String universityName;
@@ -38,6 +44,8 @@ class SuperAdminRegisterState {
   final String confirmPassword;
   final bool obscurePassword;
   final bool obscureConfirmPassword;
+  final SubmissionStatus status;
+  final String? errorMessage;
 
   SuperAdminRegisterState copyWith({
     String? universityName,
@@ -54,6 +62,9 @@ class SuperAdminRegisterState {
     String? confirmPassword,
     bool? obscurePassword,
     bool? obscureConfirmPassword,
+    SubmissionStatus? status,
+    String? errorMessage,
+    bool clearError = false,
   }) {
     return SuperAdminRegisterState(
       universityName: universityName ?? this.universityName,
@@ -70,13 +81,18 @@ class SuperAdminRegisterState {
       obscurePassword: obscurePassword ?? this.obscurePassword,
       obscureConfirmPassword:
           obscureConfirmPassword ?? this.obscureConfirmPassword,
+      status: status ?? this.status,
+      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }
 }
 
 class SuperAdminRegisterCubit extends Cubit<SuperAdminRegisterState> {
-  SuperAdminRegisterCubit() : super(const SuperAdminRegisterState());
+  SuperAdminRegisterCubit({AuthRepository? authRepository})
+    : _authRepository = authRepository ?? DI.authRepository,
+      super(const SuperAdminRegisterState());
 
+  final AuthRepository _authRepository;
   final formKey = GlobalKey<FormState>();
 
   void universityNameChanged(String v) =>
@@ -102,8 +118,7 @@ class SuperAdminRegisterCubit extends Cubit<SuperAdminRegisterState> {
 
   void adminEmailChanged(String v) => emit(state.copyWith(adminEmail: v));
 
-  void adminPasswordChanged(String v) =>
-      emit(state.copyWith(adminPassword: v));
+  void adminPasswordChanged(String v) => emit(state.copyWith(adminPassword: v));
 
   void confirmPasswordChanged(String v) =>
       emit(state.copyWith(confirmPassword: v));
@@ -115,9 +130,31 @@ class SuperAdminRegisterCubit extends Cubit<SuperAdminRegisterState> {
     state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword),
   );
 
-  /// Placeholder until the PocketBase repository is wired in.
-  void submit() {
+  Future<void> submit() async {
     if (!formKey.currentState!.validate()) return;
-    // TODO(pocketbase): create the university + super admin account.
+
+    emit(state.copyWith(status: SubmissionStatus.submitting, clearError: true));
+    try {
+      await _authRepository.registerSuperAdmin(
+        universityName: state.universityName,
+        shortName: state.shortName,
+        universityType: state.universityType!,
+        city: state.city,
+        country: state.country,
+        establishedAt: state.establishedAt,
+        logoBytes: state.logoBytes,
+        adminName: state.adminName,
+        adminEmail: state.adminEmail,
+        adminPassword: state.adminPassword,
+      );
+      emit(state.copyWith(status: SubmissionStatus.success));
+    } on AuthException catch (e) {
+      emit(
+        state.copyWith(
+          status: SubmissionStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
+    }
   }
 }

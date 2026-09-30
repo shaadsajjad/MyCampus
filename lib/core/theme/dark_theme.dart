@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_colors.dart';
 import 'app_theme.dart';
 import 'text_styles.dart';
@@ -48,9 +49,7 @@ class DarkTheme {
       titleLarge: AppTextStyles.headlineMd.copyWith(
         color: colorScheme.onSurface,
       ),
-      titleMedium: AppTextStyles.titleMd.copyWith(
-        color: colorScheme.onSurface,
-      ),
+      titleMedium: AppTextStyles.titleMd.copyWith(color: colorScheme.onSurface),
       bodyLarge: AppTextStyles.bodyLg.copyWith(
         color: colorScheme.onSurfaceVariant,
       ),
@@ -60,15 +59,9 @@ class DarkTheme {
       bodySmall: AppTextStyles.bodySm.copyWith(
         color: colorScheme.onSurfaceVariant,
       ),
-      labelLarge: AppTextStyles.labelLg.copyWith(
-        color: colorScheme.onSurface,
-      ),
-      labelMedium: AppTextStyles.labelMd.copyWith(
-        color: colorScheme.onSurface,
-      ),
-      labelSmall: AppTextStyles.labelSm.copyWith(
-        color: colorScheme.onSurface,
-      ),
+      labelLarge: AppTextStyles.labelLg.copyWith(color: colorScheme.onSurface),
+      labelMedium: AppTextStyles.labelMd.copyWith(color: colorScheme.onSurface),
+      labelSmall: AppTextStyles.labelSm.copyWith(color: colorScheme.onSurface),
     );
 
     return ThemeData(

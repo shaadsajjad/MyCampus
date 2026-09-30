@@ -54,10 +54,7 @@ class AppMonthYearField extends StatelessWidget {
             decoration: InputDecoration(
               hintText: hint,
               prefixIcon: Icon(icon, size: 20),
-              suffixIcon: const Icon(
-                Icons.calendar_today_outlined,
-                size: 18,
-              ),
+              suffixIcon: const Icon(Icons.calendar_today_outlined, size: 18),
             ),
             isEmpty: value == null,
             child: value != null

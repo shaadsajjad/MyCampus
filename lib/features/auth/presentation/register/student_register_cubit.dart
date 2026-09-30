@@ -2,21 +2,26 @@ import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
-import 'package:mycampus/features/auth/domain/entities/teacher_designation.dart';
+import 'package:mycampus/core/di/di.dart';
+import 'package:mycampus/features/auth/domain/exceptions/auth_exception.dart';
+import 'package:mycampus/features/auth/domain/repositories/auth_repository.dart';
+import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
 
-class TeacherRegisterState {
-  const TeacherRegisterState({
+class StudentRegisterState {
+  const StudentRegisterState({
     this.fullName = '',
     this.email = '',
     this.phone = '',
     this.password = '',
     this.confirmPassword = '',
     this.photoBytes,
-    this.teacherId = '',
+    this.studentId = '',
     this.department,
-    this.designation,
+    this.batch = '',
     this.obscurePassword = true,
     this.obscureConfirmPassword = true,
+    this.status = SubmissionStatus.idle,
+    this.errorMessage,
   });
 
   final String fullName;
@@ -27,13 +32,15 @@ class TeacherRegisterState {
 
   /// Optional — left unset if not provided.
   final Uint8List? photoBytes;
-  final String teacherId;
+  final String studentId;
   final String? department;
-  final TeacherDesignation? designation;
+  final String batch;
   final bool obscurePassword;
   final bool obscureConfirmPassword;
+  final SubmissionStatus status;
+  final String? errorMessage;
 
-  TeacherRegisterState copyWith({
+  StudentRegisterState copyWith({
     String? fullName,
     String? email,
     String? phone,
@@ -41,32 +48,40 @@ class TeacherRegisterState {
     String? confirmPassword,
     Uint8List? photoBytes,
     bool clearPhoto = false,
-    String? teacherId,
+    String? studentId,
     String? department,
-    TeacherDesignation? designation,
+    String? batch,
     bool? obscurePassword,
     bool? obscureConfirmPassword,
+    SubmissionStatus? status,
+    String? errorMessage,
+    bool clearError = false,
   }) {
-    return TeacherRegisterState(
+    return StudentRegisterState(
       fullName: fullName ?? this.fullName,
       email: email ?? this.email,
       phone: phone ?? this.phone,
       password: password ?? this.password,
       confirmPassword: confirmPassword ?? this.confirmPassword,
       photoBytes: clearPhoto ? null : (photoBytes ?? this.photoBytes),
-      teacherId: teacherId ?? this.teacherId,
+      studentId: studentId ?? this.studentId,
       department: department ?? this.department,
-      designation: designation ?? this.designation,
+      batch: batch ?? this.batch,
       obscurePassword: obscurePassword ?? this.obscurePassword,
       obscureConfirmPassword:
           obscureConfirmPassword ?? this.obscureConfirmPassword,
+      status: status ?? this.status,
+      errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }
 }
 
-class TeacherRegisterCubit extends Cubit<TeacherRegisterState> {
-  TeacherRegisterCubit() : super(const TeacherRegisterState());
+class StudentRegisterCubit extends Cubit<StudentRegisterState> {
+  StudentRegisterCubit({AuthRepository? authRepository})
+    : _authRepository = authRepository ?? DI.authRepository,
+      super(const StudentRegisterState());
 
+  final AuthRepository _authRepository;
   final formKey = GlobalKey<FormState>();
 
   void fullNameChanged(String v) => emit(state.copyWith(fullName: v));
@@ -80,17 +95,15 @@ class TeacherRegisterCubit extends Cubit<TeacherRegisterState> {
   void confirmPasswordChanged(String v) =>
       emit(state.copyWith(confirmPassword: v));
 
-  void photoChanged(Uint8List bytes) =>
-      emit(state.copyWith(photoBytes: bytes));
+  void photoChanged(Uint8List bytes) => emit(state.copyWith(photoBytes: bytes));
 
   void removePhoto() => emit(state.copyWith(clearPhoto: true));
 
-  void teacherIdChanged(String v) => emit(state.copyWith(teacherId: v));
+  void studentIdChanged(String v) => emit(state.copyWith(studentId: v));
 
   void departmentChanged(String? v) => emit(state.copyWith(department: v));
 
-  void designationChanged(TeacherDesignation? v) =>
-      emit(state.copyWith(designation: v));
+  void batchChanged(String v) => emit(state.copyWith(batch: v));
 
   void toggleObscurePassword() =>
       emit(state.copyWith(obscurePassword: !state.obscurePassword));
@@ -99,9 +112,29 @@ class TeacherRegisterCubit extends Cubit<TeacherRegisterState> {
     state.copyWith(obscureConfirmPassword: !state.obscureConfirmPassword),
   );
 
-  /// Placeholder until the PocketBase repository is wired in.
-  void submit() {
+  Future<void> submit() async {
     if (!formKey.currentState!.validate()) return;
-    // TODO(pocketbase): create the teacher account, pending admin approval.
+
+    emit(state.copyWith(status: SubmissionStatus.submitting, clearError: true));
+    try {
+      await _authRepository.registerStudent(
+        fullName: state.fullName,
+        email: state.email,
+        phone: state.phone,
+        password: state.password,
+        studentId: state.studentId,
+        department: state.department!,
+        batch: state.batch,
+        photoBytes: state.photoBytes,
+      );
+      emit(state.copyWith(status: SubmissionStatus.success));
+    } on AuthException catch (e) {
+      emit(
+        state.copyWith(
+          status: SubmissionStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
+    }
   }
 }

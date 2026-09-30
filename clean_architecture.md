@@ -143,6 +143,44 @@ Widgets never import a `data/` class directly.
 - Colors come from `Theme.of(context).colorScheme` (or `AppColors` for
   brand colors with no scheme slot); spacing/radii come from `AppTheme`.
 
+## Environment config and dependency injection
+
+- **`core/config/app_config.dart`** (`AppConfig`) holds per-flavor values
+  (right now: the PocketBase base URL). It's set once, in `main_*.dart`,
+  before `bootstrap()` runs — never read `AppConfig` before that or hardcode
+  an environment URL at a call site.
+- Three flavors, three entrypoints: `main_development.dart`,
+  `main_staging.dart`, `main_production.dart`. Run with `flutter run -t
+  lib/main_development.dart` (etc.), matching the existing Xcode/Android
+  flavor setup. Development's PocketBase URL auto-switches to `10.0.2.2`
+  on the Android emulator, since it can't reach the host's `127.0.0.1`.
+  Staging/production URLs are placeholders — replace them once those
+  environments exist.
+- **`core/di/di.dart`** (`DI`) is a small manual service locator — no
+  `get_it`/`injectable`, just static singletons built in `DI.init()`
+  (called once from `bootstrap()`, after `AppConfig.init()`). It wires the
+  `PocketBase` client (with a `SharedPreferences`-backed `AsyncAuthStore`
+  so login survives an app restart) into `AuthRepository`.
+- A Cubit that needs a repository takes it as an **optional constructor
+  param defaulting to the `DI` singleton**:
+  ```dart
+  LoginCubit({AuthRepository? authRepository})
+      : _authRepository = authRepository ?? DI.authRepository,
+        super(const LoginState());
+  ```
+  Call sites stay simple (`LoginCubit()`), while tests can inject a fake.
+- **Data-layer errors**: a repository method wraps its PocketBase call in
+  a `try`/`on ClientException catch` (see `AuthRepositoryImpl._guard`) and
+  rethrows a domain-level `AuthException(message)` — the only failure type
+  a Cubit ever needs to catch. Cubits never import `package:pocketbase`.
+- **Form submission lifecycle**: `SubmissionStatus` (`idle` /
+  `submitting` / `success` / `failure`) lives in a Cubit's state alongside
+  an `errorMessage`. The page wraps its `Form` in a `BlocListener` that
+  reacts once per status change (`listenWhen: previous.status !=
+  current.status`) — a SnackBar on success/failure, navigation on success.
+  The submit button reads `status` via `BlocBuilder` to show
+  `PrimaryActionButton(isLoading: ...)`.
+
 ## Feature map
 
 - `splash` — shows the logo for a fixed delay (`SplashCubit`, 3s), then
@@ -158,16 +196,35 @@ Widgets never import a `data/` class directly.
 - `auth` — login (one screen, all three roles) and registration (one
   screen per role — `SuperAdminRegisterPage`, `StudentRegisterPage`,
   `TeacherRegisterPage` — since the three forms share almost no fields).
-  Has a `domain` layer for the two role-specific enums (`UniversityType`,
-  `TeacherDesignation`); no `data` layer yet — every Cubit's `submit()` is a
-  documented `// TODO(pocketbase)` stub. Wiring it up means adding
-  `data/datasources` (a PocketBase client wrapper), `data/repositories`,
-  and a `domain/repositories/auth_repository.dart` contract, then having
-  each `submit()` call through the repository instead of returning early.
-  Shared form UI (`AppTextField`, `AppPasswordField`, `AppDropdownField`,
-  `FormSectionCard`, `AuthScaffold`, `RoleContextChip`, `AuthFooterLink`)
-  lives in `presentation/widgets` since it's specific to auth-shaped forms,
-  not generic enough for `core/widgets`.
+  Backed by PocketBase (see `pocketbase_schema.md` for the collections to
+  set up) through a full `data`/`domain` split — `AuthRepository` is the
+  contract the cubits call; `AuthRemoteDataSource` is the only file that
+  imports the `pocketbase` package or sees a `RecordModel`/
+  `ClientException`. `data/models` (`UserModel`, `StudentProfileModel`,
+  `TeacherProfileModel`, `UniversityModel`) are DTOs matching PocketBase's
+  wire format exactly (e.g. `role`/`status` stay raw strings); the
+  repository is what parses those into the domain-level `AuthUser`
+  (`UserRole`/`AccountStatus` enums) — a model never leaks past the data
+  layer. `domain/entities` also holds the two role-specific enums
+  (`UniversityType`, `TeacherDesignation`) plus `AccountStatus`
+  (pending/approved/rejected — students and teachers need a super admin's
+  approval; super admins are auto-approved since they create the
+  university). PocketBase collections mirror this split too: `users` holds
+  only basic account info (email, name, phone, role, status, university);
+  role-specific fields live in their own `students` / `teachers`
+  collections, linked back via a `user` relation — not crammed onto
+  `users`. Shared form UI (`AppTextField`, `AppPasswordField`,
+  `AppDropdownField`, `FormSectionCard`, `AuthScaffold`, `RoleContextChip`,
+  `AuthFooterLink`) lives in `presentation/widgets` since it's specific to
+  auth-shaped forms, not generic enough for `core/widgets`.
+- `dashboard` — placeholder landing page shown after a successful login or
+  registration (`context.go(AppRoute.dashboard)`, replacing the stack —
+  you shouldn't be able to back out to login). Presentation-only:
+  `DashboardCubit` just reads `AuthRepository.currentUser` (via `DI`) to
+  show who's logged in and a pending-approval banner if relevant, plus a
+  logout action. The real role-specific dashboards (attendance, notices,
+  approvals, ...) are separate, later features — this one only exists to
+  prove the auth round-trip works end-to-end.
 
 ## Adding a new feature — checklist
 

@@ -4,6 +4,7 @@ import 'package:mycampus/features/auth/presentation/pages/login_page.dart';
 import 'package:mycampus/features/auth/presentation/pages/student_register_page.dart';
 import 'package:mycampus/features/auth/presentation/pages/super_admin_register_page.dart';
 import 'package:mycampus/features/auth/presentation/pages/teacher_register_page.dart';
+import 'package:mycampus/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:mycampus/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:mycampus/features/splash/presentation/pages/splash_page.dart';
 
@@ -14,6 +15,7 @@ abstract class AppRoute {
   static const registerSuperAdmin = '/auth/register/super-admin';
   static const registerStudent = '/auth/register/student';
   static const registerTeacher = '/auth/register/teacher';
+  static const dashboard = '/dashboard';
 
   /// The login screen for [role] — role travels as a query param since one
   /// screen serves all three roles.
@@ -71,6 +73,10 @@ class AppRouter {
       GoRoute(
         path: AppRoute.registerTeacher,
         builder: (context, state) => const TeacherRegisterPage(),
+      ),
+      GoRoute(
+        path: AppRoute.dashboard,
+        builder: (context, state) => const DashboardPage(),
       ),
     ],
   );

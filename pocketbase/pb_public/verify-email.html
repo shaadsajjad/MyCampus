@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Verify your MyCampus email</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: #f4f6fb;
+    color: #1a1d29;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+  .card {
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    background: #fff;
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  }
+  .icon { font-size: 40px; line-height: 1; margin-bottom: 12px; }
+  h1 { font-size: 20px; margin: 0 0 8px; }
+  p { font-size: 15px; line-height: 1.5; color: #565a6e; margin: 0 0 4px; }
+  .spinner {
+    width: 28px; height: 28px; margin: 4px auto 16px;
+    border: 3px solid #dfe3ee; border-top-color: #2b4cff;
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .state { display: none; }
+  .state.active { display: block; }
+  .error h1 { color: #c4302b; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div id="opening" class="state active">
+      <div class="spinner" role="status" aria-label="Opening"></div>
+      <h1>Opening MyCampus&hellip;</h1>
+      <p>If the app doesn't open in a moment, we'll verify your email here instead.</p>
+    </div>
+
+    <div id="verifying" class="state">
+      <div class="spinner" role="status" aria-label="Verifying"></div>
+      <h1>Verifying your email&hellip;</h1>
+      <p>One moment while we confirm your MyCampus account.</p>
+    </div>
+
+    <div id="success" class="state">
+      <div class="icon">&#9989;</div>
+      <h1>Email verified</h1>
+      <p>Your email is confirmed. Open the MyCampus app and log in to continue.</p>
+    </div>
+
+    <div id="error" class="state error">
+      <div class="icon">&#9888;&#65039;</div>
+      <h1>Verification link invalid</h1>
+      <p id="error-message">
+        This link is invalid or has already been used. Go back to the
+        MyCampus app and request a new verification email.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      function show(id) {
+        document.querySelectorAll('.state').forEach(function (el) {
+          el.classList.toggle('active', el.id === id);
+        });
+      }
+
+      var token = new URLSearchParams(window.location.search).get('token');
+      if (!token) {
+        show('error');
+        return;
+      }
+
+      function confirmHere() {
+        show('verifying');
+        // Same-origin call — this page is served by the PocketBase
+        // instance itself, so no host/IP needs to be hardcoded here.
+        fetch('/api/collections/users/confirm-verification', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: token }),
+        })
+          .then(function (res) {
+            if (res.ok) {
+              show('success');
+              return;
+            }
+            return res.json().then(function (body) {
+              var message =
+                (body && body.data && body.data.token && body.data.token.message) ||
+                (body && body.message) ||
+                null;
+              if (message) {
+                document.getElementById('error-message').textContent = message;
+              }
+              show('error');
+            });
+          })
+          .catch(function () {
+            show('error');
+          });
+      }
+
+      // Most mail apps strip non-http(s) links from the email itself, so
+      // the handoff to the app has to happen from here — an actual browser
+      // navigation — instead. If it works, the OS switches away to the app
+      // (this tab goes hidden/blurred) and the app confirms the token
+      // itself; if nothing happens within ~1.5s (app not installed, or the
+      // OS blocked the redirect), fall back to confirming right here.
+      var appOpened = false;
+      var markAppOpened = function () {
+        appOpened = true;
+      };
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) markAppOpened();
+      });
+      window.addEventListener('blur', markAppOpened);
+      window.addEventListener('pagehide', markAppOpened);
+
+      window.location.href = 'mycampus://verify?token=' + encodeURIComponent(token);
+
+      setTimeout(function () {
+        if (!appOpened) confirmHere();
+      }, 1500);
+    })();
+  </script>
+</body>
+</html>

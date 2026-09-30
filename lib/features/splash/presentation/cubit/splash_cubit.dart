@@ -6,7 +6,7 @@ enum SplashStatus { loading, ready }
 
 class SplashCubit extends Cubit<SplashStatus> {
   SplashCubit({Duration duration = const Duration(seconds: 3)})
-      : super(SplashStatus.loading) {
+    : super(SplashStatus.loading) {
     unawaited(_init(duration));
   }
 

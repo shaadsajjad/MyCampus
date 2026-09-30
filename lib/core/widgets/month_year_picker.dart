@@ -132,9 +132,9 @@ class _PickerView extends StatelessWidget {
                         month: month,
                         isSelected: month == state.month,
                         isEnabled: _isMonthEnabled(state.year, month),
-                        onTap: () => Navigator.of(
-                          context,
-                        ).pop(DateTime(state.year, month)),
+                        onTap: () =>
+                            Navigator.of(context)
+                                .pop(DateTime(state.year, month)),
                       ),
                   ],
                 ),
