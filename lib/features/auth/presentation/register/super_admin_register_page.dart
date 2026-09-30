@@ -10,8 +10,8 @@ import 'package:mycampus/core/utils/validators.dart';
 import 'package:mycampus/core/widgets/app_image_picker_field.dart';
 import 'package:mycampus/core/widgets/primary_action_button.dart';
 import 'package:mycampus/features/auth/domain/entities/university_type.dart';
-import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
-import 'package:mycampus/features/auth/presentation/cubit/super_admin_register_cubit.dart';
+import 'package:mycampus/features/auth/presentation/submission_status.dart';
+import 'package:mycampus/features/auth/presentation/register/super_admin_register_cubit.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_dropdown_field.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_month_year_field.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_password_field.dart';
@@ -47,10 +47,11 @@ class SuperAdminRegisterView extends StatelessWidget {
         listenWhen: (previous, current) => previous.status != current.status,
         listener: (context, state) {
           if (state.status == SubmissionStatus.success) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('university.createdSuccess'.tr())),
+            // Navigate to verification page with the registered admin email
+            context.go(
+              AppRoute.verificationPath(state.adminEmail),
+              extra: state.adminPassword,
             );
-            context.go(AppRoute.dashboard);
           } else if (state.status == SubmissionStatus.failure &&
               state.errorMessage != null) {
             ScaffoldMessenger.of(context).showSnackBar(

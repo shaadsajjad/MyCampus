@@ -9,6 +9,7 @@ class AuthUser {
     required this.email,
     required this.role,
     required this.status,
+    required this.verified,
     this.name,
     this.universityId,
   });
@@ -17,6 +18,9 @@ class AuthUser {
   final String email;
   final UserRole role;
   final AccountStatus status;
+
+  /// Whether the user has confirmed their email via the verification link.
+  final bool verified;
   final String? name;
   final String? universityId;
 }

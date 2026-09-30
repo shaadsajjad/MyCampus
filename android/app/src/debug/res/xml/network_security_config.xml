@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Debug-build only: allows plain-http traffic. Needed because the
+  development PocketBase server (lib/main_development.dart) is reached
+  over http://<lan-ip>:8090, and Android blocks cleartext traffic to any
+  non-localhost host by default for apps targeting SDK 28+. Never merged
+  into the release build, so production (https only) is unaffected.
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

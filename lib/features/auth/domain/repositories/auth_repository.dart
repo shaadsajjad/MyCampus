@@ -51,5 +51,11 @@ abstract class AuthRepository {
     Uint8List? logoBytes,
   });
 
+  /// Sends a verification email to the given address.
+  Future<void> requestVerification(String email);
+
+  /// Confirms email verification with the token from the deep link.
+  Future<void> confirmVerification(String token);
+
   Future<void> logout();
 }

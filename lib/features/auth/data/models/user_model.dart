@@ -12,6 +12,7 @@ class UserModel {
     required this.email,
     required this.role,
     required this.status,
+    required this.verified,
     this.name,
     this.phone,
     this.universityId,
@@ -23,6 +24,7 @@ class UserModel {
       email: record.getStringValue('email'),
       role: record.getStringValue('role'),
       status: record.getStringValue('status'),
+      verified: record.getBoolValue('verified'),
       name: _emptyToNull(record.getStringValue('name')),
       phone: _emptyToNull(record.getStringValue('phone')),
       universityId: _emptyToNull(record.getStringValue('university')),
@@ -33,6 +35,9 @@ class UserModel {
   final String email;
   final String role;
   final String status;
+
+  /// PocketBase's built-in email-verified flag on the auth record.
+  final bool verified;
   final String? name;
   final String? phone;
   final String? universityId;

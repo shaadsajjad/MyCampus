@@ -32,6 +32,12 @@ abstract class AuthRemoteDataSource {
     Uint8List? logoBytes,
   });
 
+  /// Sends a verification email to the given address.
+  Future<void> requestVerification(String email);
+
+  /// Confirms email verification with the token from the deep link.
+  Future<void> confirmVerification(String token);
+
   Future<void> logout();
 }
 
@@ -102,6 +108,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         ? null
         : _pb.files.getUrl(record, record.getStringValue('logo')).toString();
     return UniversityModel.fromRecord(record, logoUrl: logoUrl);
+  }
+
+  @override
+  Future<void> requestVerification(String email) async {
+    await _pb.collection('users').requestVerification(email);
+  }
+
+  @override
+  Future<void> confirmVerification(String token) async {
+    await _pb.collection('users').confirmVerification(token);
   }
 
   @override

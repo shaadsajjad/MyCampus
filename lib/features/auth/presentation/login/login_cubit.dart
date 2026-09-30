@@ -3,7 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/auth/domain/exceptions/auth_exception.dart';
 import 'package:mycampus/features/auth/domain/repositories/auth_repository.dart';
-import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
+import 'package:mycampus/features/auth/presentation/submission_status.dart';
+
+enum LoginResult { success, emailNotVerified, failure }
 
 class LoginState {
   const LoginState({
@@ -12,6 +14,7 @@ class LoginState {
     this.obscurePassword = true,
     this.status = SubmissionStatus.idle,
     this.errorMessage,
+    this.result,
   });
 
   final String email;
@@ -19,6 +22,7 @@ class LoginState {
   final bool obscurePassword;
   final SubmissionStatus status;
   final String? errorMessage;
+  final LoginResult? result;
 
   LoginState copyWith({
     String? email,
@@ -26,7 +30,9 @@ class LoginState {
     bool? obscurePassword,
     SubmissionStatus? status,
     String? errorMessage,
+    LoginResult? result,
     bool clearError = false,
+    bool clearResult = false,
   }) {
     return LoginState(
       email: email ?? this.email,
@@ -34,6 +40,7 @@ class LoginState {
       obscurePassword: obscurePassword ?? this.obscurePassword,
       status: status ?? this.status,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+      result: clearResult ? null : (result ?? this.result),
     );
   }
 }
@@ -49,9 +56,9 @@ class LoginCubit extends Cubit<LoginState> {
   /// plain [StatelessWidget] while still validating on submit.
   final formKey = GlobalKey<FormState>();
 
-  void emailChanged(String value) => emit(state.copyWith(email: value));
+  void emailChanged(String value) => emit(state.copyWith(email: value, clearResult: true));
 
-  void passwordChanged(String value) => emit(state.copyWith(password: value));
+  void passwordChanged(String value) => emit(state.copyWith(password: value, clearResult: true));
 
   void toggleObscurePassword() =>
       emit(state.copyWith(obscurePassword: !state.obscurePassword));
@@ -59,9 +66,28 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> submit() async {
     if (!formKey.currentState!.validate()) return;
 
-    emit(state.copyWith(status: SubmissionStatus.submitting, clearError: true));
+    emit(state.copyWith(status: SubmissionStatus.submitting, clearError: true, clearResult: true));
     try {
       await _authRepository.login(email: state.email, password: state.password);
+      emit(state.copyWith(status: SubmissionStatus.success, result: LoginResult.success));
+    } on AuthException catch (e) {
+      // Check if the error indicates unverified email
+      final isUnverified = _isEmailNotVerifiedError(e.message);
+      emit(
+        state.copyWith(
+          status: SubmissionStatus.failure,
+          errorMessage: e.message,
+          result: isUnverified ? LoginResult.emailNotVerified : LoginResult.failure,
+        ),
+      );
+    }
+  }
+
+  /// Resend verification email for the current email.
+  Future<void> resendVerificationEmail() async {
+    emit(state.copyWith(status: SubmissionStatus.submitting, clearError: true));
+    try {
+      await _authRepository.requestVerification(state.email);
       emit(state.copyWith(status: SubmissionStatus.success));
     } on AuthException catch (e) {
       emit(
@@ -71,5 +97,13 @@ class LoginCubit extends Cubit<LoginState> {
         ),
       );
     }
+  }
+
+  bool _isEmailNotVerifiedError(String message) {
+    final lower = message.toLowerCase();
+    return lower.contains('verif') ||
+        lower.contains('confirm') ||
+        lower.contains('unverified') ||
+        lower.contains('not verified');
   }
 }

@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/auth/domain/exceptions/auth_exception.dart';
 import 'package:mycampus/features/auth/domain/repositories/auth_repository.dart';
-import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
+import 'package:mycampus/features/auth/presentation/submission_status.dart';
 
 class StudentRegisterState {
   const StudentRegisterState({

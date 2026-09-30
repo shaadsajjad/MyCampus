@@ -6,7 +6,7 @@ import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/auth/domain/entities/university_type.dart';
 import 'package:mycampus/features/auth/domain/exceptions/auth_exception.dart';
 import 'package:mycampus/features/auth/domain/repositories/auth_repository.dart';
-import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
+import 'package:mycampus/features/auth/presentation/submission_status.dart';
 
 class SuperAdminRegisterState {
   const SuperAdminRegisterState({

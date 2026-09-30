@@ -8,8 +8,8 @@ import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/utils/validators.dart';
 import 'package:mycampus/core/widgets/primary_action_button.dart';
-import 'package:mycampus/features/auth/presentation/cubit/login_cubit.dart';
-import 'package:mycampus/features/auth/presentation/cubit/submission_status.dart';
+import 'package:mycampus/features/auth/presentation/login/login_cubit.dart';
+import 'package:mycampus/features/auth/presentation/submission_status.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_password_field.dart';
 import 'package:mycampus/features/auth/presentation/widgets/app_text_field.dart';
 import 'package:mycampus/features/auth/presentation/widgets/auth_footer_link.dart';
@@ -43,9 +43,11 @@ class LoginView extends StatelessWidget {
       title: 'auth.loginTitle'.tr(),
       subtitle: 'auth.loginSubtitle'.tr(),
       child: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (previous, current) => previous.status != current.status,
+        listenWhen: (previous, current) =>
+            previous.status != current.status || previous.result != current.result,
         listener: (context, state) {
-          if (state.status == SubmissionStatus.success) {
+          if (state.status == SubmissionStatus.success &&
+              state.result == LoginResult.success) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text('auth.loginSuccess'.tr())));
@@ -69,6 +71,87 @@ class LoginView extends StatelessWidget {
               const SizedBox(height: AppTheme.spaceLg),
               BlocBuilder<LoginCubit, LoginState>(
                 builder: (context, state) {
+                  // Show email not verified UI
+                  if (state.result == LoginResult.emailNotVerified) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(AppTheme.spaceMd),
+                          decoration: BoxDecoration(
+                            color: AppColors.brandTint,
+                            borderRadius:
+                                BorderRadius.circular(AppTheme.radiusMd),
+                          ),
+                          child: Column(
+                            children: [
+                              const Icon(
+                                Icons.mark_email_unread_outlined,
+                                color: AppColors.brandAccentText,
+                                size: 32,
+                              ),
+                              const SizedBox(height: AppTheme.spaceSm),
+                              Text(
+                                'login.emailNotVerifiedTitle'.tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(
+                                      color:
+                                          AppColors.brandAccentText,
+                                    ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: AppTheme.spaceXs),
+                              Text(
+                                'login.emailNotVerifiedDesc'.tr(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color:
+                                          AppColors.brandAccentText,
+                                    ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: AppTheme.spaceMd),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: OutlinedButton.icon(
+                                      icon:
+                                          const Icon(Icons.email_outlined),
+                                      label: Text(
+                                        'login.resendVerification'.tr(),
+                                      ),
+                                      onPressed: state.status ==
+                                              SubmissionStatus.submitting
+                                          ? null
+                                          : cubit.resendVerificationEmail,
+                                    ),
+                                  ),
+                                  const SizedBox(width: AppTheme.spaceSm),
+                                  Expanded(
+                                    child: PrimaryActionButton(
+                                      label: 'login.goToVerification'.tr(),
+                                      onPressed: () => context.go(
+                                        AppRoute.verificationPath(
+                                          state.email,
+                                        ),
+                                        extra: state.password,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: AppTheme.spaceMd),
+                      ],
+                    );
+                  }
+
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
