@@ -6,13 +6,13 @@ import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
-import 'package:mycampus/features/auth/domain/entities/account_status.dart';
 import 'package:mycampus/features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:mycampus/features/super_admin_dashboard/presentation/pages/super_admin_dashboard_page.dart';
 
-/// Placeholder landing page shown right after a successful login or
-/// registration. Confirms the PocketBase round-trip worked; the real
-/// role-specific dashboards (attendance, notices, approvals, ...) are a
-/// separate, later feature.
+/// Landing page shown right after a successful login or registration —
+/// routes to the role-specific dashboard. Only the super admin one exists
+/// so far (`SuperAdminDashboardPage`); faculty/student fall back to the
+/// placeholder [DashboardView] below until their dashboards are built.
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
@@ -20,7 +20,12 @@ class DashboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => DashboardCubit(),
-      child: const DashboardView(),
+      child: BlocSelector<DashboardCubit, DashboardState, UserRole?>(
+        selector: (state) => state.role,
+        builder: (context, role) => role == UserRole.superAdmin
+            ? const SuperAdminDashboardPage()
+            : const DashboardView(),
+      ),
     );
   }
 }
@@ -35,11 +40,9 @@ class DashboardView extends StatelessWidget {
 
     return BlocBuilder<DashboardCubit, DashboardState>(
       builder: (context, state) {
-        final user = state.user;
-
         return Scaffold(
           appBar: AppBar(
-            title: Text(_titleFor(user?.role)),
+            title: Text('common.dashboard'.tr()),
             actions: [
               IconButton(
                 tooltip: 'common.logout'.tr(),
@@ -64,13 +67,13 @@ class DashboardView extends StatelessWidget {
                   ),
                   const SizedBox(height: AppTheme.spaceMd),
                   Text(
-                    user?.name ?? user?.email ?? '',
+                    state.name ?? state.email ?? '',
                     style: textTheme.headlineSmall,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: AppTheme.spaceXs),
-                  Text(user?.email ?? '', style: textTheme.bodyMedium),
-                  if (user?.status == AccountStatus.pending) ...[
+                  Text(state.email ?? '', style: textTheme.bodyMedium),
+                  if (state.isPending) ...[
                     const SizedBox(height: AppTheme.spaceLg),
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -98,18 +101,5 @@ class DashboardView extends StatelessWidget {
         );
       },
     );
-  }
-
-  String _titleFor(UserRole? role) {
-    switch (role) {
-      case UserRole.superAdmin:
-        return 'admin.dashboard'.tr();
-      case UserRole.faculty:
-        return 'teacher.dashboard'.tr();
-      case UserRole.student:
-        return 'student.dashboard'.tr();
-      case null:
-        return 'common.dashboard'.tr();
-    }
   }
 }
