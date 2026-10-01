@@ -145,12 +145,9 @@ class RegisterRepositoryImpl implements RegisterRepository {
     } on ClientException catch (e) {
       throw RegisterException(pocketBaseErrorMessage(e));
     } on TimeoutException {
-      throw const RegisterException(
-        'Could not reach the server. Check that PocketBase is running and '
-        'reachable from this device, then try again.',
-      );
+      throw const RegisterException('error.unreachableServer');
     } catch (e) {
-      throw RegisterException('Something went wrong. Please try again. ($e)');
+      throw RegisterException('error.unknown');
     }
   }
 }

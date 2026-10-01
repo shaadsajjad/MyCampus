@@ -86,14 +86,11 @@ class SuperAdminProfileRepositoryImpl implements SuperAdminProfileRepository {
     } on ClientException catch (e) {
       throw ProfileException(pocketBaseErrorMessage(e));
     } on TimeoutException {
-      throw const ProfileException(
-        'Could not reach the server. Check that PocketBase is running and '
-        'reachable from this device, then try again.',
-      );
+      throw const ProfileException('error.unreachableServer');
     } on ProfileException {
       rethrow;
     } catch (e) {
-      throw ProfileException('Something went wrong. Please try again. ($e)');
+      throw ProfileException('error.unknown');
     }
   }
 }

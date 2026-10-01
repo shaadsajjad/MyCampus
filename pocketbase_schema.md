@@ -74,6 +74,35 @@ a notice is genuinely new data with nothing to piggyback on, so it gets its
 own collection. `audience` picks who it's for so a reading screen can
 filter without a second collection.
 
+6. `courses` (new collection, type: Base)
+
+The catalogue a university teaches — the thing a routine is eventually built
+out of. A super admin creates courses (code, title, credits, contact hours);
+nothing assigns them to students/teachers or slots them into periods yet.
+| Field | Type | Options |
+|---|---|---|
+| `code` | Plain text | required — e.g. `CSE-101`, unique **per university** |
+| `title` | Plain text | required |
+| `credits` | Number | required, 1–20 |
+| `contactHours` | Number | required, 1–20 — scheduled hours/week, deliberately separate from `credits` (a 4-credit course commonly meets 3×/week) |
+| `department` | Plain text | optional (free text for now, matching `students`/`teachers`) |
+| `university` | Relation → `universities` | required, single |
+
+**API rules**: same shape as `notices` — `listRule`/`viewRule` are
+`university = @request.auth.university`, `createRule` requires
+`@request.auth.role = 'superAdmin'` *and* `university` matching the requester,
+`updateRule`/`deleteRule` require `university = @request.auth.university` (so
+one super admin can maintain their own catalogue but not another's).
+
+**Uniqueness is enforced in the app, not by a PocketBase index.** A unique
+index on `code` alone would be record-scoped, not university-scoped, so it
+would wrongly stop two different campuses from each teaching `CSE-101`.
+`CoursesRepositoryImpl.createCourse` therefore lists the university's courses
+and rejects a duplicate code itself. If you ever need this at the database
+level, use a compound unique on (`university`, `code`).
+
+##
+
 All select option values must match exactly — they're `UserRole.name` /
 `AccountStatus.name` / `UniversityType.name` / `TeacherDesignation.name` /
 `NoticeAudience.name` from the Dart enums.

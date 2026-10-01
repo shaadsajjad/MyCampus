@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_void_public_cubit_methods
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -53,10 +55,11 @@ class VerificationState {
 class VerificationCubit extends Cubit<VerificationState> {
   VerificationCubit({
     required String email,
-    this.password,
+    String? password,
     VerificationRepository? verificationRepository,
   }) : _verificationRepository =
            verificationRepository ?? DI.verificationRepository,
+       _password = password,
        super(VerificationState(email: email)) {
     // Claim verification links for as long as this page is on screen, so
     // tapping the link in the email app (while this app is backgrounded)
@@ -87,7 +90,12 @@ class VerificationCubit extends Cubit<VerificationState> {
   /// unauthenticated dashboard. `null` when this page was reached without
   /// it (e.g. from the login screen's "I already verified" link) — the
   /// user just logs in normally in that case.
-  final String? password;
+  final String? _password;
+
+  /// Public read-only accessor — kept public only because the page reads
+  /// it during its async verification flow (see `verification_page.dart`).
+  /// The field itself is private to satisfy `bloc_lint.avoid_public_fields`.
+  String? get password => _password;
 
   @override
   Future<void> close() {

@@ -93,6 +93,16 @@ class TeacherDashboardCubit extends Cubit<TeacherDashboardState> {
   /// Re-reads the signed-in `users` record into the shared auth store when
   /// a realtime event fires, so [load] below sees the new approval status.
   final AuthRefreshService _authRefreshService;
+
+  /// Tracks the membership status as of the most recent realtime event so
+  /// the next event's pending → approved comparison is against an actually
+  /// current snapshot, not whatever the status was when this cubit was
+  /// first created. Without this, *every* subsequent event after the first
+  /// approval would also satisfy `pending → approved` and fire a duplicate
+  /// welcome snackbar — e.g. an admin editing the faculty's name after
+  /// approving them would surface a second "welcome to campus" banner.
+  MembershipStatus _lastSeenMembership = MembershipStatus.none;
+
   Future<void> Function()? _unsubscribeUpdates;
 
   Future<void> load() async {
@@ -152,12 +162,17 @@ class TeacherDashboardCubit extends Cubit<TeacherDashboardState> {
   /// data) and re-run [load]. If the faculty just got approved, also
   /// flip `justApproved` so the UI can fire a one-shot snackbar.
   void _subscribeToUserUpdates() {
-    final previousMembership = _repository.currentMembershipStatus;
+    _lastSeenMembership = _repository.currentMembershipStatus;
     _unsubscribeUpdates = _repository.watchCurrentUser(onChange: () async {
       if (isClosed) return;
       await _authRefreshService.refreshCurrentUser();
       if (isClosed) return;
+      final previousMembership = _lastSeenMembership;
       final nextMembership = _repository.currentMembershipStatus;
+      // Update BEFORE `load()` so that, if `load()` re-enters or another
+      // event arrives mid-await, the next comparison starts from the value
+      // we just observed rather than the stale snapshot.
+      _lastSeenMembership = nextMembership;
       final justApproved = previousMembership == MembershipStatus.pending &&
           nextMembership == MembershipStatus.approved;
       await load();

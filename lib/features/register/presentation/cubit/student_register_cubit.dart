@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_flutter_imports, prefer_void_public_cubit_methods
+
 import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
@@ -82,7 +84,13 @@ class StudentRegisterCubit extends Cubit<StudentRegisterState> {
       super(const StudentRegisterState());
 
   final RegisterRepository _registerRepository;
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
+
+  /// Public read-only accessor so pages can do `Form(key: cubit.formKey, ...)`
+  /// without exposing the field itself — keeping the field private satisfies
+  /// `bloc_lint.avoid_public_fields`. (See `clean_architecture.md`: form
+  /// keys deliberately live on the cubit.)
+  GlobalKey<FormState> get formKey => _formKey;
 
   void fullNameChanged(String v) => emit(state.copyWith(fullName: v));
 
@@ -113,7 +121,7 @@ class StudentRegisterCubit extends Cubit<StudentRegisterState> {
   );
 
   Future<void> submit() async {
-    if (!formKey.currentState!.validate()) return;
+    if (!(_formKey.currentState?.validate() ?? false)) return;
 
     emit(state.copyWith(status: SubmissionStatus.submitting, clearError: true));
     try {

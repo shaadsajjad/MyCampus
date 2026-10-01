@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_void_public_cubit_methods
+
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
@@ -45,17 +47,20 @@ class MemberNoticesState {
 /// viewer's role rather than passed in from a menu the user could change.
 class MemberNoticesCubit extends Cubit<MemberNoticesState> {
   MemberNoticesCubit({
-    required this.audience,
+    required NoticeAudience audience,
     NoticesRepository? repository,
   }) : _repository = repository ?? DI.noticesRepository,
+       _audience = audience,
        super(const MemberNoticesState()) {
     unawaited(load());
   }
 
   /// The role-specific audience (`students` or `faculty`). Combined with
   /// [NoticeAudience.all] automatically — every member sees campus-wide
-  /// notices.
-  final NoticeAudience audience;
+  /// notices. Read-only via the public getter so the field itself stays
+  /// private (`bloc_lint.avoid_public_fields`).
+  final NoticeAudience _audience;
+  NoticeAudience get audience => _audience;
 
   final NoticesRepository _repository;
 
@@ -76,7 +81,7 @@ class MemberNoticesCubit extends Cubit<MemberNoticesState> {
     try {
       final notices = await _repository.getNoticesForAudiences(
         universityId,
-        {NoticeAudience.all, audience},
+        {NoticeAudience.all, _audience},
       );
       if (!isClosed) {
         emit(

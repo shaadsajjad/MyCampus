@@ -127,10 +127,7 @@ class MemberProfileRepositoryImpl implements MemberProfileRepository {
     } on ClientException catch (e) {
       throw MemberProfileException(pocketBaseErrorMessage(e));
     } on TimeoutException {
-      throw const MemberProfileException(
-        'Could not reach the server. Check that PocketBase is running and '
-        'reachable from this device, then try again.',
-      );
+      throw const MemberProfileException('error.unreachableServer');
     } on MemberProfileException {
       rethrow;
     } catch (e) {

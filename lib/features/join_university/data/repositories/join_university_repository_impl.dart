@@ -42,10 +42,7 @@ class JoinUniversityRepositoryImpl implements JoinUniversityRepository {
     } on ClientException catch (e) {
       throw JoinUniversityException(pocketBaseErrorMessage(e));
     } on TimeoutException {
-      throw const JoinUniversityException(
-        'Could not reach the server. Check that PocketBase is running and '
-        'reachable from this device, then try again.',
-      );
+      throw const JoinUniversityException('error.unreachableServer');
     } catch (e) {
       throw JoinUniversityException(
         'Something went wrong. Please try again. ($e)',

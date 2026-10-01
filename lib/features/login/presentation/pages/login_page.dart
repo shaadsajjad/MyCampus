@@ -7,6 +7,7 @@ import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/utils/validators.dart';
+import 'package:mycampus/core/widgets/app_form.dart';
 import 'package:mycampus/core/widgets/app_password_field.dart';
 import 'package:mycampus/core/widgets/app_text_field.dart';
 import 'package:mycampus/core/widgets/auth_footer_link.dart';
@@ -30,10 +31,20 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({required this.role, super.key});
 
   final UserRole role;
+
+  @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  /// Lets the submit button reach into [AppForm] to validate + submit.
+  /// Without [AppForm], the cubit would have to own a `GlobalKey<FormState>`
+  /// and import `package:flutter/widgets.dart`, which `bloc_lint` flags.
+  final _formKey = GlobalKey<AppFormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -63,12 +74,13 @@ class LoginView extends StatelessWidget {
             );
           }
         },
-        child: Form(
-          key: cubit.formKey,
+        child: AppForm(
+          formKey: _formKey,
+          onSubmit: cubit.submit,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Center(child: RoleContextChip(role: role)),
+              Center(child: RoleContextChip(role: widget.role)),
               const SizedBox(height: AppTheme.spaceLg),
               BlocBuilder<LoginCubit, LoginState>(
                 builder: (context, state) {
@@ -186,7 +198,7 @@ class LoginView extends StatelessWidget {
                   return PrimaryActionButton(
                     label: 'common.login'.tr(),
                     isLoading: state.status == SubmissionStatus.submitting,
-                    onPressed: cubit.submit,
+                    onPressed: () => _formKey.currentState?.submit(),
                   );
                 },
               ),
@@ -194,8 +206,9 @@ class LoginView extends StatelessWidget {
               AuthFooterLink(
                 promptKey: 'login.noAccount',
                 actionKey: 'common.register',
-                onTap: () =>
-                    context.pushReplacement(AppRoute.registerPathFor(role)),
+                onTap: () => context.pushReplacement(
+                  AppRoute.registerPathFor(widget.role),
+                ),
               ),
             ],
           ),

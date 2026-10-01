@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mycampus/core/domain/entities/user_role.dart';
+import 'package:mycampus/features/courses/presentation/pages/courses_page.dart';
 import 'package:mycampus/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:mycampus/features/join_university/presentation/pages/scan_join_page.dart';
 import 'package:mycampus/features/login/presentation/pages/login_page.dart';
@@ -25,6 +26,12 @@ abstract class AppRoute {
   /// (student and teacher both just update their own `users` record), so
   /// it isn't nested under either role's dashboard path.
   static const joinUniversity = '/join';
+
+  /// The super admin's course catalogue — reached by pushing from the
+  /// directory tab rather than sitting in the bottom nav, so the tab bar
+  /// stays at the 5 items Material recommends. Pushed (not `go`) so the
+  /// back button returns to the directory the user came from.
+  static const courses = '/dashboard/courses';
 
   /// The login screen for [role] — role travels as a query param since one
   /// screen serves all three roles.
@@ -120,6 +127,10 @@ class AppRouter {
       GoRoute(
         path: AppRoute.joinUniversity,
         builder: (context, state) => const ScanJoinPage(),
+      ),
+      GoRoute(
+        path: AppRoute.courses,
+        builder: (context, state) => const CoursesPage(),
       ),
     ],
   );
