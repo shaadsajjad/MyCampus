@@ -1,5 +1,8 @@
 import 'package:mycampus/core/config/app_config.dart';
 import 'package:mycampus/core/services/auth_refresh_service.dart';
+import 'package:mycampus/features/courses/data/datasources/courses_remote_datasource.dart';
+import 'package:mycampus/features/courses/data/repositories/courses_repository_impl.dart';
+import 'package:mycampus/features/courses/domain/repositories/courses_repository.dart';
 import 'package:mycampus/features/dashboard/data/datasources/dashboard_remote_datasource.dart';
 import 'package:mycampus/features/dashboard/data/repositories/dashboard_repository_impl.dart';
 import 'package:mycampus/features/dashboard/domain/repositories/dashboard_repository.dart';
@@ -12,6 +15,9 @@ import 'package:mycampus/features/join_university/domain/repositories/join_unive
 import 'package:mycampus/features/login/data/datasources/login_remote_datasource.dart';
 import 'package:mycampus/features/login/data/repositories/login_repository_impl.dart';
 import 'package:mycampus/features/login/domain/repositories/login_repository.dart';
+import 'package:mycampus/features/member_directory/data/datasources/member_directory_remote_datasource.dart';
+import 'package:mycampus/features/member_directory/data/repositories/member_directory_repository_impl.dart';
+import 'package:mycampus/features/member_directory/domain/repositories/member_directory_repository.dart';
 import 'package:mycampus/features/member_profile/data/datasources/member_profile_remote_datasource.dart';
 import 'package:mycampus/features/member_profile/data/repositories/member_profile_repository_impl.dart';
 import 'package:mycampus/features/member_profile/domain/repositories/member_profile_repository.dart';
@@ -66,6 +72,8 @@ class DI {
   static late final DashboardRepository dashboardRepository;
   static late final SuperAdminDashboardRepository superAdminDashboardRepository;
   static late final JoinRequestsRepository joinRequestsRepository;
+  static late final MemberDirectoryRepository memberDirectoryRepository;
+  static late final CoursesRepository coursesRepository;
   static late final SuperAdminProfileRepository superAdminProfileRepository;
   static late final NoticesRepository noticesRepository;
   static late final JoinUniversityRepository joinUniversityRepository;
@@ -107,6 +115,12 @@ class DI {
     );
     joinRequestsRepository = JoinRequestsRepositoryImpl(
       remoteDataSource: JoinRequestsRemoteDataSourceImpl(pocketBase),
+    );
+    memberDirectoryRepository = MemberDirectoryRepositoryImpl(
+      remoteDataSource: MemberDirectoryRemoteDataSourceImpl(pocketBase),
+    );
+    coursesRepository = CoursesRepositoryImpl(
+      remoteDataSource: CoursesRemoteDataSourceImpl(pocketBase),
     );
     superAdminProfileRepository = SuperAdminProfileRepositoryImpl(
       remoteDataSource: SuperAdminProfileRemoteDataSourceImpl(pocketBase),

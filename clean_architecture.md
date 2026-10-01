@@ -486,6 +486,45 @@ Widgets never import a `data/` class directly.
   rule), while the pages and the repository stay per-feature since
   `super_admin_profile` reads university identity + a join-code QR and this
   one reads the member's own avatar/name.
+- `member_directory` — the super admin's "Directory" tab: every **approved**
+  student/faculty member of their university, searchable and filterable by
+  role. Deliberately a separate feature from `join_requests` even though both
+  read the same `users` records — that one is a work queue (pending only,
+  with approve/reject actions and selection state), this one is a read-only
+  reference list of everyone already on campus. Following the same rule, it
+  defines its own `DirectoryRole` enum and `DirectoryMember` entity rather
+  than reusing `join_requests`' `MemberRole`/`MemberRequest`: a super admin
+  is never a directory entry, and `faculty` is the word this screen uses.
+  The two screens' data sources differ in exactly one place — the
+  `member_directory` filter adds `&& status = 'approved'`, which is what
+  makes it a directory rather than a second copy of the requests queue — and
+  the rest (the expand, the profile-field flattening, the `_guard`) is the
+  sanctioned per-feature duplication. Its cubit mirrors
+  `JoinRequestsCubit`'s load/search/filter shape minus the selection and
+  busy-id state, since a read-only list has no per-row action to disable.
+  The page is a tab body in `super_admin_dashboard`'s bottom nav, and it took
+  over the previously-stubbed "Pass" nav slot — the campus pass itself lives
+  on the Home tab as its own card, so nothing lost an entry point.
+- `courses` — the super admin's course catalogue (code, title, credits,
+  contact hours, department), which a routine gets built out of later.
+  Unlike `notices` and `member_directory` this is a real CRUD tab rather
+  than a read-only list: two Cubits, not one — `CoursesCubit` owns the list
+  (load/delete, with a per-row `pendingDeleteIds` busy set so deleting one
+  course doesn't freeze the page) and `ComposeCourseCubit` owns the "new
+  course" sheet's form, a fresh instance per sheet open. The sheet resolves
+  its `Future<bool?>` to `true` on success and the page reloads only then,
+  mirroring `ComposeNoticeSheet`. Numeric fields stay as raw strings in the
+  cubit state (so a half-typed `""` or `"1"` is representable) and are
+  parsed once at submit; `positiveIntValidator()` is the shared validator for
+  both, returning a localized message and capping at 20. `credits` and
+  `contactHours` are kept as separate fields because a 4-credit course
+  commonly meets 3× a week — a routine has to fit the contact hours.
+  Reached by **pushing** `AppRoute.courses` from a "Manage Courses" button on
+  the `member_directory` tab rather than taking a 6th bottom-nav slot:
+  Material's own guidance stops at 5 items, the bar was already full, and
+  both screens are the same "campus registry" concern. `deleteCourse` goes
+  through a confirmation dialog because, once routines exist, deleting a
+  course silently breaks published timetables that reference it.
 - `campus_pass` — lives inside `super_admin_dashboard` (not its own
   feature) because it's only reachable from the super admin's own pass card.
   `CampusPassRepository` is the one repository in the app with **no**

@@ -71,10 +71,7 @@ class JoinRequestsRepositoryImpl implements JoinRequestsRepository {
     } on ClientException catch (e) {
       throw JoinRequestsException(pocketBaseErrorMessage(e));
     } on TimeoutException {
-      throw const JoinRequestsException(
-        'Could not reach the server. Check that PocketBase is running and '
-        'reachable from this device, then try again.',
-      );
+      throw const JoinRequestsException('error.unreachableServer');
     } catch (e) {
       throw JoinRequestsException(
         'Something went wrong. Please try again. ($e)',

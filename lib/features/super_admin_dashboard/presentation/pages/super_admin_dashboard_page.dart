@@ -7,6 +7,7 @@ import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/features/join_requests/presentation/pages/join_requests_page.dart';
+import 'package:mycampus/features/member_directory/presentation/pages/member_directory_page.dart';
 import 'package:mycampus/features/notices/presentation/pages/notices_page.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/cubit/campus_pass_cubit.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/cubit/super_admin_dashboard_cubit.dart';
@@ -116,6 +117,7 @@ class _SuperAdminDashboardView extends StatelessWidget {
             body: switch (state.tab) {
               SuperAdminDashboardTab.home => _HomeTab(state: state),
               SuperAdminDashboardTab.requests => const JoinRequestsPage(),
+              SuperAdminDashboardTab.directory => const MemberDirectoryPage(),
               SuperAdminDashboardTab.notices => const NoticesPage(),
               SuperAdminDashboardTab.profile => const SuperAdminProfilePage(),
             },
@@ -134,6 +136,7 @@ class _SuperAdminDashboardView extends StatelessWidget {
   String _subtitleFor(SuperAdminDashboardTab tab) => switch (tab) {
     SuperAdminDashboardTab.home => 'admin.dashboard'.tr(),
     SuperAdminDashboardTab.requests => 'admin.joinRequests'.tr(),
+    SuperAdminDashboardTab.directory => 'directory.navDirectory'.tr(),
     SuperAdminDashboardTab.notices => 'admin.navNotices'.tr(),
     SuperAdminDashboardTab.profile => 'admin.navProfile'.tr(),
   };
@@ -200,8 +203,10 @@ class _HomeTab extends StatelessWidget {
 
 enum _ProfileAction { profile, logout }
 
-/// Bottom-nav order: Home, Requests, Pass, Notices, Profile. Pass has no
-/// screen yet, so it isn't a [SuperAdminDashboardTab].
+/// Bottom-nav order: Home, Requests, Directory, Notices, Profile. The
+/// `Pass` slot was repurposed for Directory once that feature landed; the
+/// campus pass itself lives on the Home tab as its own card, so nothing
+/// lost its entry point.
 class _DashboardBottomNav extends StatelessWidget {
   const _DashboardBottomNav({
     required this.currentTab,
@@ -222,6 +227,7 @@ class _DashboardBottomNav extends StatelessWidget {
       currentIndex: switch (currentTab) {
         SuperAdminDashboardTab.home => 0,
         SuperAdminDashboardTab.requests => 1,
+        SuperAdminDashboardTab.directory => 2,
         SuperAdminDashboardTab.notices => _noticesIndex,
         SuperAdminDashboardTab.profile => _profileIndex,
       },
@@ -229,6 +235,7 @@ class _DashboardBottomNav extends StatelessWidget {
       onTap: (index) => switch (index) {
         0 => onSelect(SuperAdminDashboardTab.home),
         1 => onSelect(SuperAdminDashboardTab.requests),
+        2 => onSelect(SuperAdminDashboardTab.directory),
         _noticesIndex => onSelect(SuperAdminDashboardTab.notices),
         _profileIndex => onSelect(SuperAdminDashboardTab.profile),
         _ => onUnavailableTap(),
@@ -243,8 +250,8 @@ class _DashboardBottomNav extends StatelessWidget {
           label: 'admin.navRequests'.tr(),
         ),
         BottomNavigationBarItem(
-          icon: const Icon(Icons.qr_code_scanner),
-          label: 'admin.navPass'.tr(),
+          icon: const Icon(Icons.groups),
+          label: 'directory.navDirectory'.tr(),
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.mark_email_unread_outlined),

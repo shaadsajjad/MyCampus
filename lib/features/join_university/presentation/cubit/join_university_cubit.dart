@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_void_public_cubit_methods
+
 import 'package:bloc/bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:mycampus/core/di/di.dart';
@@ -53,7 +55,14 @@ class JoinUniversityCubit extends Cubit<JoinUniversityState> {
       super(const JoinUniversityState());
 
   final JoinUniversityRepository _repository;
-  final MobileScannerController scannerController = MobileScannerController();
+  final MobileScannerController _scannerController = MobileScannerController();
+
+  /// Public read-only accessor for the QR scanner. The page widget calls
+  /// `MobileScanner(controller: cubit.scannerController, ...)`, which is
+  /// why we need a getter — the field itself stays private to satisfy
+  /// `bloc_lint.avoid_public_fields`.
+  MobileScannerController get scannerController => _scannerController;
+
   bool _busy = false;
 
   void updateManualCode(String value) =>
@@ -69,7 +78,7 @@ class JoinUniversityCubit extends Cubit<JoinUniversityState> {
     if (_busy || code.isEmpty) return;
 
     _busy = true;
-    await scannerController.stop();
+    await _scannerController.stop();
     emit(state.copyWith(status: JoinUniversityStatus.lookingUp));
     try {
       final preview = await _repository.lookupUniversity(code);
@@ -115,12 +124,12 @@ class JoinUniversityCubit extends Cubit<JoinUniversityState> {
   /// Discards the current preview/error and resumes the live camera feed.
   Future<void> resumeScanning() async {
     emit(const JoinUniversityState().copyWith(manualCode: state.manualCode));
-    await scannerController.start();
+    await _scannerController.start();
   }
 
   @override
   Future<void> close() async {
-    await scannerController.dispose();
+    await _scannerController.dispose();
     await super.close();
   }
 }

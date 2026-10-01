@@ -30,6 +30,8 @@
     "continue": "Continue",
     "dashboard": "Dashboard",
     "comingSoon": "Coming soon",
+    "retry": "Retry",
+    "delete": "Delete",
     "department": "Department",
     "selectOption": "Select an option",
     "selectMonthYear": "Select Month & Year",
@@ -340,6 +342,37 @@
     "typePrivate": "Private",
     "typeInternational": "International"
   },
+  "courses": {
+    "title": "Courses",
+    "desc": "The course catalogue your routine will be built from.",
+    "summary": "{courses} courses • {credits} total credits",
+    "search": "Search by code, title or department",
+    "addCourse": "Add Course",
+    "newCourse": "New Course",
+    "newCourseDesc": "Add a course to your university's catalogue.",
+    "courseCode": "Course Code",
+    "courseTitle": "Course Title",
+    "credits": "Credits",
+    "contactHours": "Contact Hours",
+    "creditsShort": "{count} cr",
+    "contactHoursShort": "{count} hrs/wk",
+    "saveCourse": "Save Course",
+    "noCourses": "No courses yet. Add your first course to start building a routine.",
+    "noResults": "No courses match your search.",
+    "deleteTitle": "Delete course?",
+    "deleteBody": "{code} — {title} will be removed from your catalogue. Any routine already using it will lose that slot.",
+    "navCourses": "Courses"
+  },
+  "directory": {
+    "title": "Member Directory",
+    "desc": "Everyone approved at your university.",
+    "search": "Search by name, email, ID or department",
+    "filterAll": "All",
+    "noResults": "No members match your search.",
+    "noMembers": "No approved members yet. Students and faculty appear here once you approve their join request.",
+    "navDirectory": "Directory",
+    "manageCourses": "Manage Courses"
+  },
   "joinUniversity": {
     "title": "Join Your Campus",
     "scanInstructions": "Point your camera at your campus QR code",
@@ -368,7 +401,13 @@
     "invalidEmail": "Enter a valid email address",
     "invalidPhone": "Enter a valid phone number",
     "passwordTooShort": "Password must be at least 8 characters",
-    "passwordMismatch": "Passwords do not match"
+    "passwordMismatch": "Passwords do not match",
+    "positiveNumber": "Enter a whole number above 0",
+    "tooLarge": "Must be 20 or less"
+  },
+  "error": {
+    "unknown": "Something went wrong. Please try again. ({detail})",
+    "unreachableServer": "Could not reach the server. Check that PocketBase is running and reachable from this device, then try again."
   },
   "verification": {
     "checkYourEmail": "Check Your Email",

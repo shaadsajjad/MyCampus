@@ -101,14 +101,11 @@ class NoticesRepositoryImpl implements NoticesRepository {
     } on ClientException catch (e) {
       throw NoticesException(pocketBaseErrorMessage(e));
     } on TimeoutException {
-      throw const NoticesException(
-        'Could not reach the server. Check that PocketBase is running and '
-        'reachable from this device, then try again.',
-      );
+      throw const NoticesException('error.unreachableServer');
     } on NoticesException {
       rethrow;
     } catch (e) {
-      throw NoticesException('Something went wrong. Please try again. ($e)');
+      throw NoticesException('error.unknown');
     }
   }
 }

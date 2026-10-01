@@ -51,10 +51,7 @@ class VerificationRepositoryImpl implements VerificationRepository {
     } on ClientException catch (e) {
       throw VerificationException(pocketBaseErrorMessage(e));
     } on TimeoutException {
-      throw const VerificationException(
-        'Could not reach the server. Check that PocketBase is running and '
-        'reachable from this device, then try again.',
-      );
+      throw const VerificationException('error.unreachableServer');
     } catch (e) {
       throw VerificationException(
         'Something went wrong. Please try again. ($e)',

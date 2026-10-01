@@ -84,10 +84,7 @@ class TeacherDashboardRepositoryImpl implements TeacherDashboardRepository {
     } on ClientException catch (e) {
       throw TeacherDashboardException(pocketBaseErrorMessage(e));
     } on TimeoutException {
-      throw const TeacherDashboardException(
-        'Could not reach the server. Check that PocketBase is running and '
-        'reachable from this device, then try again.',
-      );
+      throw const TeacherDashboardException('error.unreachableServer');
     } catch (e) {
       throw TeacherDashboardException(
         'Something went wrong. Please try again. ($e)',

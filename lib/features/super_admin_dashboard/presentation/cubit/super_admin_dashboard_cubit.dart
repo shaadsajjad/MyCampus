@@ -12,7 +12,7 @@ enum SuperAdminDashboardStatus { loading, ready }
 /// The dashboard's own bottom-nav tabs that actually have content behind
 /// them. `Pass` stays unbuilt for now — tapping it just shows a "coming
 /// soon" message rather than switching [tab].
-enum SuperAdminDashboardTab { home, requests, notices, profile }
+enum SuperAdminDashboardTab { home, requests, directory, notices, profile }
 
 class SuperAdminDashboardState {
   const SuperAdminDashboardState({

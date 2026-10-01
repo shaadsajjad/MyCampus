@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_void_public_cubit_methods
+
 import 'package:bloc/bloc.dart';
 
 /// Holds which tab the dashboard bottom-nav shell is showing.
@@ -12,11 +14,17 @@ import 'package:bloc/bloc.dart';
 /// falls outside the nav bar instead of emitting an index the `IndexedStack`
 /// has no child for.
 class DashboardShellCubit extends Cubit<int> {
-  DashboardShellCubit({required int initialIndex, required this.tabCount})
+  DashboardShellCubit({required int initialIndex, required int tabCount})
     : assert(initialIndex >= 0 && initialIndex < tabCount),
+      _tabCount = tabCount,
       super(initialIndex);
 
-  final int tabCount;
+  /// The number of tabs the shell renders — captured at construction
+  /// because the tab list for a given role never changes mid-session.
+  /// Read-only via the public getter so `bloc_lint.avoid_public_fields`
+  /// stays green.
+  final int _tabCount;
+  int get tabCount => _tabCount;
 
   /// Taps a nav item. Ignores a tap on the already-active tab so a
   /// redundant tap can't re-emit the same value (which would rebuild

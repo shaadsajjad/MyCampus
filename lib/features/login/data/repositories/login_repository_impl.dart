@@ -35,12 +35,12 @@ class LoginRepositoryImpl implements LoginRepository {
     } on ClientException catch (e) {
       throw LoginException(pocketBaseErrorMessage(e));
     } on TimeoutException {
-      throw const LoginException(
-        'Could not reach the server. Check that PocketBase is running and '
-        'reachable from this device, then try again.',
-      );
+      // Translation key — `translate_error.dart` walks the em-dash of
+      // PocketBase English text via `cubit.translateError(e.message)` on
+      // the other side, and `.tr()`s anything under the `error.*` prefix.
+      throw const LoginException('error.unreachableServer');
     } catch (e) {
-      throw LoginException('Something went wrong. Please try again. ($e)');
+      throw LoginException('error.unknown');
     }
   }
 }
