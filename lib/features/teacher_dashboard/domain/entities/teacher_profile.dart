@@ -1,7 +1,7 @@
 /// Domain-level view of a `teachers` record — drives the redesigned
 /// faculty ID card (teacherId, department, designation).
 class TeacherProfile {
-  const TeacherProfile({
+  const new({
     required this.teacherId,
     required this.department,
     required this.designation,

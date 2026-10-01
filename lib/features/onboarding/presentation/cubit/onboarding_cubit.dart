@@ -3,7 +3,7 @@ import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/features/onboarding/domain/entities/auth_mode.dart';
 
 class OnboardingState {
-  const OnboardingState({
+  const new({
     this.selectedRole = UserRole.student,
     this.authMode = AuthMode.login,
   });
@@ -20,7 +20,7 @@ class OnboardingState {
 }
 
 class OnboardingCubit extends Cubit<OnboardingState> {
-  OnboardingCubit() : super(const OnboardingState());
+  new() : super(const OnboardingState());
 
   void selectRole(UserRole role) {
     emit(state.copyWith(selectedRole: role));

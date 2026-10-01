@@ -25,7 +25,7 @@ Future<bool?> showComposeNoticeSheet(BuildContext context) {
 }
 
 class _ComposeNoticeSheet extends StatelessWidget {
-  const _ComposeNoticeSheet();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +97,7 @@ class _ComposeNoticeSheet extends StatelessWidget {
 }
 
 class _BodyField extends StatelessWidget {
-  const _BodyField({required this.value, required this.onChanged});
+  const new({required this.value, required this.onChanged});
 
   final String value;
   final ValueChanged<String> onChanged;
@@ -127,7 +127,7 @@ class _BodyField extends StatelessWidget {
 }
 
 class _AudiencePicker extends StatelessWidget {
-  const _AudiencePicker({required this.value, required this.onChanged});
+  const new({required this.value, required this.onChanged});
 
   final NoticeAudience value;
   final ValueChanged<NoticeAudience> onChanged;

@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:mycampus/core/di/di.dart';
+import 'package:mycampus/core/router/app_router.dart' show AppRoute;
 import 'package:mycampus/core/services/deep_link_service.dart';
 import 'package:mycampus/features/verification/domain/exceptions/verification_exception.dart';
 import 'package:mycampus/features/verification/domain/repositories/verification_repository.dart';
@@ -16,7 +17,7 @@ const _pollInterval = Duration(seconds: 3);
 enum VerificationStatus { waiting, verifying, verified, error }
 
 class VerificationState {
-  const VerificationState({
+  const new({
     this.status = VerificationStatus.waiting,
     this.email = '',
     this.errorMessage,
@@ -53,7 +54,7 @@ class VerificationState {
 }
 
 class VerificationCubit extends Cubit<VerificationState> {
-  VerificationCubit({
+  new({
     required String email,
     String? password,
     VerificationRepository? verificationRepository,

@@ -8,7 +8,7 @@ import 'package:mycampus/features/super_admin_dashboard/domain/entities/universi
 /// approved students, approved faculty. [stats] is null while loading or
 /// if the fetch failed — each tile then shows a placeholder dash.
 class AccessMetricsRow extends StatelessWidget {
-  const AccessMetricsRow({required this.stats, super.key});
+  const new({required this.stats, super.key});
 
   final UniversityStats? stats;
 
@@ -74,7 +74,7 @@ class AccessMetricsRow extends StatelessWidget {
 }
 
 class _MetricTile extends StatelessWidget {
-  const _MetricTile({
+  const new({
     required this.icon,
     required this.iconColor,
     required this.value,

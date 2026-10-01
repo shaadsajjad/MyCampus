@@ -8,7 +8,7 @@ import 'package:mycampus/features/courses/domain/entities/course.dart';
 /// matter to them — credits and contact hours — side by side, since
 /// comparing courses is the reason this screen exists.
 class CourseCard extends StatelessWidget {
-  const CourseCard({
+  const new({
     required this.course,
     required this.isBusy,
     required this.onDelete,
@@ -118,7 +118,7 @@ class CourseCard extends StatelessWidget {
 }
 
 class _StatChip extends StatelessWidget {
-  const _StatChip({required this.icon, required this.label});
+  const new({required this.icon, required this.label});
 
   final IconData icon;
   final String label;

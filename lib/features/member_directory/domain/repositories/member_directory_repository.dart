@@ -1,4 +1,6 @@
 import 'package:mycampus/features/member_directory/domain/entities/directory_member.dart';
+import 'package:mycampus/features/member_directory/domain/exceptions/member_directory_exception.dart'
+    show MemberDirectoryException;
 
 /// The contract the member-directory tab codes against.
 /// [MemberDirectoryException] is the only failure type it needs to know

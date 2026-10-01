@@ -17,7 +17,7 @@ enum CampusPassOutcome {
 }
 
 class CampusPassState {
-  const CampusPassState({this.action = CampusPassAction.idle, this.outcome});
+  const new({this.action = CampusPassAction.idle, this.outcome});
 
   final CampusPassAction action;
 
@@ -29,7 +29,7 @@ class CampusPassState {
 }
 
 class CampusPassCubit extends Cubit<CampusPassState> {
-  CampusPassCubit({CampusPassRepository? repository})
+  new({CampusPassRepository? repository})
     : _repository = repository ?? DI.campusPassRepository,
       super(const CampusPassState());
 

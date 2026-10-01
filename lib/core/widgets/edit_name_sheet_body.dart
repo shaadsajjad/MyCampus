@@ -15,7 +15,7 @@ import 'package:mycampus/core/widgets/primary_action_button.dart';
 /// which is why all three sheets stay pixel-identical without `core`
 /// depending on three different cubit types.
 class EditNameSheetBody extends StatelessWidget {
-  const EditNameSheetBody({
+  const new({
     required this.formKey,
     required this.value,
     required this.isSaving,

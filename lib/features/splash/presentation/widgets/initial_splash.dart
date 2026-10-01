@@ -4,7 +4,7 @@ import 'package:mycampus/core/constants/app_assets.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 
 class InitialSplash extends StatelessWidget {
-  const InitialSplash({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,9 @@ import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/theme/theme_cubit.dart';
+import 'package:mycampus/core/widgets/avatar_editor.dart';
 import 'package:mycampus/core/widgets/edit_name_sheet_body.dart';
+import 'package:mycampus/core/widgets/language_picker.dart';
 import 'package:mycampus/core/widgets/profile_header_card.dart';
 import 'package:mycampus/core/widgets/profile_widgets.dart';
 import 'package:mycampus/features/member_profile/domain/entities/member_profile.dart';
@@ -21,7 +23,7 @@ import 'package:mycampus/features/member_profile/presentation/cubit/member_profi
 /// tabs read as the same screen; the difference is the middle "Academic"
 /// section, which is role-specific.
 class MemberProfilePage extends StatelessWidget {
-  const MemberProfilePage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class MemberProfilePage extends StatelessWidget {
 }
 
 class _MemberProfileView extends StatelessWidget {
-  const _MemberProfileView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,14 @@ class _MemberProfileView extends StatelessWidget {
         switch (state.outcome) {
           case MemberProfileOutcome.nameSaved:
             _showSnack(context, 'profile.nameSaved'.tr());
+          case MemberProfileOutcome.avatarSaved:
+            _showSnack(context, 'profile.nameSaved'.tr());
+          case MemberProfileOutcome.avatarSaveFailed:
+            _showSnack(
+              context,
+              state.errorMessage ?? 'common.error'.tr(),
+              isError: true,
+            );
           case MemberProfileOutcome.resetEmailSent:
             _showSnack(
               context,
@@ -90,13 +100,21 @@ class _MemberProfileView extends StatelessWidget {
                 roleLabelKey: profile.roleLabelKey,
                 verified: profile.verified,
                 onEdit: () => _openEditNameSheet(context),
+                isSavingAvatar: state.isSavingAvatar,
+                onEditAvatar: () => pickAndApplyAvatar(
+                  context,
+                  hasAvatar: profile.avatarUrl != null,
+                  onPicked: cubit.updateAvatar,
+                  onRemove: cubit.removeAvatar,
+                ),
               ),
               const SizedBox(height: AppTheme.spaceLg),
               _CampusSection(campus: profile.campus, status: profile.status),
               const SizedBox(height: AppTheme.spaceLg),
               _AcademicSection(profile: profile),
               const SizedBox(height: AppTheme.spaceLg),
-              _AccountSection(profile: profile),              const SizedBox(height: AppTheme.spaceLg),
+              _AccountSection(profile: profile),
+              const SizedBox(height: AppTheme.spaceLg),
               const _PreferencesSection(),
               const SizedBox(height: AppTheme.spaceLg),
               ProfileSection(
@@ -152,10 +170,8 @@ class _MemberProfileView extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (_) => BlocProvider.value(
-        value: cubit,
-        child: const _EditNameSheet(),
-      ),
+      builder: (_) =>
+          BlocProvider.value(value: cubit, child: const _EditNameSheet()),
     );
   }
 
@@ -176,7 +192,7 @@ class _MemberProfileView extends StatelessWidget {
 }
 
 class _EditNameSheet extends StatelessWidget {
-  const _EditNameSheet();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -207,7 +223,7 @@ class _EditNameSheet extends StatelessWidget {
 /// rendered — with no campus yet it becomes the "not a member yet" prompt,
 /// which is more useful than hiding the section entirely.
 class _CampusSection extends StatelessWidget {
-  const _CampusSection({required this.campus, required this.status});
+  const new({required this.campus, required this.status});
 
   final MemberCampus? campus;
   final MemberStatus status;
@@ -228,9 +244,10 @@ class _CampusSection extends StatelessWidget {
       );
     }
 
-    final location = [campus!.city, campus!.country]
-        .where((part) => part != null && part.isNotEmpty)
-        .join(', ');
+    final location = [
+      campus!.city,
+      campus!.country,
+    ].where((part) => part != null && part.isNotEmpty).join(', ');
 
     return ProfileSection(
       title: 'profile.campus'.tr(),
@@ -270,7 +287,7 @@ class _CampusSection extends StatelessWidget {
 /// "not on file" row rather than disappearing if the role-extension record
 /// hasn't been created.
 class _AcademicSection extends StatelessWidget {
-  const _AcademicSection({required this.profile});
+  const new({required this.profile});
 
   final MemberProfile profile;
 
@@ -339,7 +356,7 @@ class _AcademicSection extends StatelessWidget {
 }
 
 class _AccountSection extends StatelessWidget {
-  const _AccountSection({required this.profile});
+  const new({required this.profile});
 
   final MemberProfile profile;
 
@@ -361,7 +378,7 @@ class _AccountSection extends StatelessWidget {
           ProfileInfoRow(
             icon: Icons.phone_outlined,
             label: 'common.phone'.tr(),
-            value: profile.phone!,
+            value: profile.phone,
           ),
         ProfileInfoRow(
           icon: Icons.how_to_reg_outlined,
@@ -392,7 +409,7 @@ class _AccountSection extends StatelessWidget {
 }
 
 class _PreferencesSection extends StatelessWidget {
-  const _PreferencesSection();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -405,12 +422,15 @@ class _PreferencesSection extends StatelessWidget {
             ProfileInfoRow(
               icon: isDark ? Icons.dark_mode : Icons.light_mode,
               label: 'profile.darkModeDesc'.tr(),
-              value: isDark ? 'profile.darkModeOn'.tr() : 'profile.darkModeOff'.tr(),
+              value: isDark
+                  ? 'profile.darkModeOn'.tr()
+                  : 'profile.darkModeOff'.tr(),
               trailing: Switch(
                 value: isDark,
                 onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
               ),
             ),
+            const LanguagePreferenceRow(),
           ],
         );
       },

@@ -17,7 +17,7 @@ import 'package:mycampus/features/teacher_dashboard/presentation/widgets/teacher
 /// automatically from "waiting for approval" to the home dashboard the
 /// moment a super admin approves or rejects the request.
 class TeacherDashboardPage extends StatelessWidget {
-  const TeacherDashboardPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class TeacherDashboardPage extends StatelessWidget {
 }
 
 class _TeacherDashboardView extends StatelessWidget {
-  const _TeacherDashboardView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,8 @@ class _TeacherDashboardView extends StatelessWidget {
           previous.membership != current.membership ||
           previous.justApproved != current.justApproved,
       listener: (context, state) {
-        if (state.justApproved && state.membership == MembershipStatus.approved) {
+        if (state.justApproved &&
+            state.membership == MembershipStatus.approved) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -63,63 +64,62 @@ class _TeacherDashboardView extends StatelessWidget {
       },
       builder: (context, state) {
         return switch (state.membership) {
-          MembershipStatus.none ||
-          MembershipStatus.rejected => Scaffold(
-              appBar: AppBar(
-                title: Text('teacher.dashboard'.tr()),
-                actions: [
-                  IconButton(
-                    tooltip: 'common.logout'.tr(),
-                    icon: const Icon(Icons.logout),
-                    onPressed: () async {
-                      await cubit.logout();
-                      if (context.mounted) context.go(AppRoute.onboarding);
-                    },
-                  ),
-                ],
-              ),
-              body: EmptyStatePrompt(
-                icon: Icons.qr_code_scanner,
-                title: 'teacher.joinTitle'.tr(),
-                description: 'teacher.joinDesc'.tr(),
-                bannerText: state.membership == MembershipStatus.rejected
-                    ? 'teacher.rejectedNotice'.tr()
-                    : null,
-                bannerColor: AppColors.error,
-                actionLabel: 'common.scan'.tr(),
-                onAction: () => _openScanner(context),
-              ),
+          MembershipStatus.none || MembershipStatus.rejected => Scaffold(
+            appBar: AppBar(
+              title: Text('teacher.dashboard'.tr()),
+              actions: [
+                IconButton(
+                  tooltip: 'common.logout'.tr(),
+                  icon: const Icon(Icons.logout),
+                  onPressed: () async {
+                    await cubit.logout();
+                    if (context.mounted) context.go(AppRoute.onboarding);
+                  },
+                ),
+              ],
             ),
+            body: EmptyStatePrompt(
+              icon: Icons.qr_code_scanner,
+              title: 'teacher.joinTitle'.tr(),
+              description: 'teacher.joinDesc'.tr(),
+              bannerText: state.membership == MembershipStatus.rejected
+                  ? 'teacher.rejectedNotice'.tr()
+                  : null,
+              bannerColor: AppColors.error,
+              actionLabel: 'common.scan'.tr(),
+              onAction: () => _openScanner(context),
+            ),
+          ),
           MembershipStatus.pending => Scaffold(
-              appBar: AppBar(
-                title: Text('teacher.dashboard'.tr()),
-                actions: [
-                  IconButton(
-                    tooltip: 'common.logout'.tr(),
-                    icon: const Icon(Icons.logout),
-                    onPressed: () async {
-                      await cubit.logout();
-                      if (context.mounted) context.go(AppRoute.onboarding);
-                    },
-                  ),
-                ],
-              ),
-              body: EmptyStatePrompt(
-                icon: Icons.hourglass_top_outlined,
-                title: state.university?.name ?? 'teacher.joinTitle'.tr(),
-                description: 'status.waitingApproval'.tr(),
-                bannerText: 'status.pending'.tr(),
-              ),
+            appBar: AppBar(
+              title: Text('teacher.dashboard'.tr()),
+              actions: [
+                IconButton(
+                  tooltip: 'common.logout'.tr(),
+                  icon: const Icon(Icons.logout),
+                  onPressed: () async {
+                    await cubit.logout();
+                    if (context.mounted) context.go(AppRoute.onboarding);
+                  },
+                ),
+              ],
             ),
+            body: EmptyStatePrompt(
+              icon: Icons.hourglass_top_outlined,
+              title: state.university?.name ?? 'teacher.joinTitle'.tr(),
+              description: 'status.waitingApproval'.tr(),
+              bannerText: 'status.pending'.tr(),
+            ),
+          ),
           MembershipStatus.approved => TeacherHomeView(
-              name: state.name,
-              email: state.email,
-              university: state.university,
-              avatarUrl: state.avatarUrl,
-              teacherId: state.profile?.teacherId ?? '',
-              department: state.profile?.department ?? '',
-              designation: state.profile?.designation ?? 'Faculty',
-            ),
+            name: state.name,
+            email: state.email,
+            university: state.university,
+            avatarUrl: state.avatarUrl,
+            teacherId: state.profile?.teacherId ?? '',
+            department: state.profile?.department ?? '',
+            designation: state.profile?.designation ?? 'Faculty',
+          ),
         };
       },
     );

@@ -3,7 +3,7 @@ import 'package:mycampus/features/dashboard/data/datasources/dashboard_remote_da
 import 'package:mycampus/features/dashboard/domain/repositories/dashboard_repository.dart';
 
 class DashboardRepositoryImpl implements DashboardRepository {
-  DashboardRepositoryImpl({required DashboardRemoteDataSource remoteDataSource})
+  new({required DashboardRemoteDataSource remoteDataSource})
     : _remote = remoteDataSource;
 
   final DashboardRemoteDataSource _remote;

@@ -28,7 +28,7 @@ abstract class AuthRefreshService {
 }
 
 class AuthRefreshServiceImpl implements AuthRefreshService {
-  AuthRefreshServiceImpl(this._pocketBase);
+  new(this._pocketBase);
 
   final PocketBase _pocketBase;
 

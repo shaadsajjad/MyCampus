@@ -2,7 +2,7 @@
 /// student dashboard needs to render the digital ID card (studentId),
 /// program label (department) and term (batch).
 class StudentProfile {
-  const StudentProfile({
+  const new({
     required this.studentId,
     required this.department,
     required this.batch,

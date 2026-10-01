@@ -1,4 +1,6 @@
 import 'package:mycampus/features/notices/data/models/notice_record_model.dart';
+import 'package:mycampus/features/notices/domain/exceptions/notices_exception.dart'
+    show NoticesException;
 import 'package:pocketbase/pocketbase.dart';
 
 /// The only file in the `notices` feature that talks to the PocketBase
@@ -27,7 +29,7 @@ abstract class NoticesRemoteDataSource {
 }
 
 class NoticesRemoteDataSourceImpl implements NoticesRemoteDataSource {
-  NoticesRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 
@@ -42,7 +44,7 @@ class NoticesRemoteDataSourceImpl implements NoticesRemoteDataSource {
 
   @override
   Future<List<NoticeRecordModel>> getNotices(String universityId) {
-    return _fetch('university = \'$universityId\'');
+    return _fetch("university = '$universityId'");
   }
 
   @override
@@ -53,8 +55,8 @@ class NoticesRemoteDataSourceImpl implements NoticesRemoteDataSource {
     // An empty audience set would otherwise produce `()` — a syntax error.
     // Nothing can match it, so short-circuit with an empty list.
     if (audiences.isEmpty) return Future.value(const []);
-    final clause = audiences.map((a) => 'audience = \'$a\'').join(' || ');
-    return _fetch('university = \'$universityId\' && ($clause)');
+    final clause = audiences.map((a) => "audience = '$a'").join(' || ');
+    return _fetch("university = '$universityId' && ($clause)");
   }
 
   Future<List<NoticeRecordModel>> _fetch(String filter) async {

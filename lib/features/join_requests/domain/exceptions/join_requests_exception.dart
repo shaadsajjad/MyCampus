@@ -2,7 +2,7 @@
 /// human-readable message by the time it reaches the Cubit, so it can be
 /// shown directly.
 class JoinRequestsException implements Exception {
-  const JoinRequestsException(this.message);
+  const new(this.message);
 
   final String message;
 

@@ -6,7 +6,7 @@ import 'package:mycampus/core/widgets/field_label.dart';
 /// state; the current value flows in via [initialValue] and out via
 /// [onChanged].
 class AppTextField extends StatelessWidget {
-  const AppTextField({
+  const new({
     required this.label,
     required this.icon,
     required this.initialValue,

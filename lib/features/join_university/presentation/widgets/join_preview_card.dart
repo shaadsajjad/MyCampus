@@ -8,7 +8,7 @@ import 'package:mycampus/features/join_university/domain/entities/university_pre
 /// Confirmation card shown once a scanned/typed code resolves to a real
 /// university — "yes, this is where I want to send a join request".
 class JoinPreviewCard extends StatelessWidget {
-  const JoinPreviewCard({
+  const new({
     required this.preview,
     required this.isSubmitting,
     required this.onConfirm,

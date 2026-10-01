@@ -5,7 +5,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/features/notices/domain/entities/notice.dart';
 
 class NoticeCard extends StatelessWidget {
-  const NoticeCard({
+  const new({
     required this.notice,
     this.canDelete = false,
     this.isDeleting = false,
@@ -59,10 +59,7 @@ class NoticeCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppTheme.spaceSm),
-          Text(
-            notice.body,
-            style: textTheme.bodyMedium?.copyWith(height: 1.4),
-          ),
+          Text(notice.body, style: textTheme.bodyMedium?.copyWith(height: 1.4)),
           const SizedBox(height: AppTheme.spaceMd),
           Divider(height: 1, color: colorScheme.outline),
           const SizedBox(height: AppTheme.spaceSm),
@@ -127,7 +124,7 @@ class NoticeCard extends StatelessWidget {
 }
 
 class _AudienceBadge extends StatelessWidget {
-  const _AudienceBadge({required this.audience});
+  const new({required this.audience});
 
   final NoticeAudience audience;
 
@@ -163,9 +160,8 @@ class _AudienceBadge extends StatelessWidget {
           const SizedBox(width: 4),
           Text(
             label,
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall?.copyWith(color: color),
+            style: Theme.of(context).textTheme.labelSmall
+                ?.copyWith(color: color),
           ),
         ],
       ),
@@ -175,7 +171,7 @@ class _AudienceBadge extends StatelessWidget {
 
 /// A small circular initial avatar standing in for the author's photo.
 class _AuthorAvatar extends StatelessWidget {
-  const _AuthorAvatar({required this.name});
+  const new({required this.name});
 
   final String name;
 
@@ -187,10 +183,8 @@ class _AuthorAvatar extends StatelessWidget {
       backgroundColor: AppColors.primary.withValues(alpha: 0.12),
       child: Text(
         initial,
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: AppColors.primary,
-          fontWeight: FontWeight.w700,
-        ),
+        style: Theme.of(context).textTheme.labelSmall
+            ?.copyWith(color: AppColors.primary, fontWeight: FontWeight.w700),
       ),
     );
   }

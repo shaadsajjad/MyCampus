@@ -12,7 +12,7 @@ import 'package:mycampus/features/student_dashboard/domain/repositories/student_
 enum StudentDashboardStatus { loading, ready }
 
 class StudentDashboardState {
-  const StudentDashboardState({
+  const new({
     this.status = StudentDashboardStatus.loading,
     this.name,
     this.email,
@@ -79,7 +79,7 @@ class StudentDashboardState {
 /// transitions automatically from "waiting for approval" to the home
 /// dashboard the moment a super admin approves/rejects the request.
 class StudentDashboardCubit extends Cubit<StudentDashboardState> {
-  StudentDashboardCubit({
+  new({
     StudentDashboardRepository? repository,
     AuthRefreshService? authRefreshService,
   }) : _repository = repository ?? DI.studentDashboardRepository,
@@ -166,25 +166,28 @@ class StudentDashboardCubit extends Cubit<StudentDashboardState> {
   /// flip `justApproved` so the UI can fire a one-shot snackbar.
   void _subscribeToUserUpdates() {
     _lastSeenMembership = _repository.currentMembershipStatus;
-    _unsubscribeUpdates = _repository.watchCurrentUser(onChange: () async {
-      if (isClosed) return;
-      // Refresh the in-memory record from PocketBase first — `load()` reads
-      // off `_pb.authStore.record` for status / university.
-      await _authRefreshService.refreshCurrentUser();
-      if (isClosed) return;
-      final previousMembership = _lastSeenMembership;
-      final nextMembership = _repository.currentMembershipStatus;
-      // Update BEFORE `load()` so that, if `load()` re-enters or another
-      // event arrives mid-await, the next comparison starts from the value
-      // we just observed rather than the stale snapshot.
-      _lastSeenMembership = nextMembership;
-      final justApproved = previousMembership == MembershipStatus.pending &&
-          nextMembership == MembershipStatus.approved;
-      await load();
-      if (justApproved && !isClosed) {
-        _emitReady(justApproved: true);
-      }
-    });
+    _unsubscribeUpdates = _repository.watchCurrentUser(
+      onChange: () async {
+        if (isClosed) return;
+        // Refresh the in-memory record from PocketBase first — `load()` reads
+        // off `_pb.authStore.record` for status / university.
+        await _authRefreshService.refreshCurrentUser();
+        if (isClosed) return;
+        final previousMembership = _lastSeenMembership;
+        final nextMembership = _repository.currentMembershipStatus;
+        // Update BEFORE `load()` so that, if `load()` re-enters or another
+        // event arrives mid-await, the next comparison starts from the value
+        // we just observed rather than the stale snapshot.
+        _lastSeenMembership = nextMembership;
+        final justApproved =
+            previousMembership == MembershipStatus.pending &&
+            nextMembership == MembershipStatus.approved;
+        await load();
+        if (justApproved && !isClosed) {
+          _emitReady(justApproved: true);
+        }
+      },
+    );
   }
 
   /// Acknowledged by the page once it's shown the welcome snackbar so it

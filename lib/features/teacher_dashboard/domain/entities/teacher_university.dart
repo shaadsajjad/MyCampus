@@ -1,7 +1,7 @@
 /// The app-level view of the `universities` record a teacher belongs to —
 /// just enough to identify it on the dashboard's header card.
 class TeacherUniversity {
-  const TeacherUniversity({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,

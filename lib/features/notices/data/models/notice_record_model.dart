@@ -3,7 +3,7 @@
 /// domain enum). Parsing into the domain-level `Notice` is the
 /// repository's job, not this model's.
 class NoticeRecordModel {
-  const NoticeRecordModel({
+  const new({
     required this.id,
     required this.title,
     required this.body,

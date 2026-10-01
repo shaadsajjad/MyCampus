@@ -11,6 +11,7 @@ import 'package:mycampus/features/member_directory/presentation/pages/member_dir
 import 'package:mycampus/features/notices/presentation/pages/notices_page.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/cubit/campus_pass_cubit.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/cubit/super_admin_dashboard_cubit.dart';
+import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/academic_registry_card.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/access_metrics_row.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/campus_pass_card.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/join_requests_banner.dart';
@@ -19,7 +20,7 @@ import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/uni
 import 'package:mycampus/features/super_admin_profile/presentation/pages/super_admin_profile_page.dart';
 
 class SuperAdminDashboardPage extends StatelessWidget {
-  const SuperAdminDashboardPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class SuperAdminDashboardPage extends StatelessWidget {
 }
 
 class _SuperAdminDashboardView extends StatelessWidget {
-  const _SuperAdminDashboardView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +163,7 @@ void _showSnack(BuildContext context, String message, {bool isError = false}) {
 }
 
 class _HomeTab extends StatelessWidget {
-  const _HomeTab({required this.state});
+  const new({required this.state});
 
   final SuperAdminDashboardState state;
 
@@ -194,6 +195,8 @@ class _HomeTab extends StatelessWidget {
             ),
           ],
           const SizedBox(height: AppTheme.spaceLg),
+          const AcademicRegistryCard(),
+          const SizedBox(height: AppTheme.spaceLg),
           const SecurityPolicyNote(),
         ],
       ),
@@ -208,7 +211,7 @@ enum _ProfileAction { profile, logout }
 /// campus pass itself lives on the Home tab as its own card, so nothing
 /// lost its entry point.
 class _DashboardBottomNav extends StatelessWidget {
-  const _DashboardBottomNav({
+  const new({
     required this.currentTab,
     required this.onSelect,
     required this.onUnavailableTap,

@@ -519,12 +519,33 @@ Widgets never import a `data/` class directly.
   both, returning a localized message and capping at 20. `credits` and
   `contactHours` are kept as separate fields because a 4-credit course
   commonly meets 3× a week — a routine has to fit the contact hours.
-  Reached by **pushing** `AppRoute.courses` from a "Manage Courses" button on
-  the `member_directory` tab rather than taking a 6th bottom-nav slot:
-  Material's own guidance stops at 5 items, the bar was already full, and
-  both screens are the same "campus registry" concern. `deleteCourse` goes
-  through a confirmation dialog because, once routines exist, deleting a
-  course silently breaks published timetables that reference it.
+  Reached by **pushing** `AppRoute.courses` from an "Academic Registry" card
+  on the Home tab (`AcademicRegistryCard`) rather than taking a 6th
+  bottom-nav slot: Material's own guidance stops at 5 items, and the bar
+  was already full. Deliberately *not* also linked from `member_directory`
+  or `routine` — one entry point per destination, not three ways to reach
+  the same screen. `deleteCourse` goes through a confirmation dialog
+  because, once routines exist, deleting a course silently breaks
+  published timetables that reference it.
+- `routine` — the university-wide weekly timetable a super admin builds out
+  of the `courses` catalogue, and the thing both `student_dashboard`'s and
+  `teacher_dashboard`'s reserved Routine tab show. Same shape as `courses`
+  (`RoutineCubit`/`ComposeRoutineSlotCubit`, `_guard`-wrapped repository,
+  bool-resolving compose sheet) with one addition: `MyRoutinePage`, a
+  `Scaffold`-less read-only view embedded identically into both dashboards'
+  `DashboardShell`, mirroring how `MemberNoticesPage` is shared. Its
+  `RoutineCourseOption`/`getCourseOptions()` read the `courses` PocketBase
+  collection **directly** from `routine`'s own datasource rather than
+  importing `CoursesRepository` — per "features own their data" above, even
+  though both features describe the same course. `DayOfWeek` (`core/domain/
+  entities`) is promoted the same way `UserRole` was: the builder and both
+  dashboard views switch on the identical seven values. Reached the same
+  way as `courses` — **pushed** from the same Home-tab "Academic Registry"
+  card, not nested under the Courses tab (that would make Routine two taps
+  deep behind a feature it doesn't otherwise depend on).
+  v1 shows the whole university's timetable to every member (no department/
+  section/teacher filtering, no Home-tab mock-card rewiring) — see the
+  "Explicitly out of scope" note this feature's PR left for what comes next.
 - `campus_pass` — lives inside `super_admin_dashboard` (not its own
   feature) because it's only reachable from the super admin's own pass card.
   `CampusPassRepository` is the one repository in the app with **no**

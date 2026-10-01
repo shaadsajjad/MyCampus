@@ -8,7 +8,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// "Up Next" card. Pure presentational mock — the routine feature will
 /// replace the static values with real data once it ships.
 class TodaysScheduleSection extends StatelessWidget {
-  const TodaysScheduleSection({
+  const new({
     required this.onSubmitBeacon,
     required this.onOpenNotes,
     super.key,
@@ -36,9 +36,8 @@ class TodaysScheduleSection extends StatelessWidget {
             const Spacer(),
             Text(
               'Wednesday, Apr 16',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: AppColors.onSurfaceVariant,
-              ),
+              style: Theme.of(context).textTheme.labelMedium
+                  ?.copyWith(color: AppColors.onSurfaceVariant),
             ),
           ],
         ),
@@ -126,11 +125,10 @@ class TodaysScheduleSection extends StatelessWidget {
                     children: [
                       Text(
                         '09:30 AM',
-                        style: Theme.of(context).textTheme.labelLarge
-                            ?.copyWith(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       Text(
                         '11:00 AM',
@@ -254,18 +252,16 @@ class TodaysScheduleSection extends StatelessWidget {
                       ),
                       child: Text(
                         'student.upNext'.tr(namedArgs: {'time': '01:15 PM'}),
-                        style: Theme.of(context).textTheme.labelSmall
-                            ?.copyWith(
-                              color: AppColors.onSurface,
-                              fontWeight: FontWeight.w600,
-                            ),
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.onSurface,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                     Text(
                       'Room Lab 2B',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.onSurfaceVariant,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall
+                          ?.copyWith(color: AppColors.onSurfaceVariant),
                     ),
                   ],
                 ),

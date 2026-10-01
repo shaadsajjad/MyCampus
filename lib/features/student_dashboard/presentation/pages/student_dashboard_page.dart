@@ -17,7 +17,7 @@ import 'package:mycampus/features/student_dashboard/presentation/widgets/student
 /// approval" to the home dashboard the moment a super admin approves or
 /// rejects the request.
 class StudentDashboardPage extends StatelessWidget {
-  const StudentDashboardPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class StudentDashboardPage extends StatelessWidget {
 }
 
 class _StudentDashboardView extends StatelessWidget {
-  const _StudentDashboardView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,8 @@ class _StudentDashboardView extends StatelessWidget {
           previous.membership != current.membership ||
           previous.justApproved != current.justApproved,
       listener: (context, state) {
-        if (state.justApproved && state.membership == MembershipStatus.approved) {
+        if (state.justApproved &&
+            state.membership == MembershipStatus.approved) {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -63,64 +64,63 @@ class _StudentDashboardView extends StatelessWidget {
       },
       builder: (context, state) {
         return switch (state.membership) {
-          MembershipStatus.none ||
-          MembershipStatus.rejected => Scaffold(
-              appBar: AppBar(
-                title: Text('student.dashboard'.tr()),
-                actions: [
-                  IconButton(
-                    tooltip: 'common.logout'.tr(),
-                    icon: const Icon(Icons.logout),
-                    onPressed: () async {
-                      await cubit.logout();
-                      if (context.mounted) context.go(AppRoute.onboarding);
-                    },
-                  ),
-                ],
-              ),
-              body: EmptyStatePrompt(
-                icon: Icons.qr_code_scanner,
-                title: 'student.joinTitle'.tr(),
-                description: 'student.joinDesc'.tr(),
-                bannerText: state.membership == MembershipStatus.rejected
-                    ? 'student.rejectedNotice'.tr()
-                    : null,
-                bannerColor: AppColors.error,
-                actionLabel: 'common.scan'.tr(),
-                onAction: () => _openScanner(context),
-              ),
+          MembershipStatus.none || MembershipStatus.rejected => Scaffold(
+            appBar: AppBar(
+              title: Text('student.dashboard'.tr()),
+              actions: [
+                IconButton(
+                  tooltip: 'common.logout'.tr(),
+                  icon: const Icon(Icons.logout),
+                  onPressed: () async {
+                    await cubit.logout();
+                    if (context.mounted) context.go(AppRoute.onboarding);
+                  },
+                ),
+              ],
             ),
+            body: EmptyStatePrompt(
+              icon: Icons.qr_code_scanner,
+              title: 'student.joinTitle'.tr(),
+              description: 'student.joinDesc'.tr(),
+              bannerText: state.membership == MembershipStatus.rejected
+                  ? 'student.rejectedNotice'.tr()
+                  : null,
+              bannerColor: AppColors.error,
+              actionLabel: 'common.scan'.tr(),
+              onAction: () => _openScanner(context),
+            ),
+          ),
           MembershipStatus.pending => Scaffold(
-              appBar: AppBar(
-                title: Text('student.dashboard'.tr()),
-                actions: [
-                  IconButton(
-                    tooltip: 'common.logout'.tr(),
-                    icon: const Icon(Icons.logout),
-                    onPressed: () async {
-                      await cubit.logout();
-                      if (context.mounted) context.go(AppRoute.onboarding);
-                    },
-                  ),
-                ],
-              ),
-              body: EmptyStatePrompt(
-                icon: Icons.hourglass_top_outlined,
-                title: state.university?.name ?? 'student.joinTitle'.tr(),
-                description: 'status.waitingApproval'.tr(),
-                bannerText: 'status.pending'.tr(),
-              ),
+            appBar: AppBar(
+              title: Text('student.dashboard'.tr()),
+              actions: [
+                IconButton(
+                  tooltip: 'common.logout'.tr(),
+                  icon: const Icon(Icons.logout),
+                  onPressed: () async {
+                    await cubit.logout();
+                    if (context.mounted) context.go(AppRoute.onboarding);
+                  },
+                ),
+              ],
             ),
+            body: EmptyStatePrompt(
+              icon: Icons.hourglass_top_outlined,
+              title: state.university?.name ?? 'student.joinTitle'.tr(),
+              description: 'status.waitingApproval'.tr(),
+              bannerText: 'status.pending'.tr(),
+            ),
+          ),
           MembershipStatus.approved => StudentHomeView(
-              name: state.name,
-              email: state.email,
-              university: state.university,
-              avatarUrl: state.avatarUrl,
-              studentId: state.profile?.studentId ?? '',
-              program: state.profile == null
-                  ? ''
-                  : '${state.profile!.department} • Sem ${state.profile!.batch}',
-            ),
+            name: state.name,
+            email: state.email,
+            university: state.university,
+            avatarUrl: state.avatarUrl,
+            studentId: state.profile?.studentId ?? '',
+            program: state.profile == null
+                ? ''
+                : '${state.profile!.department} • Sem ${state.profile!.batch}',
+          ),
         };
       },
     );

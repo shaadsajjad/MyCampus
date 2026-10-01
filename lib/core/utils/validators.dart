@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 /// Shared client-side form validators, returning a localized error message
 /// (or `null` when the value is valid) for use as a `TextFormField.validator`.
 class Validators {
-  Validators._();
+  new _();
 
   static final _emailPattern = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
   static final _phonePattern = RegExp(r'^\+?[0-9\s-]{7,15}$');

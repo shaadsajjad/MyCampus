@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 /// App color palette based on the MyCampus design system.
 /// Reference: Stitch design guide - Academic Modernity
 class AppColors {
-  AppColors._();
+  new _();
 
   // ── Brand Colors ──────────────────────────────────────────────
   static const Color primary = Color(0xFF1E3A8A); // Deep Navy Blue

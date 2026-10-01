@@ -6,7 +6,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// Centered "couldn't load" state with a retry action, shared by every
 /// profile screen. Stays scrollable so pull-to-refresh keeps working.
 class ProfileErrorState extends StatelessWidget {
-  const ProfileErrorState({this.message, required this.onRetry, super.key});
+  const new({required this.onRetry, this.message, super.key});
 
   final String? message;
   final VoidCallback onRetry;
@@ -60,11 +60,7 @@ class ProfileErrorState extends StatelessWidget {
 /// section/row rhythm — keeping one implementation is what makes the
 /// tabs look identical across roles.
 class ProfileSection extends StatelessWidget {
-  const ProfileSection({
-    required this.title,
-    required this.children,
-    super.key,
-  });
+  const new({required this.title, required this.children, super.key});
 
   final String title;
   final List<Widget> children;
@@ -113,7 +109,7 @@ class ProfileSection extends StatelessWidget {
 /// A single icon + label + value row inside a [ProfileSection]. Tappable
 /// when [onTap] is set; [trailing] replaces the default chevron.
 class ProfileInfoRow extends StatelessWidget {
-  const ProfileInfoRow({
+  const new({
     required this.icon,
     required this.label,
     this.value,
@@ -190,7 +186,7 @@ class ProfileInfoRow extends StatelessWidget {
 /// Square university logo with a monogram fallback — used by the Campus
 /// section on every profile screen.
 class ProfileUniversityLogo extends StatelessWidget {
-  const ProfileUniversityLogo({required this.logoUrl, super.key});
+  const new({required this.logoUrl, super.key});
 
   final String? logoUrl;
 
@@ -221,7 +217,7 @@ class ProfileUniversityLogo extends StatelessWidget {
 /// Round avatar with an initials fallback, framed for the navy gradient
 /// header card.
 class ProfileAvatar extends StatelessWidget {
-  const ProfileAvatar({required this.avatarUrl, required this.initials, super.key});
+  const new({required this.avatarUrl, required this.initials, super.key});
 
   final String? avatarUrl;
   final String initials;
@@ -253,7 +249,7 @@ class ProfileAvatar extends StatelessWidget {
 }
 
 class ProfileInitials extends StatelessWidget {
-  const ProfileInitials({required this.initials, super.key});
+  const new({required this.initials, super.key});
 
   final String initials;
 
@@ -275,7 +271,7 @@ class ProfileInitials extends StatelessWidget {
 /// Small translucent pill used for the role + verification badges under
 /// the header card's name.
 class ProfileBadge extends StatelessWidget {
-  const ProfileBadge({
+  const new({
     required this.icon,
     required this.label,
     required this.color,
@@ -301,9 +297,8 @@ class ProfileBadge extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             label,
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall?.copyWith(color: Colors.white),
+            style: Theme.of(context).textTheme.labelSmall
+                ?.copyWith(color: Colors.white),
           ),
         ],
       ),

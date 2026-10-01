@@ -9,7 +9,7 @@ import 'package:mycampus/features/courses/domain/repositories/courses_repository
 enum CoursesStatus { loading, ready, error }
 
 class CoursesState {
-  const CoursesState({
+  const new({
     this.status = CoursesStatus.loading,
     this.courses = const [],
     this.query = '',
@@ -71,7 +71,7 @@ class CoursesState {
 /// `MemberDirectoryCubit`'s load/search shape, plus the per-row busy state
 /// that deleting a course needs.
 class CoursesCubit extends Cubit<CoursesState> {
-  CoursesCubit({CoursesRepository? repository})
+  new({CoursesRepository? repository})
     : _repository = repository ?? DI.coursesRepository,
       super(const CoursesState()) {
     unawaited(load());
@@ -94,17 +94,12 @@ class CoursesCubit extends Cubit<CoursesState> {
     try {
       final courses = await _repository.getCourses(universityId);
       if (!isClosed) {
-        emit(
-          state.copyWith(status: CoursesStatus.ready, courses: courses),
-        );
+        emit(state.copyWith(status: CoursesStatus.ready, courses: courses));
       }
     } on CoursesException catch (e) {
       if (!isClosed) {
         emit(
-          state.copyWith(
-            status: CoursesStatus.error,
-            errorMessage: e.message,
-          ),
+          state.copyWith(status: CoursesStatus.error, errorMessage: e.message),
         );
       }
     }

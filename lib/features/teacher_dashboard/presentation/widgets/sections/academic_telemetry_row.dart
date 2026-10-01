@@ -6,7 +6,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// Compact 3-stat strip — Enrolled students, Attendance rate, Pending
 /// submissions. Mirrors the Stitch mock's "Academic Telemetry" row.
 class AcademicTelemetryRow extends StatelessWidget {
-  const AcademicTelemetryRow({
+  const new({
     required this.enrolledCount,
     required this.sectionsCount,
     required this.attendancePercent,
@@ -53,8 +53,9 @@ class AcademicTelemetryRow extends StatelessWidget {
                 label: 'teacher.enrolled'.tr(),
                 value: '$enrolledCount',
                 valueColor: AppColors.primary,
-                footer: 'teacher.sections'
-                    .tr(namedArgs: {'count': '$sectionsCount'}),
+                footer: 'teacher.sections'.tr(
+                  namedArgs: {'count': '$sectionsCount'},
+                ),
               ),
             ),
             const SizedBox(width: AppTheme.spaceSm),
@@ -62,7 +63,9 @@ class AcademicTelemetryRow extends StatelessWidget {
               child: _StatTile(
                 label: 'teacher.attendanceRate'.tr(),
                 value: '${attendancePercent.toStringAsFixed(1)}%',
-                footer: 'teacher.trendUp'.tr(namedArgs: {'pct': attendanceDelta}),
+                footer: 'teacher.trendUp'.tr(
+                  namedArgs: {'pct': attendanceDelta},
+                ),
                 footerIcon: Icons.trending_up,
                 footerColor: AppColors.secondary,
               ),
@@ -86,7 +89,7 @@ class AcademicTelemetryRow extends StatelessWidget {
 }
 
 class _StatTile extends StatelessWidget {
-  const _StatTile({
+  const new({
     required this.label,
     required this.value,
     required this.footer,
@@ -119,9 +122,8 @@ class _StatTile extends StatelessWidget {
         children: [
           Text(
             label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: AppColors.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.labelSmall
+                ?.copyWith(color: AppColors.onSurfaceVariant),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
@@ -140,7 +142,7 @@ class _StatTile extends StatelessWidget {
                   Container(
                     width: 8,
                     height: 8,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.tertiaryContainer,
                       shape: BoxShape.circle,
                     ),

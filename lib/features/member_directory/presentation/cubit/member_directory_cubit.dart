@@ -14,7 +14,7 @@ enum MemberDirectoryStatus { loading, ready, error }
 enum MemberDirectoryFilter { all, students, faculty }
 
 class MemberDirectoryState {
-  const MemberDirectoryState({
+  const new({
     this.status = MemberDirectoryStatus.loading,
     this.members = const [],
     this.query = '',
@@ -49,8 +49,7 @@ class MemberDirectoryState {
       return member.name.toLowerCase().contains(normalizedQuery) ||
           member.email.toLowerCase().contains(normalizedQuery) ||
           (member.roleId?.toLowerCase().contains(normalizedQuery) ?? false) ||
-          (member.department?.toLowerCase().contains(normalizedQuery) ??
-              false);
+          (member.department?.toLowerCase().contains(normalizedQuery) ?? false);
     }).toList();
   }
 
@@ -77,7 +76,7 @@ class MemberDirectoryState {
 /// load/search/filter shape — this is a read-only screen, so there's no
 /// selection, batching, or per-row busy state to carry.
 class MemberDirectoryCubit extends Cubit<MemberDirectoryState> {
-  MemberDirectoryCubit({MemberDirectoryRepository? repository})
+  new({MemberDirectoryRepository? repository})
     : _repository = repository ?? DI.memberDirectoryRepository,
       super(const MemberDirectoryState()) {
     unawaited(load());
@@ -101,15 +100,14 @@ class MemberDirectoryCubit extends Cubit<MemberDirectoryState> {
       return;
     }
 
-    emit(state.copyWith(status: MemberDirectoryStatus.loading, clearError: true));
+    emit(
+      state.copyWith(status: MemberDirectoryStatus.loading, clearError: true),
+    );
     try {
       final members = await _repository.getApprovedMembers(universityId);
       if (!isClosed) {
         emit(
-          state.copyWith(
-            status: MemberDirectoryStatus.ready,
-            members: members,
-          ),
+          state.copyWith(status: MemberDirectoryStatus.ready, members: members),
         );
       }
     } on MemberDirectoryException catch (e) {

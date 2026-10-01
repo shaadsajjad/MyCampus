@@ -19,7 +19,7 @@ Future<void> showEditNameSheet(BuildContext context) {
 }
 
 class _EditNameSheet extends StatelessWidget {
-  const _EditNameSheet();
+  const new();
 
   @override
   Widget build(BuildContext context) {

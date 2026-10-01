@@ -2,17 +2,14 @@ import 'package:pocketbase/pocketbase.dart';
 
 /// DTO for a `universities` record as seen by the teacher dashboard.
 class TeacherUniversityModel {
-  const TeacherUniversityModel({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,
     this.logoUrl,
   });
 
-  factory TeacherUniversityModel.fromRecord(
-    RecordModel record, {
-    String? logoUrl,
-  }) {
+  factory fromRecord(RecordModel record, {String? logoUrl}) {
     return TeacherUniversityModel(
       id: record.id,
       name: record.getStringValue('name'),

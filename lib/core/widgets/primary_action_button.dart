@@ -5,7 +5,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// to advance a multi-step flow (onboarding, auth forms). Shared across
 /// features since it's generic UI chrome, not feature-specific.
 class PrimaryActionButton extends StatelessWidget {
-  const PrimaryActionButton({
+  const new({
     required this.label,
     required this.onPressed,
     this.isLoading = false,

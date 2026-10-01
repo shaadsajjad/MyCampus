@@ -6,7 +6,7 @@ import 'package:mycampus/core/di/di.dart';
 enum SplashStatus { loading, readyAuthenticated, readyUnauthenticated }
 
 class SplashCubit extends Cubit<SplashStatus> {
-  SplashCubit({Duration duration = const Duration(seconds: 3)})
+  new({Duration duration = const Duration(seconds: 3)})
     : super(SplashStatus.loading) {
     unawaited(_init(duration));
   }

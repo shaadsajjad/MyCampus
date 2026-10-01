@@ -3,8 +3,8 @@
 // Form keys live on the cubit per the pattern documented in
 // `clean_architecture.md`, so this is the rare cubit that legitimately
 // imports `package:flutter`.
-import 'package:flutter/widgets.dart';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/widgets.dart';
 import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/notices/domain/entities/notice.dart';
 import 'package:mycampus/features/notices/domain/exceptions/notices_exception.dart';
@@ -13,7 +13,7 @@ import 'package:mycampus/features/notices/domain/repositories/notices_repository
 enum SubmissionStatus { idle, submitting, success, failure }
 
 class ComposeNoticeState {
-  const ComposeNoticeState({
+  const new({
     this.title = '',
     this.body = '',
     this.audience = NoticeAudience.all,
@@ -49,7 +49,7 @@ class ComposeNoticeState {
 /// `NoticesCubit`, which lives for the whole tab) — the caller reloads the
 /// list itself once this reports [SubmissionStatus.success].
 class ComposeNoticeCubit extends Cubit<ComposeNoticeState> {
-  ComposeNoticeCubit({NoticesRepository? repository})
+  new({NoticesRepository? repository})
     : _repository = repository ?? DI.noticesRepository,
       super(const ComposeNoticeState());
 

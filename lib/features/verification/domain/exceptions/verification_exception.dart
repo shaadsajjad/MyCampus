@@ -2,7 +2,7 @@
 /// human-readable message by the time it reaches the Cubit, so it can be
 /// shown directly.
 class VerificationException implements Exception {
-  const VerificationException(this.message);
+  const new(this.message);
 
   final String message;
 

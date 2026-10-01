@@ -15,7 +15,7 @@ enum SuperAdminDashboardStatus { loading, ready }
 enum SuperAdminDashboardTab { home, requests, directory, notices, profile }
 
 class SuperAdminDashboardState {
-  const SuperAdminDashboardState({
+  const new({
     this.status = SuperAdminDashboardStatus.loading,
     this.tab = SuperAdminDashboardTab.home,
     this.adminName,
@@ -64,7 +64,7 @@ class SuperAdminDashboardState {
 /// network call otherwise fails, the dashboard still renders with the
 /// admin's identity and placeholder metrics instead of erroring.
 class SuperAdminDashboardCubit extends Cubit<SuperAdminDashboardState> {
-  SuperAdminDashboardCubit({SuperAdminDashboardRepository? repository})
+  new({SuperAdminDashboardRepository? repository})
     : _repository = repository ?? DI.superAdminDashboardRepository,
       super(const SuperAdminDashboardState()) {
     unawaited(load());

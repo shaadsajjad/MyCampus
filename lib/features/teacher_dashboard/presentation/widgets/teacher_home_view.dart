@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mycampus/core/domain/entities/notice_audience.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
-import 'package:mycampus/core/widgets/coming_soon_tab.dart';
 import 'package:mycampus/core/widgets/dashboard_shell.dart';
 import 'package:mycampus/features/member_profile/presentation/pages/member_profile_page.dart';
-import 'package:mycampus/core/domain/entities/notice_audience.dart';
 import 'package:mycampus/features/notices/presentation/pages/member_notices_page.dart';
+import 'package:mycampus/features/routine/presentation/pages/my_routine_page.dart';
 import 'package:mycampus/features/teacher_dashboard/domain/entities/teacher_university.dart';
 import 'package:mycampus/features/teacher_dashboard/presentation/widgets/sections/academic_telemetry_row.dart';
 import 'package:mycampus/features/teacher_dashboard/presentation/widgets/sections/announcements_section.dart';
@@ -26,7 +26,7 @@ import 'package:mycampus/features/teacher_dashboard/presentation/widgets/section
 /// live inside the bottom-nav shell so the same shell can later route
 /// them to the matching sub-screens.
 class TeacherHomeView extends StatelessWidget {
-  const TeacherHomeView({
+  const new({
     required this.name,
     required this.email,
     required this.university,
@@ -51,7 +51,10 @@ class TeacherHomeView extends StatelessWidget {
       initialIndex: 0,
       navItems: const [
         DashboardNavItem(icon: Icons.grid_view, labelKey: 'common.home'),
-        DashboardNavItem(icon: Icons.calendar_today, labelKey: 'common.routine'),
+        DashboardNavItem(
+          icon: Icons.calendar_today,
+          labelKey: 'common.routine',
+        ),
         DashboardNavItem(icon: Icons.campaign, labelKey: 'common.notices'),
         DashboardNavItem(
           icon: Icons.account_circle,
@@ -68,10 +71,7 @@ class TeacherHomeView extends StatelessWidget {
           department: department,
           designation: designation,
         ),
-        const ComingSoonTab(
-          titleKey: 'common.routine',
-          icon: Icons.calendar_today,
-        ),
+        const MyRoutinePage(),
         const MemberNoticesPage(audience: NoticeAudience.faculty),
         const MemberProfilePage(),
       ],
@@ -80,7 +80,7 @@ class TeacherHomeView extends StatelessWidget {
 }
 
 class _TeacherHomeBody extends StatelessWidget {
-  const _TeacherHomeBody({
+  const new({
     required this.name,
     required this.email,
     required this.university,
@@ -134,7 +134,7 @@ class _TeacherHomeBody extends StatelessWidget {
                 onMaterialsTap: _noop,
               ),
               const SizedBox(height: AppTheme.spaceMd),
-              AcademicTelemetryRow(
+              const AcademicTelemetryRow(
                 enrolledCount: 112,
                 sectionsCount: 2,
                 attendancePercent: 94.2,
@@ -165,7 +165,7 @@ class _TeacherHomeBody extends StatelessWidget {
 }
 
 class _GreetingRow extends StatelessWidget {
-  const _GreetingRow({required this.facultyName});
+  const new({required this.facultyName});
 
   final String facultyName;
 
@@ -238,7 +238,7 @@ class _GreetingRow extends StatelessWidget {
 /// the old AppBar title so the redesigned dashboards can keep the full
 /// gradient/glassy look).
 class _BrandHeader extends StatelessWidget {
-  const _BrandHeader();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -317,11 +317,7 @@ class _BrandHeader extends StatelessWidget {
 }
 
 class _HeaderIconButton extends StatelessWidget {
-  const _HeaderIconButton({
-    required this.icon,
-    required this.onTap,
-    this.showDot = false,
-  });
+  const new({required this.icon, required this.onTap, this.showDot = false});
 
   final IconData icon;
   final VoidCallback onTap;
@@ -361,7 +357,7 @@ class _HeaderIconButton extends StatelessWidget {
 }
 
 class _HeaderAvatarButton extends StatelessWidget {
-  const _HeaderAvatarButton({required this.onTap});
+  const new({required this.onTap});
 
   final VoidCallback onTap;
 
@@ -380,15 +376,10 @@ class _HeaderAvatarButton extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(
               color: AppColors.outlineVariant.withValues(alpha: 0.3),
-              width: 1,
             ),
           ),
           alignment: Alignment.center,
-          child: const Icon(
-            Icons.person,
-            color: AppColors.primary,
-            size: 20,
-          ),
+          child: const Icon(Icons.person, color: AppColors.primary, size: 20),
         ),
       ),
     );

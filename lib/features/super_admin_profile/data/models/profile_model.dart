@@ -3,7 +3,7 @@
 /// university `type`). Parsing into `SuperAdminProfile` is the
 /// repository's job.
 class ProfileModel {
-  const ProfileModel({
+  const new({
     required this.id,
     required this.email,
     required this.verified,
@@ -23,7 +23,7 @@ class ProfileModel {
 }
 
 class ProfileUniversityModel {
-  const ProfileUniversityModel({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,

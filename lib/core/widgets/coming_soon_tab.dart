@@ -8,7 +8,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// feature work behind those tabs is still pending. Each tab passes its
 /// own `titleKey` and `icon`.
 class ComingSoonTab extends StatelessWidget {
-  const ComingSoonTab({required this.titleKey, required this.icon, super.key});
+  const new({required this.titleKey, required this.icon, super.key});
 
   final String titleKey;
   final IconData icon;

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mycampus/core/widgets/primary_action_button.dart'
+    show PrimaryActionButton;
 
 /// Wraps a [Form] and centralizes the "validate then submit" sequence.
 ///
@@ -19,7 +21,7 @@ import 'package:flutter/material.dart';
 ///   Widget build(BuildContext context) => BlocProvider(
 ///     create: (_) => MyCubit(),
 ///     child: AppForm(
-///       formKey: _formKey,
+///       key: _formKey,
 ///       onSubmit: () => context.read<MyCubit>().submit(),
 ///       child: Column(children: [
 ///         ...
@@ -32,10 +34,9 @@ import 'package:flutter/material.dart';
 /// }
 /// ```
 class AppForm extends StatefulWidget {
-  const AppForm({
+  const new({
     required this.onSubmit,
     required this.child,
-    this.formKey,
     super.key,
   });
 
@@ -43,13 +44,6 @@ class AppForm extends StatefulWidget {
   final Future<void> Function() onSubmit;
 
   final Widget child;
-
-  /// Optional. Pass a [GlobalKey] if the parent needs to trigger [submit]
-  /// from a button that lives outside this widget's tree (the common case
-  /// — the submit button is below the form fields). Without it, the parent
-  /// can only submit via something inside the [child] subtree that has its
-  /// own reference to the form key.
-  final GlobalKey<AppFormState>? formKey;
 
   @override
   State<AppForm> createState() => AppFormState();
@@ -70,9 +64,6 @@ class AppFormState extends State<AppForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: widget.child,
-    );
+    return Form(key: _formKey, child: widget.child);
   }
 }

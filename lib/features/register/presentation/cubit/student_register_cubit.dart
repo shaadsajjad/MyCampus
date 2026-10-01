@@ -10,7 +10,7 @@ import 'package:mycampus/features/register/domain/repositories/register_reposito
 import 'package:mycampus/features/register/presentation/submission_status.dart';
 
 class StudentRegisterState {
-  const StudentRegisterState({
+  const new({
     this.fullName = '',
     this.email = '',
     this.phone = '',
@@ -79,7 +79,7 @@ class StudentRegisterState {
 }
 
 class StudentRegisterCubit extends Cubit<StudentRegisterState> {
-  StudentRegisterCubit({RegisterRepository? registerRepository})
+  new({RegisterRepository? registerRepository})
     : _registerRepository = registerRepository ?? DI.registerRepository,
       super(const StudentRegisterState());
 

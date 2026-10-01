@@ -3,14 +3,14 @@ import 'package:pocketbase/pocketbase.dart';
 /// DTO for a `teachers` record — the role-extension schema created
 /// alongside the user's auth record by `registerTeacher`.
 class TeacherProfileModel {
-  const TeacherProfileModel({
+  const new({
     required this.id,
     required this.teacherId,
     required this.department,
     required this.designation,
   });
 
-  factory TeacherProfileModel.fromRecord(RecordModel record) {
+  factory fromRecord(RecordModel record) {
     return TeacherProfileModel(
       id: record.id,
       teacherId: record.getStringValue('teacherId'),

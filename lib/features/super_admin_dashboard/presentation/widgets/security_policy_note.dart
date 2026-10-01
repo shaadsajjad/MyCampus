@@ -4,7 +4,7 @@ import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 
 class SecurityPolicyNote extends StatelessWidget {
-  const SecurityPolicyNote({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

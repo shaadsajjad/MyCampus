@@ -4,12 +4,7 @@ import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/features/dashboard/domain/repositories/dashboard_repository.dart';
 
 class DashboardState {
-  const DashboardState({
-    this.role,
-    this.name,
-    this.email,
-    this.isPending = false,
-  });
+  const new({this.role, this.name, this.email, this.isPending = false});
 
   /// Decides which role-specific dashboard `DashboardPage` shows.
   final UserRole? role;
@@ -19,7 +14,7 @@ class DashboardState {
 }
 
 class DashboardCubit extends Cubit<DashboardState> {
-  DashboardCubit({DashboardRepository? dashboardRepository})
+  new({DashboardRepository? dashboardRepository})
     : _dashboardRepository = dashboardRepository ?? DI.dashboardRepository,
       super(const DashboardState()) {
     emit(

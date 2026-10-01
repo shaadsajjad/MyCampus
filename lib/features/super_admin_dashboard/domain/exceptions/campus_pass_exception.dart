@@ -9,7 +9,7 @@ enum CampusPassFailure {
 }
 
 class CampusPassException implements Exception {
-  const CampusPassException(this.failure, [this.detail]);
+  const new(this.failure, [this.detail]);
 
   final CampusPassFailure failure;
 

@@ -28,7 +28,7 @@ Future<DateTime?> showMonthYearPicker(
 }
 
 class _PickerState {
-  const _PickerState({required this.year, required this.month});
+  const new({required this.year, required this.month});
 
   final int year;
   final int month;
@@ -39,7 +39,7 @@ class _PickerState {
 }
 
 class _PickerCubit extends Cubit<_PickerState> {
-  _PickerCubit({required int year, required int month})
+  new({required int year, required int month})
     : super(_PickerState(year: year, month: month));
 
   void previousYear() => emit(state.copyWith(year: state.year - 1));
@@ -48,7 +48,7 @@ class _PickerCubit extends Cubit<_PickerState> {
 }
 
 class _MonthYearPickerDialog extends StatelessWidget {
-  const _MonthYearPickerDialog({
+  const new({
     required this.initialYear,
     required this.initialMonth,
     required this.firstYear,
@@ -70,7 +70,7 @@ class _MonthYearPickerDialog extends StatelessWidget {
 }
 
 class _PickerView extends StatelessWidget {
-  const _PickerView({required this.firstYear, required this.lastYear});
+  const new({required this.firstYear, required this.lastYear});
 
   final int firstYear;
   final int lastYear;
@@ -169,7 +169,7 @@ class _PickerView extends StatelessWidget {
 }
 
 class _MonthTile extends StatelessWidget {
-  const _MonthTile({
+  const new({
     required this.month,
     required this.isSelected,
     required this.isEnabled,

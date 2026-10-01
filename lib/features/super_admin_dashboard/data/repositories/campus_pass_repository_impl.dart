@@ -9,7 +9,7 @@ import 'package:mycampus/features/super_admin_dashboard/domain/exceptions/campus
 import 'package:mycampus/features/super_admin_dashboard/domain/repositories/campus_pass_repository.dart';
 
 class CampusPassRepositoryImpl implements CampusPassRepository {
-  CampusPassRepositoryImpl({
+  new({
     this._renderer = const CampusPassImageRenderer(),
     this._exporter = const CampusPassExportDataSourceImpl(),
   });

@@ -4,7 +4,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// Shared scaffold for the login/register screens: an [AppBar] with the
 /// page title, an optional subtitle, and a scrollable, padded body.
 class AuthScaffold extends StatelessWidget {
-  const AuthScaffold({
+  const new({
     required this.title,
     required this.child,
     this.subtitle,

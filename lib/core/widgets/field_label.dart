@@ -3,7 +3,7 @@ import 'package:mycampus/core/theme/app_colors.dart';
 
 /// A form field label with an optional red "required" asterisk.
 class FieldLabel extends StatelessWidget {
-  const FieldLabel({required this.label, this.isRequired = true, super.key});
+  const new({required this.label, this.isRequired = true, super.key});
 
   final String label;
   final bool isRequired;

@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:mycampus/features/super_admin_profile/domain/entities/super_admin_profile.dart';
+import 'package:mycampus/features/super_admin_profile/domain/exceptions/profile_exception.dart'
+    show ProfileException;
 
 /// The contract the super admin's profile tab codes against;
 /// [ProfileException] is the only failure type it needs to handle.
@@ -11,6 +15,10 @@ abstract class SuperAdminProfileRepository {
   Future<SuperAdminProfile> refresh();
 
   Future<SuperAdminProfile> updateName(String name);
+
+  Future<SuperAdminProfile> updateAvatar(Uint8List bytes);
+
+  Future<SuperAdminProfile> removeAvatar();
 
   /// Emails a password-reset link to [email].
   Future<void> requestPasswordReset(String email);

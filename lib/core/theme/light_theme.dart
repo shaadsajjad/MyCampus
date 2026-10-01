@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'app_colors.dart';
-import 'app_theme.dart';
-import 'text_styles.dart';
+import 'package:mycampus/core/theme/app_colors.dart';
+import 'package:mycampus/core/theme/app_theme.dart';
+import 'package:mycampus/core/theme/text_styles.dart';
 
 class LightTheme {
-  LightTheme._();
+  new _();
 
   static ThemeData get theme {
     final colorScheme = ColorScheme.fromSeed(

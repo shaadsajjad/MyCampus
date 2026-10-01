@@ -9,7 +9,7 @@ import 'package:mycampus/core/widgets/primary_action_button.dart';
 import 'package:mycampus/features/verification/presentation/cubit/verification_cubit.dart';
 
 class VerificationPage extends StatelessWidget {
-  const VerificationPage({required this.email, super.key, this.password});
+  const new({required this.email, super.key, this.password});
 
   final String email;
   final String? password;
@@ -24,7 +24,7 @@ class VerificationPage extends StatelessWidget {
 }
 
 class VerificationView extends StatelessWidget {
-  const VerificationView({super.key, required this.email});
+  const new({required this.email, super.key});
 
   final String email;
 
@@ -96,7 +96,6 @@ class VerificationView extends StatelessWidget {
                   label: 'verification.resendEmail'.tr(),
                   onPressed: () =>
                       context.read<VerificationCubit>().resendEmail(),
-                  isLoading: false,
                 ),
                 const SizedBox(height: AppTheme.spaceMd),
                 TextButton(

@@ -9,6 +9,8 @@ import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/theme/theme_cubit.dart';
+import 'package:mycampus/core/widgets/avatar_editor.dart';
+import 'package:mycampus/core/widgets/language_picker.dart';
 import 'package:mycampus/core/widgets/profile_header_card.dart';
 import 'package:mycampus/core/widgets/profile_widgets.dart';
 import 'package:mycampus/features/super_admin_profile/domain/entities/super_admin_profile.dart';
@@ -20,7 +22,7 @@ import 'package:mycampus/features/super_admin_profile/presentation/widgets/edit_
 /// `SuperAdminDashboardPage`, so it provides its own Cubit like a page but
 /// has no `Scaffold` of its own.
 class SuperAdminProfilePage extends StatelessWidget {
-  const SuperAdminProfilePage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class SuperAdminProfilePage extends StatelessWidget {
 }
 
 class _SuperAdminProfileView extends StatelessWidget {
-  const _SuperAdminProfileView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +46,14 @@ class _SuperAdminProfileView extends StatelessWidget {
         switch (state.outcome) {
           case ProfileOutcome.nameSaved:
             _showSnack(context, 'profile.nameSaved'.tr());
+          case ProfileOutcome.avatarSaved:
+            _showSnack(context, 'profile.nameSaved'.tr());
+          case ProfileOutcome.avatarSaveFailed:
+            _showSnack(
+              context,
+              state.errorMessage ?? 'common.error'.tr(),
+              isError: true,
+            );
           case ProfileOutcome.resetEmailSent:
             _showSnack(
               context,
@@ -86,6 +96,13 @@ class _SuperAdminProfileView extends StatelessWidget {
                 roleLabelKey: 'roles.superAdmin',
                 verified: profile.verified,
                 onEdit: () => showEditNameSheet(context),
+                isSavingAvatar: state.isSavingAvatar,
+                onEditAvatar: () => pickAndApplyAvatar(
+                  context,
+                  hasAvatar: profile.avatarUrl != null,
+                  onPicked: cubit.updateAvatar,
+                  onRemove: cubit.removeAvatar,
+                ),
               ),
               const SizedBox(height: AppTheme.spaceLg),
               if (profile.university != null) ...[
@@ -157,7 +174,7 @@ class _SuperAdminProfileView extends StatelessWidget {
 }
 
 class _InstitutionSection extends StatelessWidget {
-  const _InstitutionSection({required this.university});
+  const new({required this.university});
 
   final ProfileUniversity university;
 
@@ -241,7 +258,7 @@ class _InstitutionSection extends StatelessWidget {
 }
 
 class _AccountSection extends StatelessWidget {
-  const _AccountSection({required this.profile});
+  const new({required this.profile});
 
   final SuperAdminProfile profile;
 
@@ -275,7 +292,7 @@ class _AccountSection extends StatelessWidget {
 }
 
 class _PreferencesSection extends StatelessWidget {
-  const _PreferencesSection();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -296,6 +313,7 @@ class _PreferencesSection extends StatelessWidget {
                 ),
               ),
             ),
+            const LanguagePreferenceRow(),
           ],
         );
       },
@@ -304,7 +322,7 @@ class _PreferencesSection extends StatelessWidget {
 }
 
 class _ErrorState extends StatelessWidget {
-  const _ErrorState({required this.message, required this.onRetry});
+  const new({required this.message, required this.onRetry});
 
   final String? message;
   final VoidCallback onRetry;

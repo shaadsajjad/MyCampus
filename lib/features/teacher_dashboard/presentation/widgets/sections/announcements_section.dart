@@ -8,7 +8,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// many of the section have already read it. Mocked until the notices
 /// feature ships.
 class AnnouncementsSection extends StatelessWidget {
-  const AnnouncementsSection({
+  const new({
     required this.onBroadcastTap,
     required this.onEditTap,
     required this.onResendTap,
@@ -47,11 +47,7 @@ class AnnouncementsSection extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: 2),
-                  const Icon(
-                    Icons.add,
-                    color: AppColors.secondary,
-                    size: 16,
-                  ),
+                  const Icon(Icons.add, color: AppColors.secondary, size: 16),
                 ],
               ),
             ),
@@ -90,9 +86,8 @@ class AnnouncementsSection extends StatelessWidget {
                   ),
                   Text(
                     'Yesterday, 04:15 PM',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.onSurfaceVariant,
-                    ),
+                    style: Theme.of(context).textTheme.labelSmall
+                        ?.copyWith(color: AppColors.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -112,9 +107,8 @@ class AnnouncementsSection extends StatelessWidget {
                 'Given server maintenance on the cluster node, the '
                 'synchronization deadline for Docker swarm reports has been '
                 'moved to 11:59 PM Friday.',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.onSurfaceVariant,
-                ),
+                style: Theme.of(context).textTheme.bodySmall
+                    ?.copyWith(color: AppColors.onSurfaceVariant),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -169,11 +163,11 @@ class AnnouncementsSection extends StatelessWidget {
                     const SizedBox(height: 6),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(AppTheme.radiusFull),
-                      child: LinearProgressIndicator(
+                      child: const LinearProgressIndicator(
                         value: 58 / 64,
                         minHeight: 6,
                         backgroundColor: AppColors.surfaceContainerHighest,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
+                        valueColor: AlwaysStoppedAnimation<Color>(
                           AppColors.secondary,
                         ),
                       ),
@@ -195,9 +189,7 @@ class AnnouncementsSection extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: AppColors.surfaceContainer,
-                        borderRadius: BorderRadius.circular(
-                          AppTheme.radiusMd,
-                        ),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -231,9 +223,7 @@ class AnnouncementsSection extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: AppColors.surfaceVariant,
-                        borderRadius: BorderRadius.circular(
-                          AppTheme.radiusMd,
-                        ),
+                        borderRadius: BorderRadius.circular(AppTheme.radiusMd),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -270,7 +260,7 @@ class AnnouncementsSection extends StatelessWidget {
 /// shows assigned lab + keycard clearance state. Used as a footer in the
 /// teacher dashboard.
 class LabStatusFooter extends StatelessWidget {
-  const LabStatusFooter({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -290,11 +280,7 @@ class LabStatusFooter extends StatelessWidget {
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
-            child: const Icon(
-              Icons.memory,
-              size: 18,
-              color: AppColors.primary,
-            ),
+            child: const Icon(Icons.memory, size: 18, color: AppColors.primary),
           ),
           const SizedBox(width: AppTheme.spaceSm + 2),
           Expanded(
@@ -311,9 +297,8 @@ class LabStatusFooter extends StatelessWidget {
                 ),
                 Text(
                   'Assigned Keycard clearance: Enabled',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.onSurfaceVariant,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall
+                      ?.copyWith(color: AppColors.onSurfaceVariant),
                 ),
               ],
             ),

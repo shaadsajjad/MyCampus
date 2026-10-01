@@ -7,7 +7,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// Campus Services. Each tile has its own accent + small badge. Mirrors
 /// the "Academic Tools" section of the Stitch mock.
 class AcademicToolsBento extends StatelessWidget {
-  const AcademicToolsBento({
+  const new({
     required this.onRoutineTap,
     required this.onCheckInTap,
     required this.onResultsTap,
@@ -79,7 +79,7 @@ class AcademicToolsBento extends StatelessWidget {
               icon: Icons.stars,
               iconBg: AppColors.surfaceContainerHigh,
               iconColor: AppColors.onSurface,
-              iconFill: 1.0,
+              iconFill: 1,
               titlePrefix: TextSpan(
                 text: '3.86 ',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -89,9 +89,8 @@ class AcademicToolsBento extends StatelessWidget {
               ),
               titleSuffix: TextSpan(
                 text: 'student.cgpaLabel'.tr(),
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.onSurfaceVariant,
-                ),
+                style: Theme.of(context).textTheme.labelSmall
+                    ?.copyWith(color: AppColors.onSurfaceVariant),
               ),
               subtitle: 'student.deanList'.tr(),
               badgeText: 'student.topPercent'.tr(namedArgs: {'pct': '3'}),
@@ -118,16 +117,16 @@ class AcademicToolsBento extends StatelessWidget {
 }
 
 class _BentoTile extends StatelessWidget {
-  const _BentoTile({
+  const new({
     required this.icon,
     required this.iconBg,
     required this.iconColor,
-    this.title,
     required this.subtitle,
     required this.badgeText,
     required this.badgeColor,
     required this.badgeTextColor,
     required this.onTap,
+    this.title,
     this.iconFill,
     this.titlePrefix,
     this.titleSuffix,
@@ -189,9 +188,7 @@ class _BentoTile extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: badgeColor,
-                      borderRadius: BorderRadius.circular(
-                        AppTheme.radiusFull,
-                      ),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusFull),
                     ),
                     child: Text(
                       badgeText,
@@ -219,19 +216,13 @@ class _BentoTile extends StatelessWidget {
                     ),
                   if (titlePrefix != null || titleSuffix != null)
                     RichText(
-                      text: TextSpan(
-                        children: [
-                          if (titlePrefix != null) titlePrefix!,
-                          if (titleSuffix != null) titleSuffix!,
-                        ],
-                      ),
+                      text: TextSpan(children: [?titlePrefix, ?titleSuffix]),
                     ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.onSurfaceVariant,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall
+                        ?.copyWith(color: AppColors.onSurfaceVariant),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

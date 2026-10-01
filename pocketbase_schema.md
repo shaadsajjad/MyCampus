@@ -101,6 +101,32 @@ would wrongly stop two different campuses from each teaching `CSE-101`.
 and rejects a duplicate code itself. If you ever need this at the database
 level, use a compound unique on (`university`, `code`).
 
+## 7. `routine` (new collection, type: Base)
+
+The weekly timetable a super admin builds out of the `courses` catalogue —
+one record is "this course meets on this day, in this time window". Read by
+every signed-in member of the university; written only by their super admin.
+
+| Field | Type | Options |
+|---|---|---|
+| `course` | Relation → `courses` | required, single |
+| `university` | Relation → `universities` | required, single — direct, not joined through `course`, so the rules below can filter a plain top-level field |
+| `dayOfWeek` | Select (single) | `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday` — must match `DayOfWeek.name` exactly |
+| `startTime` | Plain text | required — 24h `HH:mm`, e.g. `09:30`. No native time field exists; a zero-padded string sorts correctly |
+| `endTime` | Plain text | required — same format |
+| `room` | Plain text | optional |
+| `section` | Plain text | optional |
+
+**API rules**: same shape as `courses` — `listRule`/`viewRule` are
+`university = @request.auth.university`, `createRule`/`updateRule`/
+`deleteRule` require `@request.auth.role = 'superAdmin'` *and* `university`
+matching the requester.
+
+**Day grouping happens client-side, not via PocketBase's `sort`.**
+PocketBase sorts a Select field's values alphabetically, which isn't
+calendar order (`friday` would sort before `monday`) — see
+`RoutineRepositoryImpl.getWeeklyRoutine`.
+
 ##
 
 All select option values must match exactly — they're `UserRole.name` /

@@ -2,7 +2,7 @@ import 'package:mycampus/features/super_admin_dashboard/domain/entities/universi
 
 /// The app-level view of a PocketBase `universities` record.
 class University {
-  const University({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,

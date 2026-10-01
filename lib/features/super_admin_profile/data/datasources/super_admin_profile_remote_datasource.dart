@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:http/http.dart' as http;
 import 'package:mycampus/features/super_admin_profile/data/models/profile_model.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -11,6 +14,10 @@ abstract class SuperAdminProfileRemoteDataSource {
 
   Future<ProfileModel> updateName(String userId, String name);
 
+  Future<ProfileModel> updateAvatar(String userId, Uint8List bytes);
+
+  Future<ProfileModel> removeAvatar(String userId);
+
   Future<void> requestPasswordReset(String email);
 
   Future<void> logout();
@@ -18,7 +25,7 @@ abstract class SuperAdminProfileRemoteDataSource {
 
 class SuperAdminProfileRemoteDataSourceImpl
     implements SuperAdminProfileRemoteDataSource {
-  SuperAdminProfileRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 
@@ -43,6 +50,32 @@ class SuperAdminProfileRemoteDataSourceImpl
     final record = await _pb
         .collection('users')
         .update(userId, body: {'name': name}, expand: _expand);
+    return _toModel(record);
+  }
+
+  @override
+  Future<ProfileModel> updateAvatar(String userId, Uint8List bytes) async {
+    final record = await _pb
+        .collection('users')
+        .update(
+          userId,
+          files: [
+            http.MultipartFile.fromBytes(
+              'avatar',
+              bytes,
+              filename: 'avatar.jpg',
+            ),
+          ],
+          expand: _expand,
+        );
+    return _toModel(record);
+  }
+
+  @override
+  Future<ProfileModel> removeAvatar(String userId) async {
+    final record = await _pb
+        .collection('users')
+        .update(userId, body: {'avatar': null}, expand: _expand);
     return _toModel(record);
   }
 

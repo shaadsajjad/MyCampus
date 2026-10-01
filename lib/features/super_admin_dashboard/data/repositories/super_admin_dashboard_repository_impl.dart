@@ -11,9 +11,8 @@ import 'package:pocketbase/pocketbase.dart';
 
 class SuperAdminDashboardRepositoryImpl
     implements SuperAdminDashboardRepository {
-  SuperAdminDashboardRepositoryImpl({
-    required SuperAdminDashboardRemoteDataSource remoteDataSource,
-  }) : _remote = remoteDataSource;
+  new({required SuperAdminDashboardRemoteDataSource remoteDataSource})
+    : _remote = remoteDataSource;
 
   final SuperAdminDashboardRemoteDataSource _remote;
 

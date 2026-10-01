@@ -14,7 +14,7 @@ import 'package:bloc/bloc.dart';
 /// falls outside the nav bar instead of emitting an index the `IndexedStack`
 /// has no child for.
 class DashboardShellCubit extends Cubit<int> {
-  DashboardShellCubit({required int initialIndex, required int tabCount})
+  new({required int initialIndex, required int tabCount})
     : assert(initialIndex >= 0 && initialIndex < tabCount),
       _tabCount = tabCount,
       super(initialIndex);

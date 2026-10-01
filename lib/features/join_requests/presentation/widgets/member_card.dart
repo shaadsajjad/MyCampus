@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/features/join_requests/domain/entities/member_request.dart';
+import 'package:mycampus/features/register/domain/entities/teacher_designation.dart';
 
 class MemberCard extends StatelessWidget {
-  const MemberCard({
+  const new({
     required this.member,
     required this.isSelected,
     required this.isBusy,
@@ -102,13 +103,16 @@ class MemberCard extends StatelessWidget {
                   child: Text(
                     [
                       member.department,
-                      member.subInfo,
+                      isStudent
+                          ? member.subInfo
+                          : _designationLabel(member.subInfo),
                     ].whereType<String>().join(' • '),
                     style: textTheme.labelSmall,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                const SizedBox(width: AppTheme.spaceXs),
                 Text(
                   _relativeTime(member.requestedAt),
                   style: textTheme.labelSmall?.copyWith(
@@ -168,6 +172,14 @@ class MemberCard extends StatelessWidget {
     );
   }
 
+  String? _designationLabel(String? raw) {
+    if (raw == null) return null;
+    for (final designation in TeacherDesignation.values) {
+      if (designation.name == raw) return designation.labelKey.tr();
+    }
+    return raw;
+  }
+
   String _relativeTime(DateTime time) {
     final diff = DateTime.now().difference(time);
     if (diff.inMinutes < 1) return 'admin.justNow'.tr();
@@ -182,7 +194,7 @@ class MemberCard extends StatelessWidget {
 }
 
 class _RoleBadge extends StatelessWidget {
-  const _RoleBadge({required this.role});
+  const new({required this.role});
 
   final MemberRole role;
 
@@ -220,7 +232,7 @@ class _RoleBadge extends StatelessWidget {
 }
 
 class _StatusPill extends StatelessWidget {
-  const _StatusPill({required this.status});
+  const new({required this.status});
 
   final MemberStatus status;
 

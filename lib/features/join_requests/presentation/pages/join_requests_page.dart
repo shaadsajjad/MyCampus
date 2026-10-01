@@ -13,7 +13,7 @@ import 'package:mycampus/features/join_requests/presentation/widgets/member_card
 /// `SuperAdminDashboardPage`'s bottom nav), not a standalone route, so it
 /// provides its own [JoinRequestsCubit] the same way a page normally would.
 class JoinRequestsPage extends StatelessWidget {
-  const JoinRequestsPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class JoinRequestsPage extends StatelessWidget {
 }
 
 class _JoinRequestsView extends StatelessWidget {
-  const _JoinRequestsView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class _JoinRequestsView extends StatelessWidget {
 }
 
 class _Header extends StatelessWidget {
-  const _Header({required this.pendingCount});
+  const new({required this.pendingCount});
 
   final int pendingCount;
 
@@ -139,7 +139,7 @@ class _Header extends StatelessWidget {
 }
 
 class _SearchField extends StatelessWidget {
-  const _SearchField({required this.onChanged});
+  const new({required this.onChanged});
 
   final ValueChanged<String> onChanged;
 
@@ -162,7 +162,7 @@ class _SearchField extends StatelessWidget {
 }
 
 class _FilterPills extends StatelessWidget {
-  const _FilterPills({required this.state, required this.onSelect});
+  const new({required this.state, required this.onSelect});
 
   final JoinRequestsState state;
   final ValueChanged<JoinRequestsFilter> onSelect;
@@ -205,7 +205,7 @@ class _FilterPills extends StatelessWidget {
 }
 
 class _Pill extends StatelessWidget {
-  const _Pill({
+  const new({
     required this.label,
     required this.count,
     required this.isActive,
@@ -272,7 +272,7 @@ class _Pill extends StatelessWidget {
 }
 
 class _BatchActionBar extends StatelessWidget {
-  const _BatchActionBar({required this.state, required this.cubit});
+  const new({required this.state, required this.cubit});
 
   final JoinRequestsState state;
   final JoinRequestsCubit cubit;
@@ -327,7 +327,7 @@ class _BatchActionBar extends StatelessWidget {
 }
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState({required this.filter});
+  const new({required this.filter});
 
   final JoinRequestsFilter filter;
 

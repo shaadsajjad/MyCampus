@@ -20,7 +20,7 @@ abstract class SuperAdminDashboardRemoteDataSource {
 
 class SuperAdminDashboardRemoteDataSourceImpl
     implements SuperAdminDashboardRemoteDataSource {
-  SuperAdminDashboardRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 

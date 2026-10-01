@@ -13,7 +13,7 @@ abstract class MemberDirectoryRemoteDataSource {
 
 class MemberDirectoryRemoteDataSourceImpl
     implements MemberDirectoryRemoteDataSource {
-  MemberDirectoryRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 

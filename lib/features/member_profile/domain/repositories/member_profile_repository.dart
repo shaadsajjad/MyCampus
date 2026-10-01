@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:mycampus/features/member_profile/domain/entities/member_profile.dart';
+import 'package:mycampus/features/member_profile/domain/exceptions/member_profile_exception.dart'
+    show MemberProfileException;
 
 /// The contract the student/faculty profile screen codes against.
 /// [MemberProfileException] is the only failure type it needs to know
@@ -20,6 +24,10 @@ abstract class MemberProfileRepository {
   Future<MemberProfile> refresh();
 
   Future<MemberProfile> updateName(String name);
+
+  Future<MemberProfile> updateAvatar(Uint8List bytes);
+
+  Future<MemberProfile> removeAvatar();
 
   Future<void> requestPasswordReset(String email);
 

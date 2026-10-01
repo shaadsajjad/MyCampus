@@ -9,7 +9,7 @@ import 'package:mycampus/features/courses/domain/repositories/courses_repository
 import 'package:pocketbase/pocketbase.dart';
 
 class CoursesRepositoryImpl implements CoursesRepository {
-  CoursesRepositoryImpl({required CoursesRemoteDataSource remoteDataSource})
+  new({required CoursesRemoteDataSource remoteDataSource})
     : _remote = remoteDataSource;
 
   final CoursesRemoteDataSource _remote;
@@ -97,9 +97,7 @@ class CoursesRepositoryImpl implements CoursesRepository {
       // generic catch-all below.
       rethrow;
     } catch (e) {
-      throw CoursesException(
-        'Something went wrong. Please try again. ($e)',
-      );
+      throw CoursesException('Something went wrong. Please try again. ($e)');
     }
   }
 }

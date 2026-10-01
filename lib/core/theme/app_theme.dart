@@ -7,7 +7,7 @@ export 'light_theme.dart';
 
 /// App theme configuration based on the MyCampus design system.
 class AppTheme {
-  AppTheme._();
+  new _();
 
   // ── Border Radii ──────────────────────────────────────────────
   static const double radiusSm = 4;

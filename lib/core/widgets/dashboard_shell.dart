@@ -7,7 +7,7 @@ import 'package:mycampus/core/widgets/dashboard_shell_cubit.dart';
 /// One tab in the dashboard bottom-nav shell — an icon plus a label that
 /// will be run through `easy_localization` at build time.
 class DashboardNavItem {
-  const DashboardNavItem({required this.icon, required this.labelKey});
+  const new({required this.icon, required this.labelKey});
 
   final IconData icon;
   final String labelKey;
@@ -20,7 +20,7 @@ class DashboardNavItem {
 /// of the same nav shell, ready to be filled in by upcoming feature
 /// work.
 class DashboardShell extends StatelessWidget {
-  const DashboardShell({
+  const new({
     required this.tabs,
     required this.initialIndex,
     required this.navItems,
@@ -47,7 +47,7 @@ class DashboardShell extends StatelessWidget {
 }
 
 class _ShellView extends StatelessWidget {
-  const _ShellView({required this.tabs, required this.navItems});
+  const new({required this.tabs, required this.navItems});
 
   final List<Widget> tabs;
   final List<DashboardNavItem> navItems;
@@ -74,7 +74,7 @@ class _ShellView extends StatelessWidget {
 }
 
 class _DashboardBottomNav extends StatelessWidget {
-  const _DashboardBottomNav({
+  const new({
     required this.items,
     required this.currentIndex,
     required this.onTap,
@@ -121,11 +121,7 @@ class _DashboardBottomNav extends StatelessWidget {
 }
 
 class _NavButton extends StatelessWidget {
-  const _NavButton({
-    required this.item,
-    required this.isActive,
-    required this.onTap,
-  });
+  const new({required this.item, required this.isActive, required this.onTap});
 
   final DashboardNavItem item;
   final bool isActive;
@@ -146,9 +142,7 @@ class _NavButton extends StatelessWidget {
               width: 48,
               height: 26,
               decoration: BoxDecoration(
-                color: isActive
-                    ? AppColors.primaryFixed
-                    : Colors.transparent,
+                color: isActive ? AppColors.primaryFixed : Colors.transparent,
                 borderRadius: BorderRadius.circular(999),
               ),
               alignment: Alignment.center,

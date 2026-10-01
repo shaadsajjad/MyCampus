@@ -7,6 +7,7 @@ import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/utils/validators.dart';
+import 'package:mycampus/core/widgets/app_dropdown_field.dart';
 import 'package:mycampus/core/widgets/app_image_picker_field.dart';
 import 'package:mycampus/core/widgets/app_password_field.dart';
 import 'package:mycampus/core/widgets/app_text_field.dart';
@@ -17,12 +18,11 @@ import 'package:mycampus/core/widgets/role_context_chip.dart';
 import 'package:mycampus/features/register/domain/entities/university_type.dart';
 import 'package:mycampus/features/register/presentation/cubit/super_admin_register_cubit.dart';
 import 'package:mycampus/features/register/presentation/submission_status.dart';
-import 'package:mycampus/features/register/presentation/widgets/app_dropdown_field.dart';
 import 'package:mycampus/features/register/presentation/widgets/app_month_year_field.dart';
 import 'package:mycampus/features/register/presentation/widgets/form_section_card.dart';
 
 class SuperAdminRegisterPage extends StatelessWidget {
-  const SuperAdminRegisterPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class SuperAdminRegisterPage extends StatelessWidget {
 }
 
 class SuperAdminRegisterView extends StatelessWidget {
-  const SuperAdminRegisterView({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

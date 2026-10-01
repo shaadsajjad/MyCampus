@@ -8,12 +8,14 @@ import 'package:mycampus/features/courses/presentation/cubit/courses_cubit.dart'
 import 'package:mycampus/features/courses/presentation/widgets/compose_course_sheet.dart';
 import 'package:mycampus/features/courses/presentation/widgets/course_card.dart';
 
-/// The super admin's "Courses" tab — the course catalogue their university
-/// teaches, which a routine gets built out of later. Embedded as a tab body
-/// (via `SuperAdminDashboardPage`'s bottom nav), not a standalone route, so
-/// it provides its own [CoursesCubit] the same way a page normally would.
+/// The super admin's course catalogue, reached by **pushing**
+/// `AppRoute.courses` from the Home tab's "Academic Registry" card (see
+/// `AcademicRegistryCard`) — unlike `CoursesPage`'s siblings (Directory,
+/// Notices) it's a standalone route, not a tab body, so it owns its own
+/// [AppBar] (back button + title) rather than relying on
+/// `SuperAdminDashboardPage`'s.
 class CoursesPage extends StatelessWidget {
-  const CoursesPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +27,7 @@ class CoursesPage extends StatelessWidget {
 }
 
 class _CoursesView extends StatelessWidget {
-  const _CoursesView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,7 @@ class _CoursesView extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.surface,
+          appBar: AppBar(title: Text('courses.title'.tr())),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () async {
               final created = await ComposeCourseSheet.show(context);
@@ -68,7 +71,7 @@ class _CoursesView extends StatelessWidget {
                 80,
               ),
               children: [
-                _Header(
+                _Summary(
                   courseCount: state.courses.length,
                   totalCredits: state.totalCredits,
                 ),
@@ -136,8 +139,10 @@ class _CoursesView extends StatelessWidget {
   }
 }
 
-class _Header extends StatelessWidget {
-  const _Header({required this.courseCount, required this.totalCredits});
+/// The AppBar already carries the "Courses" title — this just adds the
+/// one-line description and the "N courses • M credits" stat underneath it.
+class _Summary extends StatelessWidget {
+  const new({required this.courseCount, required this.totalCredits});
 
   final int courseCount;
   final int totalCredits;
@@ -145,42 +150,16 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'courses.title'.tr(),
-                style: textTheme.headlineSmall?.copyWith(
-                  color: AppColors.primary,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text('courses.desc'.tr(), style: textTheme.bodySmall),
-              const SizedBox(height: AppTheme.spaceXs),
-              Text(
-                'courses.summary'.tr(
-                  namedArgs: {
-                    'courses': '$courseCount',
-                    'credits': '$totalCredits',
-                  },
-                ),
-                style: textTheme.labelSmall,
-              ),
-            ],
+        Text('courses.desc'.tr(), style: textTheme.bodySmall),
+        const SizedBox(height: AppTheme.spaceXs),
+        Text(
+          'courses.summary'.tr(
+            namedArgs: {'courses': '$courseCount', 'credits': '$totalCredits'},
           ),
-        ),
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHigh,
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(Icons.school, color: AppColors.primary),
+          style: textTheme.labelSmall?.copyWith(color: AppColors.primary),
         ),
       ],
     );
@@ -188,7 +167,7 @@ class _Header extends StatelessWidget {
 }
 
 class _SearchField extends StatelessWidget {
-  const _SearchField({required this.onChanged});
+  const new({required this.onChanged});
 
   final ValueChanged<String> onChanged;
 
@@ -211,7 +190,7 @@ class _SearchField extends StatelessWidget {
 }
 
 class _ErrorState extends StatelessWidget {
-  const _ErrorState({required this.message});
+  const new({required this.message});
 
   final String message;
 
@@ -228,7 +207,11 @@ class _ErrorState extends StatelessWidget {
             color: Theme.of(context).colorScheme.outline,
           ),
           const SizedBox(height: AppTheme.spaceSm),
-          Text(message, style: textTheme.bodyMedium, textAlign: TextAlign.center),
+          Text(
+            message,
+            style: textTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
         ],
       ),
     );
@@ -236,7 +219,7 @@ class _ErrorState extends StatelessWidget {
 }
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState({required this.hasQuery});
+  const new({required this.hasQuery});
 
   final bool hasQuery;
 

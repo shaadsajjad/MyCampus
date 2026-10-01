@@ -8,7 +8,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// to download the hall ticket. Mirrors the bulletins block of the
 /// Stitch mock; values are static until the notices feature ships.
 class BulletinsSection extends StatelessWidget {
-  const BulletinsSection({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,6 @@ class BulletinsSection extends StatelessWidget {
           categoryKey: 'Library Admin',
           categoryColor: AppColors.surfaceContainerHigh,
           categoryTextColor: AppColors.primary,
-          categoryUppercase: true,
           timeText: 'Yesterday',
           title: '24/7 Silent Study Wings Open for Finals Preparation',
           body:
@@ -66,17 +65,16 @@ class BulletinsSection extends StatelessWidget {
 }
 
 class _BulletinCard extends StatelessWidget {
-  const _BulletinCard({
+  const new({
     required this.categoryKey,
     required this.categoryColor,
     required this.categoryTextColor,
     required this.timeText,
     required this.title,
     required this.body,
-    this.categoryUppercase = true,
     this.primaryActionIcon,
     this.primaryActionLabelKey,
-  });
+  }) : categoryUppercase = true;
 
   final String categoryKey;
   final Color categoryColor;
@@ -124,9 +122,8 @@ class _BulletinCard extends StatelessWidget {
               ),
               Text(
                 timeText,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.onSurfaceVariant,
-                ),
+                style: Theme.of(context).textTheme.bodySmall
+                    ?.copyWith(color: AppColors.onSurfaceVariant),
               ),
             ],
           ),
@@ -144,9 +141,8 @@ class _BulletinCard extends StatelessWidget {
           const SizedBox(height: AppTheme.spaceXs),
           Text(
             body,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: AppColors.onSurfaceVariant),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -165,11 +161,10 @@ class _BulletinCard extends StatelessWidget {
                     const SizedBox(width: 4),
                     Text(
                       primaryActionLabelKey!.tr(),
-                      style: Theme.of(context).textTheme.labelMedium
-                          ?.copyWith(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: AppColors.secondary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),

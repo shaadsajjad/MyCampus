@@ -18,7 +18,7 @@ enum DirectoryRole { student, faculty }
 /// `students`/`teachers` profile gives the identity fields those two
 /// collections own; everything else comes off `users`.
 class DirectoryMember {
-  const DirectoryMember({
+  const new({
     required this.id,
     required this.name,
     required this.email,

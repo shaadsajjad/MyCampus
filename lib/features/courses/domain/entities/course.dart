@@ -6,7 +6,7 @@
 /// Nothing here assigns a course to anyone yet — a course is just "this
 /// campus teaches CSE-101, worth 4 credits, 3 hours a week".
 class Course {
-  const Course({
+  const new({
     required this.id,
     required this.code,
     required this.title,

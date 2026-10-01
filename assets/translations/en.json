@@ -45,7 +45,6 @@
     "home": "Home",
     "routine": "Routine",
     "notices": "Notices",
-    "profile": "Profile",
     "approvedAndVerified": "Approved & Verified",
     "approvedFaculty": "Approved Faculty"
   },
@@ -86,7 +85,8 @@
     "emailNotVerifiedTitle": "Email Not Verified",
     "emailNotVerifiedDesc": "Please verify your email address before signing in.",
     "resendVerification": "Resend Verification",
-    "goToVerification": "Go to Verification"
+    "goToVerification": "Go to Verification",
+    "passwordResetSent": "Password reset link sent to {email}"
   },
   "register": {
     "registerTitle": "Create Account",
@@ -267,6 +267,9 @@
     "reviewJoinRequests": "Review Join Requests",
     "securityPolicyTitle": "Campus Security & Rotation Policy",
     "securityPolicyDesc": "This master QR is bound to your university's gateways. Regenerating it invalidates the previous code.",
+    "academicRegistry": "Academic Registry",
+    "manageCoursesDesc": "Catalogue, credits & contact hours",
+    "manageRoutineDesc": "Build the weekly timetable",
     "statsUnavailable": "—",
     "navHome": "Home",
     "navRequests": "Requests",
@@ -310,6 +313,8 @@
     "preferences": "Preferences",
     "darkMode": "Dark mode",
     "darkModeDesc": "Appearance",
+    "language": "Language",
+    "languageDesc": "App language",
     "security": "Security",
     "changePassword": "Change password",
     "changePasswordDesc": "Get a reset link by email",
@@ -321,6 +326,8 @@
   },
   "notices": {
     "newNotice": "New Notice",
+    "desc": "Announcements for your university.",
+    "summary": "{count} notices",
     "title": "Title",
     "titleHint": "e.g. Midterm exam schedule released",
     "body": "Message",
@@ -363,6 +370,34 @@
     "deleteBody": "{code} — {title} will be removed from your catalogue. Any routine already using it will lose that slot.",
     "navCourses": "Courses"
   },
+  "routine": {
+    "title": "Routine",
+    "desc": "The weekly timetable built from your course catalogue.",
+    "addSlot": "Add Slot",
+    "newSlot": "New Routine Slot",
+    "newSlotDesc": "Add a class period to the weekly timetable.",
+    "noCoursesYet": "Add a course to your catalogue first — a routine slot needs one to point at.",
+    "course": "Course",
+    "day": "Day",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "room": "Room",
+    "section": "Section",
+    "saveSlot": "Save Slot",
+    "endBeforeStart": "End time must be after start time.",
+    "noSlots": "No slots yet. Add your first one to start building the timetable.",
+    "deleteTitle": "Delete slot?",
+    "deleteBody": "{code} — {title} will be removed from the weekly timetable.",
+    "loadFailed": "Couldn't load the routine",
+    "myRoutineEmpty": "No routine published yet. Check back once your admin builds the timetable.",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday",
+    "sunday": "Sunday"
+  },
   "directory": {
     "title": "Member Directory",
     "desc": "Everyone approved at your university.",
@@ -370,8 +405,7 @@
     "filterAll": "All",
     "noResults": "No members match your search.",
     "noMembers": "No approved members yet. Students and faculty appear here once you approve their join request.",
-    "navDirectory": "Directory",
-    "manageCourses": "Manage Courses"
+    "navDirectory": "Directory"
   },
   "joinUniversity": {
     "title": "Join Your Campus",

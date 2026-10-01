@@ -2,7 +2,7 @@
 /// human-readable message by the time it reaches the Cubit, so it can be
 /// shown directly.
 class RegisterException implements Exception {
-  const RegisterException(this.message);
+  const new(this.message);
 
   final String message;
 

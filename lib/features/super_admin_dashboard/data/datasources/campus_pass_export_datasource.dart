@@ -21,7 +21,7 @@ abstract class CampusPassExportDataSource {
 }
 
 class CampusPassExportDataSourceImpl implements CampusPassExportDataSource {
-  const CampusPassExportDataSourceImpl();
+  const new();
 
   @override
   Future<void> saveImage(Uint8List png, {required String name}) async {
