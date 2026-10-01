@@ -9,6 +9,7 @@ import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/theme/theme_cubit.dart';
+import 'package:mycampus/core/widgets/language_picker.dart';
 import 'package:mycampus/core/widgets/profile_header_card.dart';
 import 'package:mycampus/core/widgets/profile_widgets.dart';
 import 'package:mycampus/features/super_admin_profile/domain/entities/super_admin_profile.dart';
@@ -296,6 +297,7 @@ class _PreferencesSection extends StatelessWidget {
                 ),
               ),
             ),
+            const LanguagePreferenceRow(),
           ],
         );
       },

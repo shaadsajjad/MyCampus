@@ -8,6 +8,7 @@ import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/theme/theme_cubit.dart';
 import 'package:mycampus/core/widgets/edit_name_sheet_body.dart';
+import 'package:mycampus/core/widgets/language_picker.dart';
 import 'package:mycampus/core/widgets/profile_header_card.dart';
 import 'package:mycampus/core/widgets/profile_widgets.dart';
 import 'package:mycampus/features/member_profile/domain/entities/member_profile.dart';
@@ -411,6 +412,7 @@ class _PreferencesSection extends StatelessWidget {
                 onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
               ),
             ),
+            const LanguagePreferenceRow(),
           ],
         );
       },

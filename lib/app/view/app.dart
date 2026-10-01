@@ -11,7 +11,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return EasyLocalization(
-      supportedLocales: const [Locale('en')],
+      supportedLocales: const [Locale('en'), Locale('bn')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
       child: BlocProvider(

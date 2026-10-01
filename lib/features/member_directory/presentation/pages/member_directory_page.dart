@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
+import 'package:mycampus/core/widgets/section_header.dart';
 import 'package:mycampus/features/member_directory/presentation/cubit/member_directory_cubit.dart';
 import 'package:mycampus/features/member_directory/presentation/widgets/directory_member_card.dart';
 
@@ -43,7 +44,21 @@ class _MemberDirectoryView extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(AppTheme.spaceMd),
             children: [
-              const _Header(),
+              SectionHeader(
+                icon: Icons.groups,
+                title: 'directory.title'.tr(),
+                description: 'directory.desc'.tr(),
+                // Courses live one level down rather than as a 6th
+                // bottom-nav tab (Material's own guidance stops at 5, and
+                // the bar was already full) — both screens are the same
+                // "campus registry" concern, so a link between them reads
+                // naturally.
+                trailing: OutlinedButton.icon(
+                  onPressed: () => context.push(AppRoute.courses),
+                  icon: const Icon(Icons.school, size: 18),
+                  label: Text('directory.manageCourses'.tr()),
+                ),
+              ),
               const SizedBox(height: AppTheme.spaceMd),
               _SearchField(onChanged: cubit.search),
               const SizedBox(height: AppTheme.spaceSm),
@@ -74,54 +89,6 @@ class _MemberDirectoryView extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _Header extends StatelessWidget {
-  const _Header();
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'directory.title'.tr(),
-                style: textTheme.headlineSmall?.copyWith(
-                  color: AppColors.primary,
-                ),
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text('directory.desc'.tr(), style: textTheme.bodySmall),
-              const SizedBox(height: AppTheme.spaceSm),
-              // Courses live one level down rather than as a 6th bottom-nav
-              // tab (Material's own guidance stops at 5, and the bar was
-              // already full) — both screens are the same "campus registry"
-              // concern, so a link between them reads naturally.
-              OutlinedButton.icon(
-                onPressed: () => context.push(AppRoute.courses),
-                icon: const Icon(Icons.school, size: 18),
-                label: Text('directory.manageCourses'.tr()),
-              ),
-            ],
-          ),
-        ),
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerHigh,
-            shape: BoxShape.circle,
-          ),
-          child: const Icon(Icons.groups, color: AppColors.primary),
-        ),
-      ],
     );
   }
 }

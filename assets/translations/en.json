@@ -45,7 +45,6 @@
     "home": "Home",
     "routine": "Routine",
     "notices": "Notices",
-    "profile": "Profile",
     "approvedAndVerified": "Approved & Verified",
     "approvedFaculty": "Approved Faculty"
   },
@@ -310,6 +309,8 @@
     "preferences": "Preferences",
     "darkMode": "Dark mode",
     "darkModeDesc": "Appearance",
+    "language": "Language",
+    "languageDesc": "App language",
     "security": "Security",
     "changePassword": "Change password",
     "changePasswordDesc": "Get a reset link by email",
@@ -321,6 +322,8 @@
   },
   "notices": {
     "newNotice": "New Notice",
+    "desc": "Announcements for your university.",
+    "summary": "{count} notices",
     "title": "Title",
     "titleHint": "e.g. Midterm exam schedule released",
     "body": "Message",
