@@ -1,0 +1,195 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:mycampus/core/di/di.dart';
+import 'package:mycampus/core/services/auth_refresh_service.dart';
+import 'package:mycampus/features/student_dashboard/domain/entities/membership_status.dart';
+import 'package:mycampus/features/student_dashboard/domain/entities/student_profile.dart';
+import 'package:mycampus/features/student_dashboard/domain/entities/student_university.dart';
+import 'package:mycampus/features/student_dashboard/domain/exceptions/student_dashboard_exception.dart';
+import 'package:mycampus/features/student_dashboard/domain/repositories/student_dashboard_repository.dart';
+
+enum StudentDashboardStatus { loading, ready }
+
+class StudentDashboardState {
+  const StudentDashboardState({
+    this.status = StudentDashboardStatus.loading,
+    this.name,
+    this.email,
+    this.avatarUrl,
+    this.profile,
+    this.membership = MembershipStatus.none,
+    this.university,
+    this.justApproved = false,
+  });
+
+  final StudentDashboardStatus status;
+  final String? name;
+  final String? email;
+
+  /// Authenticated URL for the signed-in student's avatar (from the
+  /// `users.avatar` field) — used by the redesigned dashboard's identity
+  /// card. Null when no avatar is uploaded.
+  final String? avatarUrl;
+
+  /// Role-extension record — drives the student ID card's program and
+  /// student-id print; loaded lazily so dashboards work even when the
+  /// registration step hasn't created the linked row yet.
+  final StudentProfile? profile;
+  final MembershipStatus membership;
+
+  /// Null while loading, if there's no university yet, or if the fetch
+  /// failed — the UI falls back to the join prompt instead of erroring.
+  final StudentUniversity? university;
+
+  /// Becomes `true` the instant a realtime event flips the student's
+  /// status from pending → approved so the page can show a
+  /// "welcome to campus" snackbar without leaking through subsequent
+  /// navigations. Reset to false once the user opens a sub-screen or the
+  /// cubit reloads.
+  final bool justApproved;
+
+  StudentDashboardState copyWith({
+    StudentDashboardStatus? status,
+    String? name,
+    String? email,
+    String? avatarUrl,
+    StudentProfile? profile,
+    MembershipStatus? membership,
+    StudentUniversity? university,
+    bool? justApproved,
+  }) {
+    return StudentDashboardState(
+      status: status ?? this.status,
+      name: name ?? this.name,
+      email: email ?? this.email,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      profile: profile ?? this.profile,
+      membership: membership ?? this.membership,
+      university: university ?? this.university,
+      justApproved: justApproved ?? this.justApproved,
+    );
+  }
+}
+
+/// Loads the signed-in student's membership status (and, once approved,
+/// their university's identity) for the dashboard page. Mirrors
+/// `SuperAdminDashboardCubit`'s load/refresh shape. Also subscribes to
+/// realtime updates on the student's own `users` record so the page
+/// transitions automatically from "waiting for approval" to the home
+/// dashboard the moment a super admin approves/rejects the request.
+class StudentDashboardCubit extends Cubit<StudentDashboardState> {
+  StudentDashboardCubit({
+    StudentDashboardRepository? repository,
+    AuthRefreshService? authRefreshService,
+  }) : _repository = repository ?? DI.studentDashboardRepository,
+       _authRefreshService = authRefreshService ?? DI.authRefreshService,
+       super(const StudentDashboardState()) {
+    unawaited(load());
+    _subscribeToUserUpdates();
+  }
+
+  final StudentDashboardRepository _repository;
+
+  /// Re-reads the signed-in `users` record into the shared auth store when
+  /// a realtime event fires, so [load] below sees the new approval status.
+  final AuthRefreshService _authRefreshService;
+  Future<void> Function()? _unsubscribeUpdates;
+
+  Future<void> load() async {
+    final universityId = _repository.currentUniversityId;
+    final membership = _repository.currentMembershipStatus;
+    final userId = _repository.currentUserId;
+    emit(
+      state.copyWith(
+        status: StudentDashboardStatus.loading,
+        name: _repository.currentStudentName,
+        email: _repository.currentStudentEmail,
+        avatarUrl: _repository.currentAvatarUrl,
+        membership: membership,
+      ),
+    );
+
+    StudentUniversity? university;
+    if (universityId != null) {
+      try {
+        university = await _repository.getUniversity(universityId);
+      } on StudentDashboardException {
+        // fall through with university == null — UI will still show the
+        // home view, just without the university header.
+      }
+    }
+
+    StudentProfile? profile;
+    if (userId != null) {
+      try {
+        profile = await _repository.getStudentProfile(userId);
+      } on StudentDashboardException {
+        // Same as above: dashboard works without the role-extension
+        // record; ID card falls back to the auth-record name.
+      }
+    }
+
+    _emitReady(university: university, profile: profile);
+  }
+
+  void _emitReady({
+    StudentUniversity? university,
+    StudentProfile? profile,
+    bool? justApproved,
+  }) {
+    if (isClosed) return;
+    emit(
+      state.copyWith(
+        status: StudentDashboardStatus.ready,
+        university: university,
+        profile: profile,
+        justApproved: justApproved,
+      ),
+    );
+  }
+
+  /// Wires the realtime channel: when the server reports an update to the
+  /// signed-in user's record, pull the fresh values into the auth store
+  /// (so every other feature reading `_pb.authStore.record` sees the same
+  /// data) and re-run [load]. If the student just got approved, also
+  /// flip `justApproved` so the UI can fire a one-shot snackbar.
+  void _subscribeToUserUpdates() {
+    final previousMembership = _repository.currentMembershipStatus;
+    _unsubscribeUpdates = _repository.watchCurrentUser(onChange: () async {
+      if (isClosed) return;
+      // Refresh the in-memory record from PocketBase first — `load()` reads
+      // off `_pb.authStore.record` for status / university.
+      await _authRefreshService.refreshCurrentUser();
+      if (isClosed) return;
+      final nextMembership = _repository.currentMembershipStatus;
+      final justApproved = previousMembership == MembershipStatus.pending &&
+          nextMembership == MembershipStatus.approved;
+      await load();
+      if (justApproved && !isClosed) {
+        _emitReady(justApproved: true);
+      }
+    });
+  }
+
+  /// Acknowledged by the page once it's shown the welcome snackbar so it
+  /// doesn't re-fire on the next rebuild.
+  void clearJustApproved() {
+    if (!state.justApproved) return;
+    _emitReady(justApproved: false);
+  }
+
+  Future<void> logout() async {
+    await _unsubscribeUpdates?.call();
+    _unsubscribeUpdates = null;
+    await _repository.logout();
+    emit(const StudentDashboardState());
+  }
+
+  @override
+  Future<void> close() async {
+    await _unsubscribeUpdates?.call();
+    _unsubscribeUpdates = null;
+    await super.close();
+  }
+}

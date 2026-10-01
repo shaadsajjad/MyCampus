@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/features/dashboard/presentation/pages/dashboard_page.dart';
+import 'package:mycampus/features/join_university/presentation/pages/scan_join_page.dart';
 import 'package:mycampus/features/login/presentation/pages/login_page.dart';
 import 'package:mycampus/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:mycampus/features/register/presentation/pages/student_register_page.dart';
@@ -19,6 +20,11 @@ abstract class AppRoute {
   static const registerTeacher = '/auth/register/teacher';
   static const verification = '/auth/verify';
   static const dashboard = '/dashboard';
+
+  /// Full-screen "scan campus QR / enter code" flow — role-agnostic
+  /// (student and teacher both just update their own `users` record), so
+  /// it isn't nested under either role's dashboard path.
+  static const joinUniversity = '/join';
 
   /// The login screen for [role] — role travels as a query param since one
   /// screen serves all three roles.
@@ -110,6 +116,10 @@ class AppRouter {
       GoRoute(
         path: AppRoute.dashboard,
         builder: (context, state) => const DashboardPage(),
+      ),
+      GoRoute(
+        path: AppRoute.joinUniversity,
+        builder: (context, state) => const ScanJoinPage(),
       ),
     ],
   );

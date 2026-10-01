@@ -1,4 +1,7 @@
-enum NoticeAudience { all, students, faculty }
+import 'package:mycampus/core/domain/entities/notice_audience.dart';
+
+export 'package:mycampus/core/domain/entities/notice_audience.dart'
+    show NoticeAudience;
 
 /// A campus-wide announcement posted by a super admin, scoped to their own
 /// university.

@@ -67,9 +67,27 @@ Two things still belong in `core/` despite this:
 
 - A type genuinely used **the same way** by most of the app — `UserRole` is
   the standing example: routing, the role chip, and every registration
-  screen all switch on the exact same three values. That's different from
-  "two features both happen to read a user's name," which each just does
-  locally.
+  screen all switch on the exact same three values. `NoticeAudience` is the
+  second: the `notices` feature filters/composes/displays by it, and both
+  dashboards name which slice their tab shows (`students` / `faculty`), so no
+  two features could ever disagree about its three values. That's different
+  from "two features both happen to read a user's name," which each just
+  does locally. When promoting, promote **only the shared vocabulary** —
+  `NoticeAudience` moved to `core/domain/entities/notice_audience.dart` while
+  `Notice` itself stayed in `notices/domain/entities`, since moving the entity
+  would have dragged a feature's data layer into `core/`.
+- **View-local state still gets a Cubit.** There is no `setState`
+  carve-out: `DashboardShell`'s bottom-nav index lives in
+  `core/widgets/dashboard_shell_cubit.dart` and the shell is a plain
+  `StatelessWidget`. A cubit with no repository is normal — a cubit only
+  needs an injectable dependency when it has one to inject.
+- A tab body embedded in another feature's shell may legitimately import
+  that shell's shared vocabulary, but it must not import the *other*
+  feature's pages. `MemberNoticesPage`/`MemberProfilePage` are deliberately
+  `Scaffold`-less bodies of `DashboardShell`'s `IndexedStack`, so they stay
+  in their own features rather than moving to `core/` (that would make
+  `core/` depend on feature data) or becoming routes (that would drop the
+  bottom nav and the per-tab state).
 - Generic, non-feature-shaped logic — `core/utils/pocketbase_error.dart`
   (`pocketBaseErrorMessage`) turns a PocketBase `ClientException` into a
   message string; it's identical, mechanical parsing in every feature's
@@ -242,6 +260,14 @@ Widgets never import a `data/` class directly.
         super(const LoginState());
   ```
   Call sites stay simple (`LoginCubit()`), while tests can inject a fake.
+- **A `core/` service must not read `DI` back.** `core/` already sits
+  *above* `DI` in the import graph (`DI` imports every feature's data layer),
+  so a `core/service` that does `DI.pocketBase` closes a cycle that only
+  resolves because Dart tolerates it. `AuthRefreshService` takes the client
+  as a constructor param — `AuthRefreshServiceImpl(pocketBase)`, wired in
+  `DI.init()` — the same shape `DeepLinkService.init({verificationRepository})`
+  already uses. Its public method returns `bool` (did the refresh land?), not
+  a `RecordModel`, so no PocketBase type crosses back out of `core/`.
 - **Data-layer errors**: a repository method wraps its PocketBase call in a
   `try`/`on ClientException catch` (each feature's own private `_guard`)
   and rethrows a domain-level, feature-owned exception (`LoginException`,
@@ -315,16 +341,42 @@ Widgets never import a `data/` class directly.
 - `dashboard` — landing page shown after a successful login or registration
   (`context.go(AppRoute.dashboard)`, replacing the stack — you shouldn't be
   able to back out to login). `DashboardPage` is a router, not a screen: it
-  provides `DashboardCubit` and a `BlocSelector` on its `role` hands super
-  admins off to `SuperAdminDashboardPage` (the widget never reads a
-  repository itself); faculty/student still fall back to the
-  presentation-only placeholder `DashboardView`. Its own
-  `DashboardRepository` is deliberately minimal — role, name, email, and
-  whether the account is still pending, plus `logout()` — just enough for
-  this placeholder; it does not grow a field the moment some other feature
-  wants one (see `super_admin_dashboard` below). Their real dashboards
-  (attendance, notices, ...) are separate, later features — the
-  placeholder only exists to prove the login round-trip works end-to-end.
+  provides `DashboardCubit` and a `BlocSelector` on its `role` hands each
+  role off to its own dashboard — `SuperAdminDashboardPage`,
+  `StudentDashboardPage`, or `TeacherDashboardPage` (the widget never reads a
+  repository itself). `DashboardView` survives only as the `null`-role
+  fallback for the normally-unreachable no-signed-in-user case. Its own
+  `DashboardRepository` stays deliberately minimal — role, name, email,
+  whether the account is still pending, plus `logout()` — because the
+  per-role dashboards each answer "what does the current user need" in their
+  own vocabulary (see `student_dashboard`/`teacher_dashboard` below). It does
+  not grow a field the moment some other feature wants one.
+- `student_dashboard` — the student's home after login/registration. One page
+  that renders three states off a single `StudentDashboardCubit.load`:
+  join prompt (no university / rejected), "waiting for approval" (pending),
+  or the full home screen (approved) — a digital ID card, today's schedule,
+  bulletins, attendance progress, and an academic-tools bento. Presentation
+  is split `widgets/student_home_view.dart` plus a `widgets/sections/`
+  folder, one file per section. Full `domain`/`data` split with
+  `StudentProfile`/`StudentUniversity`/`MembershipStatus` entities, two
+  DTOs, and a repository that reads name/email/avatar + membership
+  synchronously off the shared auth store and fetches university/profile
+  lazily. The key piece is `watchCurrentUser` — a realtime subscription on
+  the student's own `users` record that, on change, calls
+  `DI.authRefreshService.refreshCurrentUser()` (re-fetching the record into
+  the shared auth store) and re-runs `load`, so an approval made by a super
+  admin flips the screen without a re-login. The pending → approved
+  transition sets a one-shot `justApproved` flag for a welcome snackbar.
+- `teacher_dashboard` — the faculty mirror of `student_dashboard`, built to
+  the same shape on purpose: its own `TeacherProfile`/`TeacherUniversity`/
+  `MembershipStatus`, its own DTOs, its own `_guard`/
+  `TeacherDashboardException`, its own copy of the realtime
+  `watchCurrentUser` → `refreshCurrentUser` → `load` cycle, and its own
+  `widgets/sections/` (faculty ID card, teaching schedule,
+  announcements, academic telemetry, quick actions). None of it is shared
+  with `student_dashboard` — including `MembershipStatus`, which is two
+  one-line doc-comment variants of the same enum, per "features own their
+  data and domain" above.
 - `super_admin_dashboard` — the super admin's home screen: their
   university's identity, a scannable join-code QR (`qr_flutter`), live
   student/faculty/pending-request counts, and a join-requests banner. Has
@@ -408,10 +460,44 @@ Widgets never import a `data/` class directly.
   the two Cubits knowing about each other directly. `notices.createRule`
   requires the requester to be a same-university super admin *and* the
   record's own `author`/`university` fields to already match them — a
-  student's or teacher's own screen for reading these doesn't exist yet
-  (see `dashboard`), and per the university-linking gap noted in
-  `pocketbase_schema.md`, couldn't see anything scoped by university even
-  if it did.
+  student's or teacher's own screen for reading these is `MemberNoticesPage`
+  (embedded as a dashboard tab body; see `student_dashboard`), and per
+  the university-linking gap noted in `pocketbase_schema.md`, couldn't see
+  anything scoped by university even if it didn't.
+- `join_university` — the QR/code flow a student or teacher uses to attach
+  their account to a campus. One route (`AppRoute.joinUniversity`) serving
+  both roles, because both do the identical thing server-side: update their
+  own `users` record. `JoinUniversityCubit` drives scan → preview → request
+  off one `JoinUniversityStatus`, with `UniversityPreview` as the
+  feature-owned entity. Reads a join code off the scanned QR, resolves it to
+  a preview the user confirms before sending anything, then `requestToJoin`.
+  The datasource's `updateOwnMembership` is what writes
+  `{'university': <id>, 'status': 'pending'}` onto the signed-in `users`
+  record — the same `status` field `join_requests` reads, which is what puts
+  a row in the super admin's Requests tab. The repository adds nothing but
+  the `_guard`.
+- `member_profile` — the student/teacher counterpart to
+  `super_admin_profile`: read the signed-in member's own record, rename
+  themselves, request a password reset, log out. Full domain/data split
+  (`MemberProfile` entity, DTO, `_guard` → `MemberProfileException`). The
+  shared profile *chrome* it has in common with `super_admin_profile` —
+  `ProfileHeaderCard`, `profile_widgets.dart`, `edit_name_sheet_body.dart` —
+  is promoted to `core/widgets/` (2+ features use each, per the `core/`
+  rule), while the pages and the repository stay per-feature since
+  `super_admin_profile` reads university identity + a join-code QR and this
+  one reads the member's own avatar/name.
+- `campus_pass` — lives inside `super_admin_dashboard` (not its own
+  feature) because it's only reachable from the super admin's own pass card.
+  `CampusPassRepository` is the one repository in the app with **no**
+  PocketBase: it's device-side only, exporting the pass PNG to the gallery
+  or the OS share sheet, so `DI` wires it as a bare
+  `CampusPassRepositoryImpl()` with no datasource. The image is drawn by
+  `CampusPassImageRenderer` in `data/datasources/` for exactly the reason
+  the "no `AnimationController` in widgets" rule above implies: rendering
+  needs a `ui.PictureRecorder`, which is data-layer work. `ShareAnchor` is a
+  record typedef `({double left, top, width, height})` rather than a Flutter
+  type, so the share-sheet call site can position the popover from a
+  widget's `RenderBox` without the domain layer importing Flutter.
 
 ## Adding a new feature — checklist
 
