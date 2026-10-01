@@ -9,11 +9,11 @@ import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/theme/theme_cubit.dart';
+import 'package:mycampus/core/widgets/profile_header_card.dart';
+import 'package:mycampus/core/widgets/profile_widgets.dart';
 import 'package:mycampus/features/super_admin_profile/domain/entities/super_admin_profile.dart';
 import 'package:mycampus/features/super_admin_profile/presentation/cubit/super_admin_profile_cubit.dart';
 import 'package:mycampus/features/super_admin_profile/presentation/widgets/edit_name_sheet.dart';
-import 'package:mycampus/features/super_admin_profile/presentation/widgets/profile_header_card.dart';
-import 'package:mycampus/features/super_admin_profile/presentation/widgets/profile_section.dart';
 
 /// The super admin's "Profile" tab — their account, the institution they
 /// own, appearance and security settings. Embedded as a tab body of
@@ -79,7 +79,12 @@ class _SuperAdminProfileView extends StatelessWidget {
             padding: const EdgeInsets.all(AppTheme.spaceMd),
             children: [
               ProfileHeaderCard(
-                profile: profile,
+                displayName: profile.displayName,
+                email: profile.email,
+                initials: profile.initials,
+                avatarUrl: profile.avatarUrl,
+                roleLabelKey: 'roles.superAdmin',
+                verified: profile.verified,
                 onEdit: () => showEditNameSheet(context),
               ),
               const SizedBox(height: AppTheme.spaceLg),
@@ -173,7 +178,7 @@ class _InstitutionSection extends StatelessWidget {
           padding: const EdgeInsets.all(AppTheme.spaceMd),
           child: Row(
             children: [
-              _UniversityLogo(logoUrl: university.logoUrl),
+              ProfileUniversityLogo(logoUrl: university.logoUrl),
               const SizedBox(width: AppTheme.spaceSm + 4),
               Expanded(
                 child: Column(
@@ -231,35 +236,6 @@ class _InstitutionSection extends StatelessWidget {
           },
         ),
       ],
-    );
-  }
-}
-
-class _UniversityLogo extends StatelessWidget {
-  const _UniversityLogo({required this.logoUrl});
-
-  final String? logoUrl;
-
-  @override
-  Widget build(BuildContext context) {
-    const fallback = ColoredBox(
-      color: AppColors.primaryContainer,
-      child: Center(
-        child: Icon(Icons.account_balance, color: Colors.white, size: 26),
-      ),
-    );
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(AppTheme.radiusLg),
-      child: SizedBox.square(
-        dimension: 52,
-        child: logoUrl == null
-            ? fallback
-            : Image.network(
-                logoUrl!,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => fallback,
-              ),
-      ),
     );
   }
 }
@@ -334,42 +310,6 @@ class _ErrorState extends StatelessWidget {
   final VoidCallback onRetry;
 
   @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppTheme.spaceLg),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.cloud_off,
-              size: 48,
-              color: Theme.of(context).colorScheme.outline,
-            ),
-            const SizedBox(height: AppTheme.spaceSm),
-            Text(
-              'profile.loadFailed'.tr(),
-              style: textTheme.titleMedium,
-              textAlign: TextAlign.center,
-            ),
-            if (message != null) ...[
-              const SizedBox(height: AppTheme.spaceXs),
-              Text(
-                message!,
-                style: textTheme.bodySmall,
-                textAlign: TextAlign.center,
-              ),
-            ],
-            const SizedBox(height: AppTheme.spaceMd),
-            OutlinedButton.icon(
-              onPressed: onRetry,
-              icon: const Icon(Icons.refresh),
-              label: Text('profile.retry'.tr()),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) =>
+      ProfileErrorState(message: message, onRetry: onRetry);
 }

@@ -29,6 +29,20 @@ class NoticesRepositoryImpl implements NoticesRepository {
   }
 
   @override
+  Future<List<Notice>> getNoticesForAudiences(
+    String universityId,
+    Set<NoticeAudience> audiences,
+  ) {
+    return _guard(() async {
+      final models = await _remote.getNoticesForAudiences(
+        universityId,
+        audiences.map((a) => a.name).toSet(),
+      );
+      return models.map(_toNotice).toList();
+    });
+  }
+
+  @override
   Future<void> createNotice({
     required String title,
     required String body,

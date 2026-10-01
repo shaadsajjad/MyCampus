@@ -7,16 +7,20 @@ import 'package:mycampus/features/notices/domain/entities/notice.dart';
 class NoticeCard extends StatelessWidget {
   const NoticeCard({
     required this.notice,
-    required this.canDelete,
-    required this.isDeleting,
-    required this.onDelete,
+    this.canDelete = false,
+    this.isDeleting = false,
+    this.onDelete,
     super.key,
   });
 
   final Notice notice;
+
+  /// Only the author (a super admin) sees the delete affordance — a
+  /// student/faculty viewer leaves this false and gets a plain read-only
+  /// card.
   final bool canDelete;
   final bool isDeleting;
-  final VoidCallback onDelete;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {

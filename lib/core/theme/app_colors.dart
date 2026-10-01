@@ -10,23 +10,39 @@ class AppColors {
   static const Color onPrimary = Color(0xFFFFFFFF);
   static const Color primaryContainer = Color(0xFF1E3A8A);
   static const Color onPrimaryContainer = Color(0xFF90A8FF);
+  static const Color primaryFixed = Color(0xFFDCE1FF);
+  static const Color primaryFixedDim = Color(0xFFB6C4FF);
+  static const Color onPrimaryFixed = Color(0xFF00164E);
+  static const Color onPrimaryFixedVariant = Color(0xFF264191);
 
   static const Color secondary = Color(0xFF2563EB); // Royal Blue
   static const Color onSecondary = Color(0xFFFFFFFF);
   static const Color secondaryContainer = Color(0xFF316BF3);
   static const Color onSecondaryContainer = Color(0xFFFEFCFF);
+  static const Color secondaryFixed = Color(0xFFDBE1FF);
+  static const Color onSecondaryFixed = Color(0xFF00174B);
+  static const Color secondaryFixedDim = Color(0xFFB4C5FF);
+  static const Color onSecondaryFixedVariant = Color(0xFF003EA8);
 
   static const Color tertiary = Color(0xFFD97706); // Academic Amber
   static const Color onTertiary = Color(0xFFFFFFFF);
   static const Color tertiaryContainer = Color(0xFF653400);
   static const Color onTertiaryContainer = Color(0xFFFC922B);
+  static const Color tertiaryFixed = Color(0xFFFFDCC3);
+  static const Color onTertiaryFixed = Color(0xFF442100);
+  static const Color tertiaryFixedDim = Color(0xFFFFB77D);
+  static const Color onTertiaryFixedVariant = Color(0xFF6E3900);
 
   // ── Neutral / Surface ─────────────────────────────────────────
   static const Color surface = Color(0xFFF8FAFC); // Slate 50
   static const Color surfaceCard = Color(0xFFFFFFFF);
   static const Color surfaceContainer = Color(0xFFF1F5F9); // Slate 100
+  static const Color surfaceContainerLow = Color(0xFFEFF4FF);
+  static const Color surfaceContainerLowest = Color(0xFFFFFFFF);
   static const Color surfaceContainerHigh = Color(0xFFE5EEFF);
   static const Color surfaceContainerHighest = Color(0xFFD3E4FE);
+  static const Color surfaceVariant = Color(0xFFD3E4FE);
+  static const Color surfaceBright = Color(0xFFF8F9FF);
 
   static const Color onSurface = Color(0xFF0F172A); // Slate 900
   static const Color onSurfaceVariant = Color(0xFF475569); // Slate 600

@@ -7,12 +7,14 @@ import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/features/dashboard/presentation/cubit/dashboard_cubit.dart';
+import 'package:mycampus/features/student_dashboard/presentation/pages/student_dashboard_page.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/pages/super_admin_dashboard_page.dart';
+import 'package:mycampus/features/teacher_dashboard/presentation/pages/teacher_dashboard_page.dart';
 
 /// Landing page shown right after a successful login or registration —
-/// routes to the role-specific dashboard. Only the super admin one exists
-/// so far (`SuperAdminDashboardPage`); faculty/student fall back to the
-/// placeholder [DashboardView] below until their dashboards are built.
+/// routes to the role-specific dashboard. [DashboardView] below is only a
+/// fallback for the (normally unreachable) case where [role] is still
+/// `null` — e.g. no signed-in user.
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
 
@@ -22,9 +24,12 @@ class DashboardPage extends StatelessWidget {
       create: (_) => DashboardCubit(),
       child: BlocSelector<DashboardCubit, DashboardState, UserRole?>(
         selector: (state) => state.role,
-        builder: (context, role) => role == UserRole.superAdmin
-            ? const SuperAdminDashboardPage()
-            : const DashboardView(),
+        builder: (context, role) => switch (role) {
+          UserRole.superAdmin => const SuperAdminDashboardPage(),
+          UserRole.student => const StudentDashboardPage(),
+          UserRole.faculty => const TeacherDashboardPage(),
+          null => const DashboardView(),
+        },
       ),
     );
   }

@@ -8,7 +8,18 @@ abstract class NoticesRemoteDataSource {
   String? get currentUniversityId;
   String? get currentUserId;
 
+  /// Every notice in [universityId], newest first. Used by the admin's
+  /// own Notices tab, which shows (and may delete) everything it posted.
   Future<List<NoticeRecordModel>> getNotices(String universityId);
+
+  /// Only the notices addressed to [audiences] — what a student/faculty
+  /// viewer is allowed to see. Filtering server-side keeps the audience
+  /// boundary in one place (the query) instead of relying on every client
+  /// remembering to filter.
+  Future<List<NoticeRecordModel>> getNoticesForAudiences(
+    String universityId,
+    Set<String> audiences,
+  );
 
   Future<void> createNotice(Map<String, dynamic> body);
 
@@ -30,13 +41,29 @@ class NoticesRemoteDataSourceImpl implements NoticesRemoteDataSource {
   String? get currentUserId => _pb.authStore.record?.id;
 
   @override
-  Future<List<NoticeRecordModel>> getNotices(String universityId) async {
+  Future<List<NoticeRecordModel>> getNotices(String universityId) {
+    return _fetch('university = \'$universityId\'');
+  }
+
+  @override
+  Future<List<NoticeRecordModel>> getNoticesForAudiences(
+    String universityId,
+    Set<String> audiences,
+  ) {
+    // An empty audience set would otherwise produce `()` — a syntax error.
+    // Nothing can match it, so short-circuit with an empty list.
+    if (audiences.isEmpty) return Future.value(const []);
+    final clause = audiences.map((a) => 'audience = \'$a\'').join(' || ');
+    return _fetch('university = \'$universityId\' && ($clause)');
+  }
+
+  Future<List<NoticeRecordModel>> _fetch(String filter) async {
     final result = await _pb
         .collection('notices')
         .getList(
           page: 1,
           perPage: 200,
-          filter: "university = '$universityId'",
+          filter: filter,
           sort: '-created',
           expand: 'author',
         );
