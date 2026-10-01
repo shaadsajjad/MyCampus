@@ -17,7 +17,7 @@ enum JoinUniversityStatus {
 }
 
 class JoinUniversityState {
-  const JoinUniversityState({
+  const new({
     this.status = JoinUniversityStatus.scanning,
     this.manualCode = '',
     this.preview,
@@ -50,7 +50,7 @@ class JoinUniversityState {
 /// owning a `TextEditingController`/`GlobalKey` elsewhere in the app) so the
 /// page can stay a `StatelessWidget`.
 class JoinUniversityCubit extends Cubit<JoinUniversityState> {
-  JoinUniversityCubit({JoinUniversityRepository? repository})
+  new({JoinUniversityRepository? repository})
     : _repository = repository ?? DI.joinUniversityRepository,
       super(const JoinUniversityState());
 

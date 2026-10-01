@@ -7,7 +7,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// Campus Services. Each tile has its own accent + small badge. Mirrors
 /// the "Academic Tools" section of the Stitch mock.
 class AcademicToolsBento extends StatelessWidget {
-  const AcademicToolsBento({
+  const new({
     required this.onRoutineTap,
     required this.onCheckInTap,
     required this.onResultsTap,
@@ -79,7 +79,7 @@ class AcademicToolsBento extends StatelessWidget {
               icon: Icons.stars,
               iconBg: AppColors.surfaceContainerHigh,
               iconColor: AppColors.onSurface,
-              iconFill: 1.0,
+              iconFill: 1,
               titlePrefix: TextSpan(
                 text: '3.86 ',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -118,16 +118,11 @@ class AcademicToolsBento extends StatelessWidget {
 }
 
 class _BentoTile extends StatelessWidget {
-  const _BentoTile({
+  const new({
     required this.icon,
     required this.iconBg,
     required this.iconColor,
-    this.title,
-    required this.subtitle,
-    required this.badgeText,
-    required this.badgeColor,
-    required this.badgeTextColor,
-    required this.onTap,
+    required this.subtitle, required this.badgeText, required this.badgeColor, required this.badgeTextColor, required this.onTap, this.title,
     this.iconFill,
     this.titlePrefix,
     this.titleSuffix,
@@ -221,8 +216,8 @@ class _BentoTile extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         children: [
-                          if (titlePrefix != null) titlePrefix!,
-                          if (titleSuffix != null) titleSuffix!,
+                          ?titlePrefix,
+                          ?titleSuffix,
                         ],
                       ),
                     ),

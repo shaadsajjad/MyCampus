@@ -5,7 +5,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/features/notices/domain/entities/notice.dart';
 
 class NoticeCard extends StatelessWidget {
-  const NoticeCard({
+  const new({
     required this.notice,
     this.canDelete = false,
     this.isDeleting = false,
@@ -127,7 +127,7 @@ class NoticeCard extends StatelessWidget {
 }
 
 class _AudienceBadge extends StatelessWidget {
-  const _AudienceBadge({required this.audience});
+  const new({required this.audience});
 
   final NoticeAudience audience;
 
@@ -175,7 +175,7 @@ class _AudienceBadge extends StatelessWidget {
 
 /// A small circular initial avatar standing in for the author's photo.
 class _AuthorAvatar extends StatelessWidget {
-  const _AuthorAvatar({required this.name});
+  const new({required this.name});
 
   final String name;
 

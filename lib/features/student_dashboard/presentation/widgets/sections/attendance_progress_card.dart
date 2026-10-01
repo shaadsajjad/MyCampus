@@ -8,7 +8,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// overall, 94% lectures, 89% labs) — these are the first real data the
 /// attendance feature will replace once it ships.
 class AttendanceProgressCard extends StatelessWidget {
-  const AttendanceProgressCard({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +65,14 @@ class AttendanceProgressCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppTheme.spaceMd),
-          Row(
+          const Row(
             children: [
-              const _AttendanceRing(percent: 92),
-              const SizedBox(width: AppTheme.spaceLg),
+              _AttendanceRing(percent: 92),
+              SizedBox(width: AppTheme.spaceLg),
               Expanded(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     _ProgressBar(label: 'Lecture Sessions', percent: 94),
                     SizedBox(height: AppTheme.spaceSm),
                     _ProgressBar(label: 'Laboratory & Practicals', percent: 89),
@@ -88,7 +88,7 @@ class AttendanceProgressCard extends StatelessWidget {
 }
 
 class _AttendanceRing extends StatelessWidget {
-  const _AttendanceRing({required this.percent});
+  const new({required this.percent});
 
   final int percent;
 
@@ -137,7 +137,7 @@ class _AttendanceRing extends StatelessWidget {
 }
 
 class _ProgressBar extends StatelessWidget {
-  const _ProgressBar({required this.label, required this.percent});
+  const new({required this.label, required this.percent});
 
   final String label;
   final int percent;

@@ -9,7 +9,7 @@ import 'package:mycampus/features/teacher_dashboard/domain/entities/teacher_univ
 /// Mirrors the design from the Stitch-generated mock; takes the avatar
 /// URL from the `users.avatar` field when present.
 class FacultyIdCard extends StatelessWidget {
-  const FacultyIdCard({
+  const new({
     required this.university,
     required this.facultyName,
     required this.department,
@@ -61,7 +61,7 @@ class FacultyIdCard extends StatelessWidget {
                           Icons.verified,
                           color: Color(0xFFFFB77D),
                           size: 18,
-                          fill: 1.0,
+                          fill: 1,
                         ),
                         const SizedBox(width: 6),
                         Expanded(
@@ -120,7 +120,7 @@ class FacultyIdCard extends StatelessWidget {
                       Container(
                         width: 56,
                         height: 56,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: AppColors.surfaceContainerHigh,
                           shape: BoxShape.circle,
                         ),
@@ -129,7 +129,7 @@ class FacultyIdCard extends StatelessWidget {
                             ? Image.network(
                                 avatarUrl!,
                                 fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) =>
+                                errorBuilder: (_, _, _) =>
                                     _InitialsAvatar(name: facultyName),
                               )
                             : _InitialsAvatar(name: facultyName),
@@ -288,7 +288,7 @@ class FacultyIdCard extends StatelessWidget {
 }
 
 class _InitialsAvatar extends StatelessWidget {
-  const _InitialsAvatar({required this.name});
+  const new({required this.name});
 
   final String name;
 

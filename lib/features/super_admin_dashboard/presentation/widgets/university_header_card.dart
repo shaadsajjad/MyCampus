@@ -8,7 +8,7 @@ import 'package:mycampus/features/super_admin_dashboard/domain/entities/universi
 /// Top-of-dashboard summary: which university this admin owns, and a
 /// quick-glance badge row (active status + campus id).
 class UniversityHeaderCard extends StatelessWidget {
-  const UniversityHeaderCard({
+  const new({
     required this.university,
     required this.fallbackName,
     super.key,
@@ -106,7 +106,7 @@ class UniversityHeaderCard extends StatelessWidget {
 }
 
 class _TypeChip extends StatelessWidget {
-  const _TypeChip({required this.type});
+  const new({required this.type});
 
   final UniversityType type;
 
@@ -135,7 +135,7 @@ class _TypeChip extends StatelessWidget {
 }
 
 class _Badge extends StatelessWidget {
-  const _Badge({
+  const new({
     required this.icon,
     required this.label,
     required this.background,

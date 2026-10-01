@@ -1,12 +1,13 @@
 // ignore_for_file: avoid_flutter_imports, prefer_void_public_cubit_methods
 
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:bloc/bloc.dart';
 // Form keys live on the cubit per the pattern documented in
 // `clean_architecture.md`, so this is the rare cubit that legitimately
 // imports `package:flutter`.
 import 'package:flutter/widgets.dart';
-import 'package:bloc/bloc.dart';
 import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/member_profile/domain/entities/member_profile.dart';
 import 'package:mycampus/features/member_profile/domain/exceptions/member_profile_exception.dart';
@@ -19,17 +20,20 @@ enum MemberProfileStatus { loading, ready, error }
 enum MemberProfileOutcome {
   nameSaved,
   nameSaveFailed,
+  avatarSaved,
+  avatarSaveFailed,
   resetEmailSent,
   resetEmailFailed,
   loggedOut,
 }
 
 class MemberProfileState {
-  const MemberProfileState({
+  const new({
     this.status = MemberProfileStatus.loading,
     this.profile,
     this.nameDraft = '',
     this.isSavingName = false,
+    this.isSavingAvatar = false,
     this.isSendingReset = false,
     this.outcome,
     this.errorMessage,
@@ -42,6 +46,7 @@ class MemberProfileState {
   /// `onChanged` — no `TextEditingController`.
   final String nameDraft;
   final bool isSavingName;
+  final bool isSavingAvatar;
   final bool isSendingReset;
 
   /// Cleared at the start of each action so the listener fires again even
@@ -54,6 +59,7 @@ class MemberProfileState {
     MemberProfile? profile,
     String? nameDraft,
     bool? isSavingName,
+    bool? isSavingAvatar,
     bool? isSendingReset,
     MemberProfileOutcome? outcome,
     String? errorMessage,
@@ -64,6 +70,7 @@ class MemberProfileState {
       profile: profile ?? this.profile,
       nameDraft: nameDraft ?? this.nameDraft,
       isSavingName: isSavingName ?? this.isSavingName,
+      isSavingAvatar: isSavingAvatar ?? this.isSavingAvatar,
       isSendingReset: isSendingReset ?? this.isSendingReset,
       outcome: clearOutcome ? null : (outcome ?? this.outcome),
       errorMessage: clearOutcome ? null : (errorMessage ?? this.errorMessage),
@@ -75,7 +82,7 @@ class MemberProfileState {
 /// as `SuperAdminProfileCubit` (cached-then-fresh load, name edit, reset
 /// email, logout) so the two profile screens behave identically.
 class MemberProfileCubit extends Cubit<MemberProfileState> {
-  MemberProfileCubit({MemberProfileRepository? repository})
+  new({MemberProfileRepository? repository})
     : _repository = repository ?? DI.memberProfileRepository,
       super(const MemberProfileState()) {
     unawaited(load());
@@ -147,6 +154,60 @@ class MemberProfileCubit extends Cubit<MemberProfileState> {
           state.copyWith(
             isSavingName: false,
             outcome: MemberProfileOutcome.nameSaveFailed,
+            errorMessage: e.message,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> updateAvatar(Uint8List bytes) async {
+    if (state.isSavingAvatar) return;
+    emit(state.copyWith(isSavingAvatar: true, clearOutcome: true));
+    try {
+      final updated = await _repository.updateAvatar(bytes);
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            profile: updated,
+            isSavingAvatar: false,
+            outcome: MemberProfileOutcome.avatarSaved,
+          ),
+        );
+      }
+    } on MemberProfileException catch (e) {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isSavingAvatar: false,
+            outcome: MemberProfileOutcome.avatarSaveFailed,
+            errorMessage: e.message,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> removeAvatar() async {
+    if (state.isSavingAvatar) return;
+    emit(state.copyWith(isSavingAvatar: true, clearOutcome: true));
+    try {
+      final updated = await _repository.removeAvatar();
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            profile: updated,
+            isSavingAvatar: false,
+            outcome: MemberProfileOutcome.avatarSaved,
+          ),
+        );
+      }
+    } on MemberProfileException catch (e) {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isSavingAvatar: false,
+            outcome: MemberProfileOutcome.avatarSaveFailed,
             errorMessage: e.message,
           ),
         );

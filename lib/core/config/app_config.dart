@@ -6,7 +6,7 @@ enum AppFlavor { development, staging, production }
 /// static getters anywhere in the app — never hardcode an environment URL
 /// at the call site.
 class AppConfig {
-  AppConfig._();
+  new _();
 
   static AppFlavor? _flavor;
   static String? _pocketbaseUrl;

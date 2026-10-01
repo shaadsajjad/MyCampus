@@ -1,3 +1,6 @@
+import 'dart:typed_data';
+
+import 'package:http/http.dart' as http;
 import 'package:mycampus/features/member_profile/data/models/member_profile_model.dart';
 import 'package:pocketbase/pocketbase.dart';
 
@@ -11,6 +14,10 @@ abstract class MemberProfileRemoteDataSource {
 
   Future<MemberProfileModel> updateName(String userId, String name);
 
+  Future<MemberProfileModel> updateAvatar(String userId, Uint8List bytes);
+
+  Future<MemberProfileModel> removeAvatar(String userId);
+
   Future<void> requestPasswordReset(String email);
 
   Future<void> logout();
@@ -18,7 +25,7 @@ abstract class MemberProfileRemoteDataSource {
 
 class MemberProfileRemoteDataSourceImpl
     implements MemberProfileRemoteDataSource {
-  MemberProfileRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 
@@ -48,6 +55,31 @@ class MemberProfileRemoteDataSourceImpl
     final record = await _pb
         .collection('users')
         .update(userId, body: {'name': name}, expand: _expand);
+    return _toModel(record);
+  }
+
+  @override
+  Future<MemberProfileModel> updateAvatar(
+    String userId,
+    Uint8List bytes,
+  ) async {
+    final record = await _pb
+        .collection('users')
+        .update(
+          userId,
+          files: [
+            http.MultipartFile.fromBytes('avatar', bytes, filename: 'avatar.jpg'),
+          ],
+          expand: _expand,
+        );
+    return _toModel(record);
+  }
+
+  @override
+  Future<MemberProfileModel> removeAvatar(String userId) async {
+    final record = await _pb
+        .collection('users')
+        .update(userId, body: {'avatar': null}, expand: _expand);
     return _toModel(record);
   }
 

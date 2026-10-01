@@ -1,6 +1,6 @@
 /// Membership counts for a university, shown on the super admin dashboard.
 class UniversityStats {
-  const UniversityStats({
+  const new({
     required this.approvedStudents,
     required this.approvedFaculty,
     required this.pendingRequests,

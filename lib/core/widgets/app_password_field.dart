@@ -6,7 +6,7 @@ import 'package:mycampus/core/widgets/field_label.dart';
 /// obscure/visible state is owned by the caller's Cubit (via [obscureText]
 /// and [onToggleObscure]) rather than local widget state.
 class AppPasswordField extends StatelessWidget {
-  const AppPasswordField({
+  const new({
     required this.label,
     required this.initialValue,
     required this.onChanged,

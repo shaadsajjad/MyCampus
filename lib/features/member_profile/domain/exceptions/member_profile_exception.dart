@@ -2,7 +2,7 @@
 /// `ClientException`, timeouts and anything else are translated into this
 /// by `MemberProfileRepositoryImpl`.
 class MemberProfileException implements Exception {
-  const MemberProfileException(this.message);
+  const new(this.message);
 
   final String message;
 

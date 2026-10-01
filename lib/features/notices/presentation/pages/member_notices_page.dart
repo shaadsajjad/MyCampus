@@ -14,7 +14,7 @@ import 'package:mycampus/features/notices/presentation/widgets/notice_card.dart'
 /// [MemberNoticesCubit] the way a page normally would but has no
 /// `Scaffold` or bottom nav of its own — those come from the shell.
 class MemberNoticesPage extends StatelessWidget {
-  const MemberNoticesPage({required this.audience, super.key});
+  const new({required this.audience, super.key});
 
   /// Which role-specific audience to request. `students` for the student
   /// dashboard, `faculty` for the teacher's.
@@ -30,7 +30,7 @@ class MemberNoticesPage extends StatelessWidget {
 }
 
 class _MemberNoticesView extends StatelessWidget {
-  const _MemberNoticesView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,7 @@ class _MemberNoticesView extends StatelessWidget {
 /// Shared empty/error layout: stays scrollable so pull-to-refresh keeps
 /// working even when there is nothing to show.
 class _ScrollableMessage extends StatelessWidget {
-  const _ScrollableMessage({
+  const new({
     required this.icon,
     this.title,
     this.titleKey,

@@ -9,7 +9,7 @@ import 'package:mycampus/features/member_directory/domain/entities/directory_mem
 /// identify someone (name, role id, email, department, batch/designation) is
 /// on the card itself rather than behind a tap.
 class DirectoryMemberCard extends StatelessWidget {
-  const DirectoryMemberCard({required this.member, super.key});
+  const new({required this.member, super.key});
 
   final DirectoryMember member;
 
@@ -135,7 +135,7 @@ class DirectoryMemberCard extends StatelessWidget {
 }
 
 class _RoleBadge extends StatelessWidget {
-  const _RoleBadge({required this.role});
+  const new({required this.role});
 
   final DirectoryRole role;
 

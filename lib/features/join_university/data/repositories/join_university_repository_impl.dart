@@ -8,7 +8,7 @@ import 'package:mycampus/features/join_university/domain/repositories/join_unive
 import 'package:pocketbase/pocketbase.dart';
 
 class JoinUniversityRepositoryImpl implements JoinUniversityRepository {
-  JoinUniversityRepositoryImpl({
+  new({
     required JoinUniversityRemoteDataSource remoteDataSource,
   }) : _remote = remoteDataSource;
 

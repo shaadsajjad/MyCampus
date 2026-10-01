@@ -4,7 +4,7 @@ import 'package:mycampus/core/theme/app_colors.dart';
 
 /// A "Don't have an account? Register" style row with a tappable action.
 class AuthFooterLink extends StatelessWidget {
-  const AuthFooterLink({
+  const new({
     required this.promptKey,
     required this.actionKey,
     required this.onTap,

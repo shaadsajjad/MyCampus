@@ -9,7 +9,7 @@ import 'package:mycampus/features/notices/domain/repositories/notices_repository
 import 'package:pocketbase/pocketbase.dart';
 
 class NoticesRepositoryImpl implements NoticesRepository {
-  NoticesRepositoryImpl({required NoticesRemoteDataSource remoteDataSource})
+  new({required NoticesRemoteDataSource remoteDataSource})
     : _remote = remoteDataSource;
 
   final NoticesRemoteDataSource _remote;
@@ -105,7 +105,7 @@ class NoticesRepositoryImpl implements NoticesRepository {
     } on NoticesException {
       rethrow;
     } catch (e) {
-      throw NoticesException('error.unknown');
+      throw const NoticesException('error.unknown');
     }
   }
 }

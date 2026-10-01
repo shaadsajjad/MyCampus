@@ -1,9 +1,11 @@
+import 'package:mycampus/features/member_profile/domain/entities/member_profile.dart' show MemberProfile;
+
 /// DTOs for the signed-in `users` record plus its expanded relations —
 /// PocketBase's wire format as-is (raw strings for dates and the
 /// `university.type` select). Parsing into [MemberProfile] is the
 /// repository's job, not the datasource's.
 class MemberProfileModel {
-  const MemberProfileModel({
+  const new({
     required this.id,
     required this.email,
     required this.verified,
@@ -37,7 +39,7 @@ class MemberProfileModel {
 }
 
 class MemberCampusModel {
-  const MemberCampusModel({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,
@@ -57,7 +59,7 @@ class MemberCampusModel {
 }
 
 class MemberStudentModel {
-  const MemberStudentModel({
+  const new({
     required this.studentId,
     required this.department,
     required this.batch,
@@ -69,7 +71,7 @@ class MemberStudentModel {
 }
 
 class MemberTeacherModel {
-  const MemberTeacherModel({
+  const new({
     required this.teacherId,
     required this.department,
     required this.designation,

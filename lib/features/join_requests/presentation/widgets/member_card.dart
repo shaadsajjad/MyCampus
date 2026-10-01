@@ -5,7 +5,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/features/join_requests/domain/entities/member_request.dart';
 
 class MemberCard extends StatelessWidget {
-  const MemberCard({
+  const new({
     required this.member,
     required this.isSelected,
     required this.isBusy,
@@ -182,7 +182,7 @@ class MemberCard extends StatelessWidget {
 }
 
 class _RoleBadge extends StatelessWidget {
-  const _RoleBadge({required this.role});
+  const new({required this.role});
 
   final MemberRole role;
 
@@ -220,7 +220,7 @@ class _RoleBadge extends StatelessWidget {
 }
 
 class _StatusPill extends StatelessWidget {
-  const _StatusPill({required this.status});
+  const new({required this.status});
 
   final MemberStatus status;
 

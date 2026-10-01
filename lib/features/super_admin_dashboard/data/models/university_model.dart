@@ -2,7 +2,7 @@ import 'package:pocketbase/pocketbase.dart';
 
 /// DTO for a `universities` record.
 class UniversityModel {
-  const UniversityModel({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,
@@ -13,7 +13,7 @@ class UniversityModel {
     this.logoUrl,
   });
 
-  factory UniversityModel.fromRecord(RecordModel record, {String? logoUrl}) {
+  factory fromRecord(RecordModel record, {String? logoUrl}) {
     return UniversityModel(
       id: record.id,
       name: record.getStringValue('name'),

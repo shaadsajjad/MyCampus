@@ -5,7 +5,7 @@ import 'package:mycampus/core/widgets/field_label.dart';
 
 /// A labeled [DropdownButtonFormField] bound to a Cubit's state.
 class AppDropdownField<T> extends StatelessWidget {
-  const AppDropdownField({
+  const new({
     required this.label,
     required this.icon,
     required this.value,

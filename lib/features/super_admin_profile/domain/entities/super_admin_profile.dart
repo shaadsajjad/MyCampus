@@ -16,7 +16,7 @@ extension UniversityTypeLabel on UniversityType {
 
 /// The institution a super admin owns, as shown on their profile.
 class ProfileUniversity {
-  const ProfileUniversity({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,
@@ -39,7 +39,7 @@ class ProfileUniversity {
 
 /// The signed-in super admin's own account plus the university they own.
 class SuperAdminProfile {
-  const SuperAdminProfile({
+  const new({
     required this.id,
     required this.email,
     required this.verified,

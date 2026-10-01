@@ -7,11 +7,12 @@ import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/notices/domain/entities/notice.dart';
 import 'package:mycampus/features/notices/domain/exceptions/notices_exception.dart';
 import 'package:mycampus/features/notices/domain/repositories/notices_repository.dart';
+import 'package:mycampus/features/notices/presentation/cubit/notices_cubit.dart' show NoticesCubit;
 
 enum MemberNoticesStatus { loading, ready, error }
 
 class MemberNoticesState {
-  const MemberNoticesState({
+  const new({
     this.status = MemberNoticesStatus.loading,
     this.notices = const [],
     this.errorMessage,
@@ -46,11 +47,10 @@ class MemberNoticesState {
 /// create/delete and the audience set it requests is derived from the
 /// viewer's role rather than passed in from a menu the user could change.
 class MemberNoticesCubit extends Cubit<MemberNoticesState> {
-  MemberNoticesCubit({
-    required NoticeAudience audience,
+  new({
+    required this._audience,
     NoticesRepository? repository,
   }) : _repository = repository ?? DI.noticesRepository,
-       _audience = audience,
        super(const MemberNoticesState()) {
     unawaited(load());
   }

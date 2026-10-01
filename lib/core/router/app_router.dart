@@ -1,6 +1,8 @@
+import 'package:flutter/material.dart' show SnackBar;
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mycampus/core/domain/entities/user_role.dart';
+import 'package:mycampus/core/services/deep_link_service.dart' show DeepLinkService;
 import 'package:mycampus/features/courses/presentation/pages/courses_page.dart';
 import 'package:mycampus/features/dashboard/presentation/pages/dashboard_page.dart';
 import 'package:mycampus/features/join_university/presentation/pages/scan_join_page.dart';
@@ -76,7 +78,7 @@ abstract class AppRoute {
 }
 
 class AppRouter {
-  AppRouter._();
+  new _();
 
   /// Lets code without a [BuildContext] (e.g. [DeepLinkService], reacting
   /// to a verification link while the app is backgrounded) navigate or

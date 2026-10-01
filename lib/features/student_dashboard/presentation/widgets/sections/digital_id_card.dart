@@ -9,7 +9,7 @@ import 'package:mycampus/features/student_dashboard/domain/entities/student_univ
 /// from the Stitch-generated mock; accepts an optional `avatarUrl` so the
 /// student's photo (from the `users.avatar` field) is used when set.
 class DigitalIdCard extends StatelessWidget {
-  const DigitalIdCard({
+  const new({
     required this.university,
     required this.studentName,
     required this.program,
@@ -146,7 +146,7 @@ class DigitalIdCard extends StatelessWidget {
                             ? Image.network(
                                 avatarUrl!,
                                 fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) =>
+                                errorBuilder: (_, _, _) =>
                                     _InitialsAvatar(name: studentName),
                               )
                             : _InitialsAvatar(name: studentName),
@@ -321,7 +321,7 @@ class DigitalIdCard extends StatelessWidget {
 }
 
 class _InitialsAvatar extends StatelessWidget {
-  const _InitialsAvatar({required this.name});
+  const new({required this.name});
 
   final String name;
 

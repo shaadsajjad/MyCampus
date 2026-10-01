@@ -8,7 +8,7 @@ import 'package:mycampus/core/widgets/primary_action_button.dart';
 /// their "not a member yet" / "waiting for approval" states, and generic
 /// enough for any future empty-state screen.
 class EmptyStatePrompt extends StatelessWidget {
-  const EmptyStatePrompt({
+  const new({
     required this.icon,
     required this.title,
     required this.description,

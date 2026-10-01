@@ -11,7 +11,7 @@ enum JoinRequestsStatus { loading, ready, error }
 enum JoinRequestsFilter { allPending, students, faculty, archived }
 
 class JoinRequestsState {
-  const JoinRequestsState({
+  const new({
     this.status = JoinRequestsStatus.loading,
     this.members = const [],
     this.query = '',
@@ -93,7 +93,7 @@ class JoinRequestsState {
 }
 
 class JoinRequestsCubit extends Cubit<JoinRequestsState> {
-  JoinRequestsCubit({JoinRequestsRepository? repository})
+  new({JoinRequestsRepository? repository})
     : _repository = repository ?? DI.joinRequestsRepository,
       super(const JoinRequestsState()) {
     unawaited(load());

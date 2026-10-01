@@ -4,7 +4,7 @@
 /// not the parsed domain enums). Parsing those into the domain-level
 /// `MemberRequest` is the repository's job, not this model's.
 class MemberRecordModel {
-  const MemberRecordModel({
+  const new({
     required this.id,
     required this.name,
     required this.email,

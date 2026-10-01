@@ -5,7 +5,7 @@ import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 
 class BrandHeader extends StatelessWidget {
-  const BrandHeader({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

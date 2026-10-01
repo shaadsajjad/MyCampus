@@ -8,7 +8,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// many of the section have already read it. Mocked until the notices
 /// feature ships.
 class AnnouncementsSection extends StatelessWidget {
-  const AnnouncementsSection({
+  const new({
     required this.onBroadcastTap,
     required this.onEditTap,
     required this.onResendTap,
@@ -169,11 +169,11 @@ class AnnouncementsSection extends StatelessWidget {
                     const SizedBox(height: 6),
                     ClipRRect(
                       borderRadius: BorderRadius.circular(AppTheme.radiusFull),
-                      child: LinearProgressIndicator(
+                      child: const LinearProgressIndicator(
                         value: 58 / 64,
                         minHeight: 6,
                         backgroundColor: AppColors.surfaceContainerHighest,
-                        valueColor: const AlwaysStoppedAnimation<Color>(
+                        valueColor: AlwaysStoppedAnimation<Color>(
                           AppColors.secondary,
                         ),
                       ),
@@ -270,7 +270,7 @@ class AnnouncementsSection extends StatelessWidget {
 /// shows assigned lab + keycard clearance state. Used as a footer in the
 /// teacher dashboard.
 class LabStatusFooter extends StatelessWidget {
-  const LabStatusFooter({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

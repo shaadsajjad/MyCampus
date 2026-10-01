@@ -19,7 +19,7 @@ import 'package:mycampus/features/member_directory/presentation/widgets/director
 /// queue (pending only, with approve/reject actions), this one is a
 /// reference list of everyone already on campus.
 class MemberDirectoryPage extends StatelessWidget {
-  const MemberDirectoryPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class MemberDirectoryPage extends StatelessWidget {
 }
 
 class _MemberDirectoryView extends StatelessWidget {
-  const _MemberDirectoryView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class _MemberDirectoryView extends StatelessWidget {
 }
 
 class _SearchField extends StatelessWidget {
-  const _SearchField({required this.onChanged});
+  const new({required this.onChanged});
 
   final ValueChanged<String> onChanged;
 
@@ -117,7 +117,7 @@ class _SearchField extends StatelessWidget {
 }
 
 class _FilterPills extends StatelessWidget {
-  const _FilterPills({required this.state, required this.onSelect});
+  const new({required this.state, required this.onSelect});
 
   final MemberDirectoryState state;
   final ValueChanged<MemberDirectoryFilter> onSelect;
@@ -154,7 +154,7 @@ class _FilterPills extends StatelessWidget {
 }
 
 class _Pill extends StatelessWidget {
-  const _Pill({
+  const new({
     required this.label,
     required this.count,
     required this.isActive,
@@ -221,7 +221,7 @@ class _Pill extends StatelessWidget {
 }
 
 class _ErrorState extends StatelessWidget {
-  const _ErrorState({required this.message, required this.onRetry});
+  const new({required this.message, required this.onRetry});
 
   final String message;
   final VoidCallback onRetry;
@@ -257,7 +257,7 @@ class _ErrorState extends StatelessWidget {
 }
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState({required this.query});
+  const new({required this.query});
 
   final String query;
 

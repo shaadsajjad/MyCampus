@@ -22,7 +22,7 @@ abstract class CoursesRemoteDataSource {
 }
 
 class CoursesRemoteDataSourceImpl implements CoursesRemoteDataSource {
-  CoursesRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 

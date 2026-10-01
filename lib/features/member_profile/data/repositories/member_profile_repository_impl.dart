@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/core/utils/pocketbase_error.dart';
@@ -10,7 +11,7 @@ import 'package:mycampus/features/member_profile/domain/repositories/member_prof
 import 'package:pocketbase/pocketbase.dart';
 
 class MemberProfileRepositoryImpl implements MemberProfileRepository {
-  MemberProfileRepositoryImpl({
+  new({
     required MemberProfileRemoteDataSource remoteDataSource,
   }) : _remote = remoteDataSource;
 
@@ -35,6 +36,28 @@ class MemberProfileRepositoryImpl implements MemberProfileRepository {
         throw const MemberProfileException('You are signed out.');
       }
       return _toEntity(await _remote.updateName(id, name));
+    });
+  }
+
+  @override
+  Future<MemberProfile> updateAvatar(Uint8List bytes) {
+    return _guard(() async {
+      final id = _remote.cachedProfile?.id;
+      if (id == null) {
+        throw const MemberProfileException('You are signed out.');
+      }
+      return _toEntity(await _remote.updateAvatar(id, bytes));
+    });
+  }
+
+  @override
+  Future<MemberProfile> removeAvatar() {
+    return _guard(() async {
+      final id = _remote.cachedProfile?.id;
+      if (id == null) {
+        throw const MemberProfileException('You are signed out.');
+      }
+      return _toEntity(await _remote.removeAvatar(id));
     });
   }
 

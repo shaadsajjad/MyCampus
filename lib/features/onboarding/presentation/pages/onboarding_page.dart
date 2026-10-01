@@ -16,7 +16,7 @@ import 'package:mycampus/features/onboarding/presentation/widgets/role_card.dart
 import 'package:mycampus/features/onboarding/presentation/widgets/security_footer.dart';
 
 class OnboardingPage extends StatelessWidget {
-  const OnboardingPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class OnboardingPage extends StatelessWidget {
 }
 
 class OnboardingView extends StatelessWidget {
-  const OnboardingView({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

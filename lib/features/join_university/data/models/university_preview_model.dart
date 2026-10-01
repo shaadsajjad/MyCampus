@@ -4,7 +4,7 @@ import 'package:pocketbase/pocketbase.dart';
 /// to render a confirmation card, not the full profile `super_admin_
 /// dashboard` reads for its own owner.
 class UniversityPreviewModel {
-  const UniversityPreviewModel({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,
@@ -13,7 +13,7 @@ class UniversityPreviewModel {
     this.logoUrl,
   });
 
-  factory UniversityPreviewModel.fromRecord(
+  factory fromRecord(
     RecordModel record, {
     String? logoUrl,
   }) {

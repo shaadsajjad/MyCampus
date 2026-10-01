@@ -17,7 +17,7 @@ import 'package:mycampus/features/join_university/presentation/widgets/scan_fram
 /// `true` once a join request has been sent, so the caller knows to reload
 /// its own status.
 class ScanJoinPage extends StatelessWidget {
-  const ScanJoinPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class ScanJoinPage extends StatelessWidget {
 }
 
 class _ScanJoinView extends StatelessWidget {
-  const _ScanJoinView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +130,7 @@ class _ScanJoinView extends StatelessWidget {
 }
 
 class _ManualEntry extends StatelessWidget {
-  const _ManualEntry({
+  const new({
     required this.value,
     required this.onChanged,
     required this.onSubmit,
@@ -164,7 +164,7 @@ class _ManualEntry extends StatelessWidget {
 }
 
 class _CameraUnavailable extends StatelessWidget {
-  const _CameraUnavailable({required this.error});
+  const new({required this.error});
 
   final MobileScannerException error;
 

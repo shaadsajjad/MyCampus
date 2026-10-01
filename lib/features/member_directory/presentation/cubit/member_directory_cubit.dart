@@ -14,7 +14,7 @@ enum MemberDirectoryStatus { loading, ready, error }
 enum MemberDirectoryFilter { all, students, faculty }
 
 class MemberDirectoryState {
-  const MemberDirectoryState({
+  const new({
     this.status = MemberDirectoryStatus.loading,
     this.members = const [],
     this.query = '',
@@ -77,7 +77,7 @@ class MemberDirectoryState {
 /// load/search/filter shape — this is a read-only screen, so there's no
 /// selection, batching, or per-row busy state to carry.
 class MemberDirectoryCubit extends Cubit<MemberDirectoryState> {
-  MemberDirectoryCubit({MemberDirectoryRepository? repository})
+  new({MemberDirectoryRepository? repository})
     : _repository = repository ?? DI.memberDirectoryRepository,
       super(const MemberDirectoryState()) {
     unawaited(load());

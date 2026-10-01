@@ -8,7 +8,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// "Up Next" card. Pure presentational mock — the routine feature will
 /// replace the static values with real data once it ships.
 class TodaysScheduleSection extends StatelessWidget {
-  const TodaysScheduleSection({
+  const new({
     required this.onSubmitBeacon,
     required this.onOpenNotes,
     super.key,

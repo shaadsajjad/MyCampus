@@ -8,7 +8,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// to download the hall ticket. Mirrors the bulletins block of the
 /// Stitch mock; values are static until the notices feature ships.
 class BulletinsSection extends StatelessWidget {
-  const BulletinsSection({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,6 @@ class BulletinsSection extends StatelessWidget {
           categoryKey: 'Library Admin',
           categoryColor: AppColors.surfaceContainerHigh,
           categoryTextColor: AppColors.primary,
-          categoryUppercase: true,
           timeText: 'Yesterday',
           title: '24/7 Silent Study Wings Open for Finals Preparation',
           body:
@@ -66,17 +65,16 @@ class BulletinsSection extends StatelessWidget {
 }
 
 class _BulletinCard extends StatelessWidget {
-  const _BulletinCard({
+  const new({
     required this.categoryKey,
     required this.categoryColor,
     required this.categoryTextColor,
     required this.timeText,
     required this.title,
     required this.body,
-    this.categoryUppercase = true,
     this.primaryActionIcon,
     this.primaryActionLabelKey,
-  });
+  }) : categoryUppercase = true;
 
   final String categoryKey;
   final Color categoryColor;

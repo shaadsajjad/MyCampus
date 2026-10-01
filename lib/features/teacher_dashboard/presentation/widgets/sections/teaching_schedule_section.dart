@@ -8,7 +8,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// a CS-412 lab card, and a Faculty Office Hours row. Static mock —
 /// routine/attendance features will replace values once they ship.
 class TeachingScheduleSection extends StatelessWidget {
-  const TeachingScheduleSection({
+  const new({
     required this.onTakeAttendanceTap,
     required this.onRosterTap,
     super.key,
@@ -133,7 +133,7 @@ class TeachingScheduleSection extends StatelessWidget {
 }
 
 class _LectureCard extends StatelessWidget {
-  const _LectureCard({
+  const new({
     required this.isNext,
     required this.code,
     required this.codeBg,

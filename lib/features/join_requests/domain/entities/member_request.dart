@@ -7,7 +7,7 @@ enum MemberStatus { pending, approved, rejected }
 /// archive (already approved/rejected) since both are just this same
 /// `users` record filtered by [status].
 class MemberRequest {
-  const MemberRequest({
+  const new({
     required this.id,
     required this.name,
     required this.email,

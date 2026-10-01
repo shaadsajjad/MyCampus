@@ -6,7 +6,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// Compact 3-stat strip — Enrolled students, Attendance rate, Pending
 /// submissions. Mirrors the Stitch mock's "Academic Telemetry" row.
 class AcademicTelemetryRow extends StatelessWidget {
-  const AcademicTelemetryRow({
+  const new({
     required this.enrolledCount,
     required this.sectionsCount,
     required this.attendancePercent,
@@ -86,7 +86,7 @@ class AcademicTelemetryRow extends StatelessWidget {
 }
 
 class _StatTile extends StatelessWidget {
-  const _StatTile({
+  const new({
     required this.label,
     required this.value,
     required this.footer,
@@ -140,7 +140,7 @@ class _StatTile extends StatelessWidget {
                   Container(
                     width: 8,
                     height: 8,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppColors.tertiaryContainer,
                       shape: BoxShape.circle,
                     ),

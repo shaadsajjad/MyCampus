@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
+import 'package:mycampus/core/widgets/app_image_picker_field.dart' show AppImagePickerField;
 import 'package:mycampus/core/widgets/profile_widgets.dart';
 
 /// Top-of-profile identity card shared by every profile screen: avatar,
@@ -13,7 +14,7 @@ import 'package:mycampus/core/widgets/profile_widgets.dart';
 /// admin, student and faculty profiles each have their own entity type,
 /// and this card is the one place they must look identical.
 class ProfileHeaderCard extends StatelessWidget {
-  const ProfileHeaderCard({
+  const new({
     required this.displayName,
     required this.email,
     required this.initials,
@@ -22,6 +23,8 @@ class ProfileHeaderCard extends StatelessWidget {
     this.avatarUrl,
     this.editTooltipKey = 'profile.editName',
     this.onEdit,
+    this.onEditAvatar,
+    this.isSavingAvatar = false,
     super.key,
   });
 
@@ -39,6 +42,15 @@ class ProfileHeaderCard extends StatelessWidget {
   /// the button entirely.
   final String editTooltipKey;
   final VoidCallback? onEdit;
+
+  /// Tapping the avatar itself opens the photo picker — a separate
+  /// affordance from [onEdit] (which only edits the display name). Omit to
+  /// leave the avatar non-interactive (e.g. a read-only context).
+  final VoidCallback? onEditAvatar;
+
+  /// Shows a spinner over the avatar instead of the camera badge while an
+  /// upload/removal from [onEditAvatar] is in flight.
+  final bool isSavingAvatar;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +72,12 @@ class ProfileHeaderCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              ProfileAvatar(avatarUrl: avatarUrl, initials: initials),
+              _EditableAvatar(
+                avatarUrl: avatarUrl,
+                initials: initials,
+                onTap: onEditAvatar,
+                isSaving: isSavingAvatar,
+              ),
               const SizedBox(width: AppTheme.spaceMd),
               Expanded(
                 child: Column(
@@ -126,4 +143,69 @@ class ProfileHeaderCard extends StatelessWidget {
     'roles.faculty' => Icons.school_outlined,
     _ => Icons.person_outline,
   };
+}
+
+/// [ProfileAvatar] plus a camera badge when [onTap] is set — the same
+/// tap-to-pick affordance [AppImagePickerField] uses on the registration
+/// forms, scaled down to fit the header card's 64px avatar.
+class _EditableAvatar extends StatelessWidget {
+  const new({
+    required this.avatarUrl,
+    required this.initials,
+    required this.onTap,
+    required this.isSaving,
+  });
+
+  final String? avatarUrl;
+  final String initials;
+  final VoidCallback? onTap;
+  final bool isSaving;
+
+  @override
+  Widget build(BuildContext context) {
+    final avatar = ProfileAvatar(avatarUrl: avatarUrl, initials: initials);
+    if (onTap == null) return avatar;
+
+    return GestureDetector(
+      onTap: isSaving ? null : onTap,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          avatar,
+          if (isSaving)
+            const Positioned.fill(
+              child: Center(
+                child: SizedBox(
+                  width: 22,
+                  height: 22,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            )
+          else
+            Positioned(
+              bottom: -2,
+              right: -2,
+              child: Container(
+                width: 22,
+                height: 22,
+                decoration: BoxDecoration(
+                  color: AppColors.secondary,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.primary, width: 2),
+                ),
+                child: const Icon(
+                  Icons.camera_alt,
+                  size: 11,
+                  color: AppColors.onSecondary,
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }

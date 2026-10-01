@@ -19,7 +19,7 @@ import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/uni
 import 'package:mycampus/features/super_admin_profile/presentation/pages/super_admin_profile_page.dart';
 
 class SuperAdminDashboardPage extends StatelessWidget {
-  const SuperAdminDashboardPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class SuperAdminDashboardPage extends StatelessWidget {
 }
 
 class _SuperAdminDashboardView extends StatelessWidget {
-  const _SuperAdminDashboardView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +162,7 @@ void _showSnack(BuildContext context, String message, {bool isError = false}) {
 }
 
 class _HomeTab extends StatelessWidget {
-  const _HomeTab({required this.state});
+  const new({required this.state});
 
   final SuperAdminDashboardState state;
 
@@ -208,7 +208,7 @@ enum _ProfileAction { profile, logout }
 /// campus pass itself lives on the Home tab as its own card, so nothing
 /// lost its entry point.
 class _DashboardBottomNav extends StatelessWidget {
-  const _DashboardBottomNav({
+  const new({
     required this.currentTab,
     required this.onSelect,
     required this.onUnavailableTap,

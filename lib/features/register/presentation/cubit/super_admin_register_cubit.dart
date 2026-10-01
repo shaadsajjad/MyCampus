@@ -2,11 +2,11 @@
 
 import 'dart:typed_data';
 
+import 'package:bloc/bloc.dart';
 // Form keys live on the cubit per the pattern documented in
 // `clean_architecture.md`, so this is the rare cubit that legitimately
 // imports `package:flutter`.
 import 'package:flutter/widgets.dart';
-import 'package:bloc/bloc.dart';
 import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/register/domain/entities/university_type.dart';
 import 'package:mycampus/features/register/domain/exceptions/register_exception.dart';
@@ -14,7 +14,7 @@ import 'package:mycampus/features/register/domain/repositories/register_reposito
 import 'package:mycampus/features/register/presentation/submission_status.dart';
 
 class SuperAdminRegisterState {
-  const SuperAdminRegisterState({
+  const new({
     this.universityName = '',
     this.shortName = '',
     this.universityType,
@@ -93,7 +93,7 @@ class SuperAdminRegisterState {
 }
 
 class SuperAdminRegisterCubit extends Cubit<SuperAdminRegisterState> {
-  SuperAdminRegisterCubit({RegisterRepository? registerRepository})
+  new({RegisterRepository? registerRepository})
     : _registerRepository = registerRepository ?? DI.registerRepository,
       super(const SuperAdminRegisterState());
 

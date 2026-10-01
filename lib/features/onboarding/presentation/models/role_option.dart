@@ -4,7 +4,7 @@ import 'package:mycampus/core/theme/app_colors.dart';
 
 /// Icon + its container color for a `RoleCard`.
 class RoleIconStyle {
-  const RoleIconStyle({
+  const new({
     required this.icon,
     required this.backgroundColor,
     required this.color,
@@ -17,7 +17,7 @@ class RoleIconStyle {
 
 /// The small status pill (dot + label) shown at the bottom of a `RoleCard`.
 class RoleBadge {
-  const RoleBadge({
+  const new({
     required this.textKey,
     required this.backgroundColor,
     required this.textColor,
@@ -36,7 +36,7 @@ class RoleBadge {
 /// describe all selectable roles as plain data instead of three
 /// near-duplicate widget blocks.
 class RoleOption {
-  const RoleOption({
+  const new({
     required this.role,
     required this.titleKey,
     required this.subtitleKey,

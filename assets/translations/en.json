@@ -85,7 +85,8 @@
     "emailNotVerifiedTitle": "Email Not Verified",
     "emailNotVerifiedDesc": "Please verify your email address before signing in.",
     "resendVerification": "Resend Verification",
-    "goToVerification": "Go to Verification"
+    "goToVerification": "Go to Verification",
+    "passwordResetSent": "Password reset link sent to {email}"
   },
   "register": {
     "registerTitle": "Create Account",

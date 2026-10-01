@@ -1,12 +1,13 @@
 // ignore_for_file: avoid_flutter_imports, prefer_void_public_cubit_methods
 
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:bloc/bloc.dart';
 // Form keys live on the cubit per the pattern documented in
 // `clean_architecture.md`, so this is the rare cubit that legitimately
 // imports `package:flutter`.
 import 'package:flutter/widgets.dart';
-import 'package:bloc/bloc.dart';
 import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/features/super_admin_profile/domain/entities/super_admin_profile.dart';
 import 'package:mycampus/features/super_admin_profile/domain/exceptions/profile_exception.dart';
@@ -19,17 +20,20 @@ enum ProfileStatus { loading, ready, error }
 enum ProfileOutcome {
   nameSaved,
   nameSaveFailed,
+  avatarSaved,
+  avatarSaveFailed,
   resetEmailSent,
   resetEmailFailed,
   loggedOut,
 }
 
 class SuperAdminProfileState {
-  const SuperAdminProfileState({
+  const new({
     this.status = ProfileStatus.loading,
     this.profile,
     this.nameDraft = '',
     this.isSavingName = false,
+    this.isSavingAvatar = false,
     this.isSendingReset = false,
     this.outcome,
     this.errorMessage,
@@ -42,6 +46,7 @@ class SuperAdminProfileState {
   /// `onChanged` — no `TextEditingController`.
   final String nameDraft;
   final bool isSavingName;
+  final bool isSavingAvatar;
   final bool isSendingReset;
 
   /// Cleared at the start of each action so the listener fires again even
@@ -54,6 +59,7 @@ class SuperAdminProfileState {
     SuperAdminProfile? profile,
     String? nameDraft,
     bool? isSavingName,
+    bool? isSavingAvatar,
     bool? isSendingReset,
     ProfileOutcome? outcome,
     String? errorMessage,
@@ -64,6 +70,7 @@ class SuperAdminProfileState {
       profile: profile ?? this.profile,
       nameDraft: nameDraft ?? this.nameDraft,
       isSavingName: isSavingName ?? this.isSavingName,
+      isSavingAvatar: isSavingAvatar ?? this.isSavingAvatar,
       isSendingReset: isSendingReset ?? this.isSendingReset,
       outcome: clearOutcome ? null : (outcome ?? this.outcome),
       errorMessage: clearOutcome ? null : (errorMessage ?? this.errorMessage),
@@ -72,7 +79,7 @@ class SuperAdminProfileState {
 }
 
 class SuperAdminProfileCubit extends Cubit<SuperAdminProfileState> {
-  SuperAdminProfileCubit({SuperAdminProfileRepository? repository})
+  new({SuperAdminProfileRepository? repository})
     : _repository = repository ?? DI.superAdminProfileRepository,
       super(const SuperAdminProfileState()) {
     unawaited(load());
@@ -144,6 +151,60 @@ class SuperAdminProfileCubit extends Cubit<SuperAdminProfileState> {
           state.copyWith(
             isSavingName: false,
             outcome: ProfileOutcome.nameSaveFailed,
+            errorMessage: e.message,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> updateAvatar(Uint8List bytes) async {
+    if (state.isSavingAvatar) return;
+    emit(state.copyWith(isSavingAvatar: true, clearOutcome: true));
+    try {
+      final updated = await _repository.updateAvatar(bytes);
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            profile: updated,
+            isSavingAvatar: false,
+            outcome: ProfileOutcome.avatarSaved,
+          ),
+        );
+      }
+    } on ProfileException catch (e) {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isSavingAvatar: false,
+            outcome: ProfileOutcome.avatarSaveFailed,
+            errorMessage: e.message,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> removeAvatar() async {
+    if (state.isSavingAvatar) return;
+    emit(state.copyWith(isSavingAvatar: true, clearOutcome: true));
+    try {
+      final updated = await _repository.removeAvatar();
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            profile: updated,
+            isSavingAvatar: false,
+            outcome: ProfileOutcome.avatarSaved,
+          ),
+        );
+      }
+    } on ProfileException catch (e) {
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            isSavingAvatar: false,
+            outcome: ProfileOutcome.avatarSaveFailed,
             errorMessage: e.message,
           ),
         );

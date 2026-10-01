@@ -6,7 +6,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/theme/theme_cubit.dart';
 
 class App extends StatelessWidget {
-  const App({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class App extends StatelessWidget {
 }
 
 class _AppView extends StatelessWidget {
-  const _AppView();
+  const new();
 
   @override
   Widget build(BuildContext context) {

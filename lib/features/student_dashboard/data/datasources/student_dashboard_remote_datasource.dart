@@ -30,7 +30,7 @@ abstract class StudentDashboardRemoteDataSource {
 
 class StudentDashboardRemoteDataSourceImpl
     implements StudentDashboardRemoteDataSource {
-  StudentDashboardRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 

@@ -12,7 +12,7 @@ import 'package:mycampus/features/register/domain/repositories/register_reposito
 import 'package:pocketbase/pocketbase.dart';
 
 class RegisterRepositoryImpl implements RegisterRepository {
-  RegisterRepositoryImpl({required RegisterRemoteDataSource remoteDataSource})
+  new({required RegisterRemoteDataSource remoteDataSource})
     : _remote = remoteDataSource;
 
   final RegisterRemoteDataSource _remote;
@@ -147,7 +147,7 @@ class RegisterRepositoryImpl implements RegisterRepository {
     } on TimeoutException {
       throw const RegisterException('error.unreachableServer');
     } catch (e) {
-      throw RegisterException('error.unknown');
+      throw const RegisterException('error.unknown');
     }
   }
 }

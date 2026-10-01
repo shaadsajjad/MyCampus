@@ -61,7 +61,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// visible to `dashboard`, `logout` from any of them clears the same
 /// store, etc.
 class DI {
-  DI._();
+  new _();
 
   static const _authStoreKey = 'pb_auth';
 

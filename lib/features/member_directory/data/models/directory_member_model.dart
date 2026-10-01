@@ -4,7 +4,7 @@
 /// the parsed domain enum). Parsing that into the domain-level
 /// `DirectoryMember` is the repository's job, not this model's.
 class DirectoryMemberModel {
-  const DirectoryMemberModel({
+  const new({
     required this.id,
     required this.name,
     required this.email,

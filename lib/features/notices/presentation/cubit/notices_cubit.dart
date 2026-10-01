@@ -9,7 +9,7 @@ import 'package:mycampus/features/notices/domain/repositories/notices_repository
 enum NoticesStatus { loading, ready, error }
 
 class NoticesState {
-  const NoticesState({
+  const new({
     this.status = NoticesStatus.loading,
     this.notices = const [],
     this.currentUserId,
@@ -48,7 +48,7 @@ class NoticesState {
 }
 
 class NoticesCubit extends Cubit<NoticesState> {
-  NoticesCubit({NoticesRepository? repository})
+  new({NoticesRepository? repository})
     : _repository = repository ?? DI.noticesRepository,
       super(const NoticesState()) {
     unawaited(load());

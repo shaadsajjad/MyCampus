@@ -7,7 +7,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// request — an empty state here would just be dead weight ("review your 0
 /// requests" is not an action anyone takes).
 class JoinRequestsBanner extends StatelessWidget {
-  const JoinRequestsBanner({
+  const new({
     required this.pendingCount,
     required this.onReview,
     super.key,

@@ -5,7 +5,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/features/onboarding/domain/entities/auth_mode.dart';
 
 class AuthToggle extends StatelessWidget {
-  const AuthToggle({
+  const new({
     required this.currentMode,
     required this.onToggle,
     super.key,

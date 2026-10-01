@@ -20,7 +20,7 @@ const List<({Locale locale, String label})> _supportedLocales = [
 /// to pick the active locale; `easy_localization` persists the choice
 /// itself, so there's nothing else to wire up.
 class LanguagePreferenceRow extends StatelessWidget {
-  const LanguagePreferenceRow({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

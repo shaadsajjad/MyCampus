@@ -18,7 +18,7 @@ import 'package:mycampus/features/login/presentation/cubit/login_cubit.dart';
 import 'package:mycampus/features/login/presentation/submission_status.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({required this.role, super.key});
+  const new({required this.role, super.key});
 
   final UserRole role;
 
@@ -32,7 +32,7 @@ class LoginPage extends StatelessWidget {
 }
 
 class LoginView extends StatefulWidget {
-  const LoginView({required this.role, super.key});
+  const new({required this.role, super.key});
 
   final UserRole role;
 
@@ -53,27 +53,54 @@ class _LoginViewState extends State<LoginView> {
     return AuthScaffold(
       title: 'login.loginTitle'.tr(),
       subtitle: 'login.loginSubtitle'.tr(),
-      child: BlocListener<LoginCubit, LoginState>(
-        listenWhen: (previous, current) =>
-            previous.status != current.status ||
-            previous.result != current.result,
-        listener: (context, state) {
-          if (state.status == SubmissionStatus.success &&
-              state.result == LoginResult.success) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text('login.loginSuccess'.tr())));
-            context.go(AppRoute.dashboard);
-          } else if (state.status == SubmissionStatus.failure &&
-              state.errorMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(state.errorMessage!),
-                backgroundColor: AppColors.error,
-              ),
-            );
-          }
-        },
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<LoginCubit, LoginState>(
+            listenWhen: (previous, current) =>
+                previous.status != current.status ||
+                previous.result != current.result,
+            listener: (context, state) {
+              if (state.status == SubmissionStatus.success &&
+                  state.result == LoginResult.success) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('login.loginSuccess'.tr())),
+                );
+                context.go(AppRoute.dashboard);
+              } else if (state.status == SubmissionStatus.failure &&
+                  state.errorMessage != null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.errorMessage!),
+                    backgroundColor: AppColors.error,
+                  ),
+                );
+              }
+            },
+          ),
+          BlocListener<LoginCubit, LoginState>(
+            listenWhen: (previous, current) =>
+                previous.passwordResetOutcome !=
+                    current.passwordResetOutcome &&
+                current.passwordResetOutcome != null,
+            listener: (context, state) {
+              final isSent =
+                  state.passwordResetOutcome == PasswordResetOutcome.sent;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    isSent
+                        ? 'login.passwordResetSent'.tr(
+                            namedArgs: {'email': state.email},
+                          )
+                        : (state.passwordResetError ?? 'common.error'.tr()),
+                  ),
+                  backgroundColor: isSent ? null : AppColors.error,
+                ),
+              );
+              context.read<LoginCubit>().acknowledgePasswordResetOutcome();
+            },
+          ),
+        ],
         child: AppForm(
           formKey: _formKey,
           onSubmit: cubit.submit,
@@ -186,10 +213,24 @@ class _LoginViewState extends State<LoginView> {
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: TextButton(
-                  // TODO(pocketbase): wire up the forgot-password flow.
-                  onPressed: () {},
-                  child: Text('login.forgotPassword'.tr()),
+                child: BlocBuilder<LoginCubit, LoginState>(
+                  buildWhen: (previous, current) =>
+                      previous.isSendingPasswordReset !=
+                      current.isSendingPasswordReset,
+                  builder: (context, state) {
+                    return TextButton(
+                      onPressed: state.isSendingPasswordReset
+                          ? null
+                          : cubit.requestPasswordReset,
+                      child: state.isSendingPasswordReset
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Text('login.forgotPassword'.tr()),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: AppTheme.spaceSm),

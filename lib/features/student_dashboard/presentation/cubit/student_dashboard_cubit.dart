@@ -12,7 +12,7 @@ import 'package:mycampus/features/student_dashboard/domain/repositories/student_
 enum StudentDashboardStatus { loading, ready }
 
 class StudentDashboardState {
-  const StudentDashboardState({
+  const new({
     this.status = StudentDashboardStatus.loading,
     this.name,
     this.email,
@@ -79,7 +79,7 @@ class StudentDashboardState {
 /// transitions automatically from "waiting for approval" to the home
 /// dashboard the moment a super admin approves/rejects the request.
 class StudentDashboardCubit extends Cubit<StudentDashboardState> {
-  StudentDashboardCubit({
+  new({
     StudentDashboardRepository? repository,
     AuthRefreshService? authRefreshService,
   }) : _repository = repository ?? DI.studentDashboardRepository,

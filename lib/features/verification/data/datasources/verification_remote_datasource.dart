@@ -1,3 +1,4 @@
+import 'package:mycampus/features/verification/domain/exceptions/verification_exception.dart' show VerificationException;
 import 'package:pocketbase/pocketbase.dart';
 
 /// The only file in the `verification` feature that talks to the
@@ -18,7 +19,7 @@ abstract class VerificationRemoteDataSource {
 }
 
 class VerificationRemoteDataSourceImpl implements VerificationRemoteDataSource {
-  VerificationRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 

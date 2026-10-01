@@ -2,13 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
+import 'package:mycampus/features/super_admin_dashboard/domain/entities/university.dart' show University;
 
 /// Pill-shaped status bar shown at the top of the approved student
 /// dashboard — "Access Granted • [University] Active" plus a
 /// "Campus Pass" action. Pure presentational widget, mirrors the design
 /// from the Stitch-generated mock.
 class AccessPillBar extends StatelessWidget {
-  const AccessPillBar({required this.universityName, super.key});
+  const new({required this.universityName, super.key});
 
   final String universityName;
 
@@ -34,7 +35,7 @@ class AccessPillBar extends StatelessWidget {
               Icons.verified,
               color: AppColors.secondary,
               size: 18,
-              fill: 1.0,
+              fill: 1,
             ),
           ),
           const SizedBox(width: AppTheme.spaceSm),
@@ -93,7 +94,7 @@ class AccessPillBar extends StatelessWidget {
 }
 
 class _PassButton extends StatelessWidget {
-  const _PassButton({required this.onTap});
+  const new({required this.onTap});
 
   final VoidCallback onTap;
 

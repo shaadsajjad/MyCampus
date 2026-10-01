@@ -1,7 +1,7 @@
 /// What goes on the exported campus pass image: the join code encoded in
 /// the QR, plus the university name printed under it.
 class CampusPass {
-  const CampusPass({required this.campusId, this.universityName});
+  const new({required this.campusId, this.universityName});
 
   final String campusId;
   final String? universityName;

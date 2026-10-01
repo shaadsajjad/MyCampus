@@ -6,7 +6,7 @@ import 'package:mycampus/features/splash/presentation/cubit/splash_cubit.dart';
 import 'package:mycampus/features/splash/presentation/widgets/initial_splash.dart';
 
 class SplashPage extends StatelessWidget {
-  const SplashPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class SplashPage extends StatelessWidget {
 }
 
 class SplashView extends StatelessWidget {
-  const SplashView({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:mycampus/core/utils/pocketbase_error.dart';
 import 'package:mycampus/features/super_admin_profile/data/datasources/super_admin_profile_remote_datasource.dart';
@@ -9,7 +10,7 @@ import 'package:mycampus/features/super_admin_profile/domain/repositories/super_
 import 'package:pocketbase/pocketbase.dart';
 
 class SuperAdminProfileRepositoryImpl implements SuperAdminProfileRepository {
-  SuperAdminProfileRepositoryImpl({
+  new({
     required SuperAdminProfileRemoteDataSource remoteDataSource,
   }) : _remote = remoteDataSource;
 
@@ -32,6 +33,24 @@ class SuperAdminProfileRepositoryImpl implements SuperAdminProfileRepository {
       final id = _remote.cachedProfile?.id;
       if (id == null) throw const ProfileException('You are signed out.');
       return _toEntity(await _remote.updateName(id, name));
+    });
+  }
+
+  @override
+  Future<SuperAdminProfile> updateAvatar(Uint8List bytes) {
+    return _guard(() async {
+      final id = _remote.cachedProfile?.id;
+      if (id == null) throw const ProfileException('You are signed out.');
+      return _toEntity(await _remote.updateAvatar(id, bytes));
+    });
+  }
+
+  @override
+  Future<SuperAdminProfile> removeAvatar() {
+    return _guard(() async {
+      final id = _remote.cachedProfile?.id;
+      if (id == null) throw const ProfileException('You are signed out.');
+      return _toEntity(await _remote.removeAvatar(id));
     });
   }
 
@@ -90,7 +109,7 @@ class SuperAdminProfileRepositoryImpl implements SuperAdminProfileRepository {
     } on ProfileException {
       rethrow;
     } catch (e) {
-      throw ProfileException('error.unknown');
+      throw const ProfileException('error.unknown');
     }
   }
 }

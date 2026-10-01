@@ -6,7 +6,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 
 /// A small pill showing which role a login/register screen is for.
 class RoleContextChip extends StatelessWidget {
-  const RoleContextChip({required this.role, super.key});
+  const new({required this.role, super.key});
 
   final UserRole role;
 

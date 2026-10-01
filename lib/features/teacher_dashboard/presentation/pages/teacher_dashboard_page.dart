@@ -17,7 +17,7 @@ import 'package:mycampus/features/teacher_dashboard/presentation/widgets/teacher
 /// automatically from "waiting for approval" to the home dashboard the
 /// moment a super admin approves or rejects the request.
 class TeacherDashboardPage extends StatelessWidget {
-  const TeacherDashboardPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class TeacherDashboardPage extends StatelessWidget {
 }
 
 class _TeacherDashboardView extends StatelessWidget {
-  const _TeacherDashboardView();
+  const new();
 
   @override
   Widget build(BuildContext context) {

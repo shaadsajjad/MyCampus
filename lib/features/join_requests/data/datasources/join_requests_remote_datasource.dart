@@ -1,4 +1,5 @@
 import 'package:mycampus/features/join_requests/data/models/member_record_model.dart';
+import 'package:mycampus/features/join_requests/domain/exceptions/join_requests_exception.dart' show JoinRequestsException;
 import 'package:pocketbase/pocketbase.dart';
 
 /// The only file in the `join_requests` feature that talks to the
@@ -14,7 +15,7 @@ abstract class JoinRequestsRemoteDataSource {
 }
 
 class JoinRequestsRemoteDataSourceImpl implements JoinRequestsRemoteDataSource {
-  JoinRequestsRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 

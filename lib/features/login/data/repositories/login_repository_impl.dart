@@ -7,7 +7,7 @@ import 'package:mycampus/features/login/domain/repositories/login_repository.dar
 import 'package:pocketbase/pocketbase.dart';
 
 class LoginRepositoryImpl implements LoginRepository {
-  LoginRepositoryImpl({required LoginRemoteDataSource remoteDataSource})
+  new({required LoginRemoteDataSource remoteDataSource})
     : _remote = remoteDataSource;
 
   final LoginRemoteDataSource _remote;
@@ -20,6 +20,11 @@ class LoginRepositoryImpl implements LoginRepository {
   @override
   Future<void> requestVerification(String email) {
     return _guard(() => _remote.requestVerification(email));
+  }
+
+  @override
+  Future<void> requestPasswordReset(String email) {
+    return _guard(() => _remote.requestPasswordReset(email));
   }
 
   /// Runs [action], translating PocketBase's [ClientException] — and any
@@ -40,7 +45,7 @@ class LoginRepositoryImpl implements LoginRepository {
       // the other side, and `.tr()`s anything under the `error.*` prefix.
       throw const LoginException('error.unreachableServer');
     } catch (e) {
-      throw LoginException('error.unknown');
+      throw const LoginException('error.unknown');
     }
   }
 }

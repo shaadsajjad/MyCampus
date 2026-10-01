@@ -12,7 +12,7 @@ import 'package:mycampus/features/courses/presentation/cubit/compose_course_cubi
 /// `ComposeNoticeSheet` uses, and the reason the two Cubits never have to
 /// know about each other.
 class ComposeCourseSheet extends StatelessWidget {
-  const ComposeCourseSheet({super.key});
+  const new({super.key});
 
   /// Shows the sheet and resolves to `true` when a course was created.
   static Future<bool?> show(BuildContext context) {

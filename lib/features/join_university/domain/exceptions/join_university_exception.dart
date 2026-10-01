@@ -1,5 +1,5 @@
 class JoinUniversityException implements Exception {
-  const JoinUniversityException(this.message);
+  const new(this.message);
 
   final String message;
 

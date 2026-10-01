@@ -9,7 +9,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// `core/` promotion rule ("duplicating a widget across two features is
 /// the signal to promote it").
 class SectionHeader extends StatelessWidget {
-  const SectionHeader({
+  const new({
     required this.icon,
     required this.title,
     required this.description,

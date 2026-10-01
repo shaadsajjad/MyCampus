@@ -6,7 +6,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/features/onboarding/presentation/models/role_option.dart';
 
 class RoleCard extends StatelessWidget {
-  const RoleCard({
+  const new({
     required this.option,
     required this.isSelected,
     required this.onTap,

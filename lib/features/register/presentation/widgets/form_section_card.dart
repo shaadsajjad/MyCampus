@@ -6,7 +6,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// description header — mirrors the "Institution Details" / "Super Admin
 /// Credentials" section styling from the design reference.
 class FormSectionCard extends StatelessWidget {
-  const FormSectionCard({
+  const new({
     required this.icon,
     required this.title,
     required this.description,

@@ -9,7 +9,7 @@ abstract class JoinUniversityRemoteDataSource {
 
 class JoinUniversityRemoteDataSourceImpl
     implements JoinUniversityRemoteDataSource {
-  JoinUniversityRemoteDataSourceImpl(this._pb);
+  new(this._pb);
 
   final PocketBase _pb;
 

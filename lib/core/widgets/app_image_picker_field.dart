@@ -14,7 +14,7 @@ enum ImagePickerShape { circle, roundedSquare }
 /// directly and hands the resulting bytes to [onChanged]; the Cubit just
 /// stores them.
 class AppImagePickerField extends StatelessWidget {
-  const AppImagePickerField({
+  const new({
     required this.label,
     required this.imageBytes,
     required this.onChanged,
@@ -118,50 +118,12 @@ class AppImagePickerField extends StatelessWidget {
   }
 
   Future<void> _openPicker(BuildContext context) async {
-    final source = await showModalBottomSheet<ImageSource>(
-      context: context,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppTheme.radiusXl),
-        ),
-      ),
-      builder: (context) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo_camera_outlined),
-              title: Text('common.takePhoto'.tr()),
-              onTap: () => Navigator.of(context).pop(ImageSource.camera),
-            ),
-            ListTile(
-              leading: const Icon(Icons.photo_library_outlined),
-              title: Text('common.chooseFromGallery'.tr()),
-              onTap: () => Navigator.of(context).pop(ImageSource.gallery),
-            ),
-            if (imageBytes != null && onRemove != null)
-              ListTile(
-                leading: const Icon(
-                  Icons.delete_outline,
-                  color: AppColors.error,
-                ),
-                title: Text(
-                  'common.removePhoto'.tr(),
-                  style: const TextStyle(color: AppColors.error),
-                ),
-                onTap: () {
-                  onRemove!();
-                  Navigator.of(context).pop();
-                },
-              ),
-          ],
-        ),
-      ),
+    final source = await showImageSourcePicker(
+      context,
+      canRemove: imageBytes != null,
+      onRemove: onRemove,
     );
-
-    if (source == null) {
-      return;
-    }
+    if (source == null) return;
 
     final picked = await ImagePicker().pickImage(
       source: source,
@@ -173,4 +135,56 @@ class AppImagePickerField extends StatelessWidget {
     final bytes = await picked.readAsBytes();
     onChanged(bytes);
   }
+}
+
+/// The take-photo / choose-from-gallery / remove-photo bottom sheet
+/// [AppImagePickerField] uses internally, exposed standalone for screens
+/// that upload immediately on pick rather than staging bytes in a form —
+/// e.g. changing an already-saved profile photo (see
+/// `pickAndApplyAvatar` in `core/widgets/avatar_editor.dart`).
+Future<ImageSource?> showImageSourcePicker(
+  BuildContext context, {
+  bool canRemove = false,
+  VoidCallback? onRemove,
+}) {
+  return showModalBottomSheet<ImageSource>(
+    context: context,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        top: Radius.circular(AppTheme.radiusXl),
+      ),
+    ),
+    builder: (sheetContext) => SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.photo_camera_outlined),
+            title: Text('common.takePhoto'.tr()),
+            onTap: () => Navigator.of(sheetContext).pop(ImageSource.camera),
+          ),
+          ListTile(
+            leading: const Icon(Icons.photo_library_outlined),
+            title: Text('common.chooseFromGallery'.tr()),
+            onTap: () => Navigator.of(sheetContext).pop(ImageSource.gallery),
+          ),
+          if (canRemove && onRemove != null)
+            ListTile(
+              leading: const Icon(
+                Icons.delete_outline,
+                color: AppColors.error,
+              ),
+              title: Text(
+                'common.removePhoto'.tr(),
+                style: const TextStyle(color: AppColors.error),
+              ),
+              onTap: () {
+                onRemove();
+                Navigator.of(sheetContext).pop();
+              },
+            ),
+        ],
+      ),
+    ),
+  );
 }

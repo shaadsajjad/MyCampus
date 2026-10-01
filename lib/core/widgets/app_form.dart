@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mycampus/core/widgets/primary_action_button.dart' show PrimaryActionButton;
 
 /// Wraps a [Form] and centralizes the "validate then submit" sequence.
 ///
@@ -32,7 +33,7 @@ import 'package:flutter/material.dart';
 /// }
 /// ```
 class AppForm extends StatefulWidget {
-  const AppForm({
+  const new({
     required this.onSubmit,
     required this.child,
     this.formKey,

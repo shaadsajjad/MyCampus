@@ -4,7 +4,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 
 /// Purely decorative square viewfinder drawn over the live camera preview.
 class ScanFrameOverlay extends StatelessWidget {
-  const ScanFrameOverlay({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

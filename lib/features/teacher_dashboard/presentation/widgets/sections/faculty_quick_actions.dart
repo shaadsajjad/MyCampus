@@ -7,7 +7,7 @@ import 'package:mycampus/core/theme/app_theme.dart';
 /// Gradebook, Course Materials. Each tile has its own accent color,
 /// icon, title and short helper line.
 class FacultyQuickActions extends StatelessWidget {
-  const FacultyQuickActions({
+  const new({
     required this.onMarkAttendanceTap,
     required this.onPostNoticeTap,
     required this.onGradebookTap,
@@ -93,7 +93,7 @@ class FacultyQuickActions extends StatelessWidget {
 }
 
 class _ActionTile extends StatelessWidget {
-  const _ActionTile({
+  const new({
     required this.icon,
     required this.iconBg,
     required this.iconColor,

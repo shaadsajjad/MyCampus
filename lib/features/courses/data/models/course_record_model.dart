@@ -3,7 +3,7 @@
 /// (`credits`/`contactHours` are Number fields on the record). Parsing those
 /// into the domain-level `Course` is the repository's job, not this model's.
 class CourseRecordModel {
-  const CourseRecordModel({
+  const new({
     required this.id,
     required this.code,
     required this.title,

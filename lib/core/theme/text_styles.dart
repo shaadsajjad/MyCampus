@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// a `TextTheme` — prefer `Theme.of(context).textTheme` in UI code over
 /// referencing these constants directly.
 class AppTextStyles {
-  AppTextStyles._();
+  new _();
 
   static const String _fontFamily = 'Inter';
 

@@ -19,7 +19,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 /// widget only reads its busy state and dispatches, holding no state of
 /// its own.
 class CampusPassCard extends StatelessWidget {
-  const CampusPassCard({
+  const new({
     required this.campusId,
     required this.universityName,
     required this.onAction,
@@ -223,7 +223,7 @@ class CampusPassCard extends StatelessWidget {
 }
 
 class _ButtonSpinner extends StatelessWidget {
-  const _ButtonSpinner({required this.color});
+  const new({required this.color});
 
   final Color color;
 
@@ -241,7 +241,7 @@ class _ButtonSpinner extends StatelessWidget {
 }
 
 class _QrPanel extends StatelessWidget {
-  const _QrPanel({required this.campusId});
+  const new({required this.campusId});
 
   final String? campusId;
 
@@ -286,7 +286,7 @@ class _QrPanel extends StatelessWidget {
 }
 
 class _CopyIdPill extends StatelessWidget {
-  const _CopyIdPill({required this.campusId, required this.onCopied});
+  const new({required this.campusId, required this.onCopied});
 
   final String campusId;
   final VoidCallback onCopied;

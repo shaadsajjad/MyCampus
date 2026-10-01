@@ -14,7 +14,7 @@ import 'package:mycampus/features/courses/presentation/widgets/course_card.dart'
 /// it owns its own [AppBar] (back button + title) rather than relying on
 /// `SuperAdminDashboardPage`'s.
 class CoursesPage extends StatelessWidget {
-  const CoursesPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class CoursesPage extends StatelessWidget {
 }
 
 class _CoursesView extends StatelessWidget {
-  const _CoursesView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +143,7 @@ class _CoursesView extends StatelessWidget {
 /// The AppBar already carries the "Courses" title — this just adds the
 /// one-line description and the "N courses • M credits" stat underneath it.
 class _Summary extends StatelessWidget {
-  const _Summary({required this.courseCount, required this.totalCredits});
+  const new({required this.courseCount, required this.totalCredits});
 
   final int courseCount;
   final int totalCredits;
@@ -168,7 +168,7 @@ class _Summary extends StatelessWidget {
 }
 
 class _SearchField extends StatelessWidget {
-  const _SearchField({required this.onChanged});
+  const new({required this.onChanged});
 
   final ValueChanged<String> onChanged;
 
@@ -191,7 +191,7 @@ class _SearchField extends StatelessWidget {
 }
 
 class _ErrorState extends StatelessWidget {
-  const _ErrorState({required this.message});
+  const new({required this.message});
 
   final String message;
 
@@ -220,7 +220,7 @@ class _ErrorState extends StatelessWidget {
 }
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState({required this.hasQuery});
+  const new({required this.hasQuery});
 
   final bool hasQuery;
 

@@ -10,7 +10,7 @@ import 'package:mycampus/features/student_dashboard/domain/repositories/student_
 import 'package:pocketbase/pocketbase.dart';
 
 class StudentDashboardRepositoryImpl implements StudentDashboardRepository {
-  StudentDashboardRepositoryImpl({
+  new({
     required StudentDashboardRemoteDataSource remoteDataSource,
   }) : _remote = remoteDataSource;
 

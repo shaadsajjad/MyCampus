@@ -17,7 +17,7 @@ import 'package:mycampus/features/student_dashboard/presentation/widgets/student
 /// approval" to the home dashboard the moment a super admin approves or
 /// rejects the request.
 class StudentDashboardPage extends StatelessWidget {
-  const StudentDashboardPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class StudentDashboardPage extends StatelessWidget {
 }
 
 class _StudentDashboardView extends StatelessWidget {
-  const _StudentDashboardView();
+  const new();
 
   @override
   Widget build(BuildContext context) {

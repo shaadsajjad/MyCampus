@@ -13,7 +13,7 @@ import 'package:mycampus/features/notices/presentation/widgets/notice_card.dart'
 /// route, so it provides its own [NoticesCubit] the same way a page
 /// normally would.
 class NoticesPage extends StatelessWidget {
-  const NoticesPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class NoticesPage extends StatelessWidget {
 }
 
 class _NoticesView extends StatelessWidget {
-  const _NoticesView();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +100,7 @@ class _NoticesView extends StatelessWidget {
 }
 
 class _EmptyState extends StatelessWidget {
-  const _EmptyState();
+  const new();
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +127,7 @@ class _EmptyState extends StatelessWidget {
 }
 
 class _ErrorState extends StatelessWidget {
-  const _ErrorState({required this.message, required this.onRetry});
+  const new({required this.message, required this.onRetry});
 
   final String? message;
   final Future<void> Function() onRetry;

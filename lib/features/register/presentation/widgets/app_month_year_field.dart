@@ -7,7 +7,7 @@ import 'package:mycampus/core/widgets/month_year_picker.dart';
 /// A labeled, tap-to-open month + year picker field bound to a Cubit's
 /// state — mirrors `AppTextField` but for a `DateTime?` (day is ignored).
 class AppMonthYearField extends StatelessWidget {
-  const AppMonthYearField({
+  const new({
     required this.label,
     required this.icon,
     required this.value,

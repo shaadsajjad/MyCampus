@@ -32,7 +32,7 @@ extension MemberStatusLabel on MemberStatus {
 /// super admin's profile shows for the university they *own* — a member
 /// has no `type`/`establishedAt` to manage, but reads them fine.
 class MemberCampus {
-  const MemberCampus({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,
@@ -56,7 +56,7 @@ class MemberCampus {
 /// different "Academic" section per role, but both come from the same
 /// fetch so the profile tab is a single call either way.
 class StudentEnrollment {
-  const StudentEnrollment({
+  const new({
     required this.studentId,
     required this.department,
     required this.batch,
@@ -68,7 +68,7 @@ class StudentEnrollment {
 }
 
 class FacultyAppointment {
-  const FacultyAppointment({
+  const new({
     required this.teacherId,
     required this.department,
     required this.designation,
@@ -84,7 +84,7 @@ class FacultyAppointment {
 /// is structurally identical, so splitting it would duplicate the page
 /// without changing what it shows.
 class MemberProfile {
-  const MemberProfile({
+  const new({
     required this.id,
     required this.email,
     required this.verified,

@@ -1,15 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:mycampus/core/domain/entities/notice_audience.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/widgets/coming_soon_tab.dart';
 import 'package:mycampus/core/widgets/dashboard_shell.dart';
 import 'package:mycampus/features/member_profile/presentation/pages/member_profile_page.dart';
-import 'package:mycampus/core/domain/entities/notice_audience.dart';
 import 'package:mycampus/features/notices/presentation/pages/member_notices_page.dart';
 import 'package:mycampus/features/student_dashboard/domain/entities/student_university.dart';
-import 'package:mycampus/features/student_dashboard/presentation/widgets/sections/access_pill_bar.dart';
 import 'package:mycampus/features/student_dashboard/presentation/widgets/sections/academic_tools_bento.dart';
+import 'package:mycampus/features/student_dashboard/presentation/widgets/sections/access_pill_bar.dart';
 import 'package:mycampus/features/student_dashboard/presentation/widgets/sections/attendance_progress_card.dart';
 import 'package:mycampus/features/student_dashboard/presentation/widgets/sections/bulletins_section.dart';
 import 'package:mycampus/features/student_dashboard/presentation/widgets/sections/digital_id_card.dart';
@@ -25,7 +25,7 @@ import 'package:mycampus/features/student_dashboard/presentation/widgets/section
 /// currently no-op stubs that route to the matching "coming soon"
 /// placeholder tab inside the bottom-nav shell.
 class StudentHomeView extends StatelessWidget {
-  const StudentHomeView({
+  const new({
     required this.name,
     required this.email,
     required this.university,
@@ -76,7 +76,7 @@ class StudentHomeView extends StatelessWidget {
 }
 
 class _StudentHomeBody extends StatelessWidget {
-  const _StudentHomeBody({
+  const new({
     required this.name,
     required this.email,
     required this.university,
@@ -156,7 +156,7 @@ class _StudentHomeBody extends StatelessWidget {
 /// the old AppBar title so the redesigned dashboards can keep the full
 /// gradient/glassy look).
 class _BrandHeader extends StatelessWidget {
-  const _BrandHeader({required this.subtitleKey});
+  const new({required this.subtitleKey});
 
   final String subtitleKey;
 
@@ -237,7 +237,7 @@ class _BrandHeader extends StatelessWidget {
 }
 
 class _HeaderIconButton extends StatelessWidget {
-  const _HeaderIconButton({
+  const new({
     required this.icon,
     required this.onTap,
     this.showDot = false,
@@ -281,7 +281,7 @@ class _HeaderIconButton extends StatelessWidget {
 }
 
 class _HeaderAvatarButton extends StatelessWidget {
-  const _HeaderAvatarButton({required this.onTap});
+  const new({required this.onTap});
 
   final VoidCallback onTap;
 
@@ -300,7 +300,6 @@ class _HeaderAvatarButton extends StatelessWidget {
             shape: BoxShape.circle,
             border: Border.all(
               color: AppColors.outlineVariant.withValues(alpha: 0.3),
-              width: 1,
             ),
           ),
           alignment: Alignment.center,

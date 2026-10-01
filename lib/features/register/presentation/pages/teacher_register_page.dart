@@ -22,7 +22,7 @@ import 'package:mycampus/features/register/presentation/widgets/department_optio
 import 'package:mycampus/features/register/presentation/widgets/form_section_card.dart';
 
 class TeacherRegisterPage extends StatelessWidget {
-  const TeacherRegisterPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class TeacherRegisterPage extends StatelessWidget {
 }
 
 class TeacherRegisterView extends StatelessWidget {
-  const TeacherRegisterView({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

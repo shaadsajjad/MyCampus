@@ -15,7 +15,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 /// (the on-screen QR sits on a transparent background, which disappears in
 /// a dark-mode photo viewer).
 class CampusPassImageRenderer {
-  const CampusPassImageRenderer();
+  const new();
 
   static const double _width = 1080;
   static const double _padding = 96;

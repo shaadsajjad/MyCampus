@@ -22,7 +22,7 @@ import 'package:mycampus/features/register/presentation/widgets/app_month_year_f
 import 'package:mycampus/features/register/presentation/widgets/form_section_card.dart';
 
 class SuperAdminRegisterPage extends StatelessWidget {
-  const SuperAdminRegisterPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class SuperAdminRegisterPage extends StatelessWidget {
 }
 
 class SuperAdminRegisterView extends StatelessWidget {
-  const SuperAdminRegisterView({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

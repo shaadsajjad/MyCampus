@@ -2,7 +2,7 @@
 /// `universities` record id) — shown for confirmation before the signed-in
 /// student/teacher sends a join request to it.
 class UniversityPreview {
-  const UniversityPreview({
+  const new({
     required this.id,
     required this.name,
     required this.shortName,

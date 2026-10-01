@@ -1,5 +1,5 @@
 class StudentDashboardException implements Exception {
-  const StudentDashboardException(this.message);
+  const new(this.message);
 
   final String message;
 

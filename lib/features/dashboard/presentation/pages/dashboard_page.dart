@@ -16,7 +16,7 @@ import 'package:mycampus/features/teacher_dashboard/presentation/pages/teacher_d
 /// fallback for the (normally unreachable) case where [role] is still
 /// `null` — e.g. no signed-in user.
 class DashboardPage extends StatelessWidget {
-  const DashboardPage({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class DashboardPage extends StatelessWidget {
 }
 
 class DashboardView extends StatelessWidget {
-  const DashboardView({super.key});
+  const new({super.key});
 
   @override
   Widget build(BuildContext context) {

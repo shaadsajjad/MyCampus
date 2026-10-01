@@ -4,7 +4,7 @@ import 'package:mycampus/core/domain/entities/user_role.dart';
 import 'package:mycampus/features/dashboard/domain/repositories/dashboard_repository.dart';
 
 class DashboardState {
-  const DashboardState({
+  const new({
     this.role,
     this.name,
     this.email,
@@ -19,7 +19,7 @@ class DashboardState {
 }
 
 class DashboardCubit extends Cubit<DashboardState> {
-  DashboardCubit({DashboardRepository? dashboardRepository})
+  new({DashboardRepository? dashboardRepository})
     : _dashboardRepository = dashboardRepository ?? DI.dashboardRepository,
       super(const DashboardState()) {
     emit(

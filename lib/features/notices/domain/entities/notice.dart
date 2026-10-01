@@ -6,7 +6,7 @@ export 'package:mycampus/core/domain/entities/notice_audience.dart'
 /// A campus-wide announcement posted by a super admin, scoped to their own
 /// university.
 class Notice {
-  const Notice({
+  const new({
     required this.id,
     required this.title,
     required this.body,

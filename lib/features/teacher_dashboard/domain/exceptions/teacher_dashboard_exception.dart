@@ -1,5 +1,5 @@
 class TeacherDashboardException implements Exception {
-  const TeacherDashboardException(this.message);
+  const new(this.message);
 
   final String message;
 
