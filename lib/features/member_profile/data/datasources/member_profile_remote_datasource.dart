@@ -68,7 +68,11 @@ class MemberProfileRemoteDataSourceImpl
         .update(
           userId,
           files: [
-            http.MultipartFile.fromBytes('avatar', bytes, filename: 'avatar.jpg'),
+            http.MultipartFile.fromBytes(
+              'avatar',
+              bytes,
+              filename: 'avatar.jpg',
+            ),
           ],
           expand: _expand,
         );

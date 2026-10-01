@@ -1,4 +1,5 @@
-import 'package:mycampus/features/verification/domain/exceptions/verification_exception.dart' show VerificationException;
+import 'package:mycampus/features/verification/domain/exceptions/verification_exception.dart'
+    show VerificationException;
 
 /// The contract the verification screen codes against;
 /// [VerificationException] is the only failure type it needs to know

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:mycampus/core/domain/entities/notice_audience.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
-import 'package:mycampus/core/widgets/coming_soon_tab.dart';
 import 'package:mycampus/core/widgets/dashboard_shell.dart';
 import 'package:mycampus/features/member_profile/presentation/pages/member_profile_page.dart';
 import 'package:mycampus/features/notices/presentation/pages/member_notices_page.dart';
+import 'package:mycampus/features/routine/presentation/pages/my_routine_page.dart';
 import 'package:mycampus/features/teacher_dashboard/domain/entities/teacher_university.dart';
 import 'package:mycampus/features/teacher_dashboard/presentation/widgets/sections/academic_telemetry_row.dart';
 import 'package:mycampus/features/teacher_dashboard/presentation/widgets/sections/announcements_section.dart';
@@ -51,7 +51,10 @@ class TeacherHomeView extends StatelessWidget {
       initialIndex: 0,
       navItems: const [
         DashboardNavItem(icon: Icons.grid_view, labelKey: 'common.home'),
-        DashboardNavItem(icon: Icons.calendar_today, labelKey: 'common.routine'),
+        DashboardNavItem(
+          icon: Icons.calendar_today,
+          labelKey: 'common.routine',
+        ),
         DashboardNavItem(icon: Icons.campaign, labelKey: 'common.notices'),
         DashboardNavItem(
           icon: Icons.account_circle,
@@ -68,10 +71,7 @@ class TeacherHomeView extends StatelessWidget {
           department: department,
           designation: designation,
         ),
-        const ComingSoonTab(
-          titleKey: 'common.routine',
-          icon: Icons.calendar_today,
-        ),
+        const MyRoutinePage(),
         const MemberNoticesPage(audience: NoticeAudience.faculty),
         const MemberProfilePage(),
       ],
@@ -317,11 +317,7 @@ class _BrandHeader extends StatelessWidget {
 }
 
 class _HeaderIconButton extends StatelessWidget {
-  const new({
-    required this.icon,
-    required this.onTap,
-    this.showDot = false,
-  });
+  const new({required this.icon, required this.onTap, this.showDot = false});
 
   final IconData icon;
   final VoidCallback onTap;
@@ -383,11 +379,7 @@ class _HeaderAvatarButton extends StatelessWidget {
             ),
           ),
           alignment: Alignment.center,
-          child: const Icon(
-            Icons.person,
-            color: AppColors.primary,
-            size: 20,
-          ),
+          child: const Icon(Icons.person, color: AppColors.primary, size: 20),
         ),
       ),
     );

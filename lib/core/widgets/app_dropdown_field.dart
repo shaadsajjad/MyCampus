@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/widgets/field_label.dart';
 
-/// A labeled [DropdownButtonFormField] bound to a Cubit's state.
+/// A labeled [DropdownButtonFormField] bound to a Cubit's state. Promoted
+/// to `core/` once a second feature (`routine`, for its course/day
+/// pickers) needed the identical labeled-dropdown shape `register` already
+/// had — see `clean_architecture.md`'s `core/` promotion rule.
 class AppDropdownField<T> extends StatelessWidget {
   const new({
     required this.label,

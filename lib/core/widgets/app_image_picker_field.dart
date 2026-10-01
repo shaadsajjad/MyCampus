@@ -170,10 +170,7 @@ Future<ImageSource?> showImageSourcePicker(
           ),
           if (canRemove && onRemove != null)
             ListTile(
-              leading: const Icon(
-                Icons.delete_outline,
-                color: AppColors.error,
-              ),
+              leading: const Icon(Icons.delete_outline, color: AppColors.error),
               title: Text(
                 'common.removePhoto'.tr(),
                 style: const TextStyle(color: AppColors.error),

@@ -7,9 +7,8 @@ import 'package:mycampus/features/verification/domain/repositories/verification_
 import 'package:pocketbase/pocketbase.dart';
 
 class VerificationRepositoryImpl implements VerificationRepository {
-  new({
-    required VerificationRemoteDataSource remoteDataSource,
-  }) : _remote = remoteDataSource;
+  new({required VerificationRemoteDataSource remoteDataSource})
+    : _remote = remoteDataSource;
 
   final VerificationRemoteDataSource _remote;
 

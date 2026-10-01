@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:mycampus/core/domain/entities/notice_audience.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
-import 'package:mycampus/core/widgets/coming_soon_tab.dart';
 import 'package:mycampus/core/widgets/dashboard_shell.dart';
 import 'package:mycampus/features/member_profile/presentation/pages/member_profile_page.dart';
 import 'package:mycampus/features/notices/presentation/pages/member_notices_page.dart';
+import 'package:mycampus/features/routine/presentation/pages/my_routine_page.dart';
 import 'package:mycampus/features/student_dashboard/domain/entities/student_university.dart';
 import 'package:mycampus/features/student_dashboard/presentation/widgets/sections/academic_tools_bento.dart';
 import 'package:mycampus/features/student_dashboard/presentation/widgets/sections/access_pill_bar.dart';
@@ -48,7 +48,10 @@ class StudentHomeView extends StatelessWidget {
       initialIndex: 0,
       navItems: const [
         DashboardNavItem(icon: Icons.grid_view, labelKey: 'common.home'),
-        DashboardNavItem(icon: Icons.calendar_today, labelKey: 'common.routine'),
+        DashboardNavItem(
+          icon: Icons.calendar_today,
+          labelKey: 'common.routine',
+        ),
         DashboardNavItem(icon: Icons.campaign, labelKey: 'common.notices'),
         DashboardNavItem(
           icon: Icons.account_circle,
@@ -64,10 +67,7 @@ class StudentHomeView extends StatelessWidget {
           studentId: studentId,
           program: program,
         ),
-        const ComingSoonTab(
-          titleKey: 'common.routine',
-          icon: Icons.calendar_today,
-        ),
+        const MyRoutinePage(),
         const MemberNoticesPage(audience: NoticeAudience.students),
         const MemberProfilePage(),
       ],
@@ -103,9 +103,7 @@ class _StudentHomeBody extends StatelessWidget {
 
     return Column(
       children: [
-        const _BrandHeader(
-          subtitleKey: 'common.approvedAndVerified',
-        ),
+        const _BrandHeader(subtitleKey: 'common.approvedAndVerified'),
         Expanded(
           child: ListView(
             padding: const EdgeInsets.fromLTRB(
@@ -115,9 +113,7 @@ class _StudentHomeBody extends StatelessWidget {
               AppTheme.spaceXl,
             ),
             children: [
-              AccessPillBar(
-                universityName: university?.shortName ?? 'Campus',
-              ),
+              AccessPillBar(universityName: university?.shortName ?? 'Campus'),
               const SizedBox(height: AppTheme.spaceLg),
               DigitalIdCard(
                 university: university,
@@ -136,10 +132,7 @@ class _StudentHomeBody extends StatelessWidget {
               const SizedBox(height: AppTheme.spaceLg),
               const AttendanceProgressCard(),
               const SizedBox(height: AppTheme.spaceLg),
-              TodaysScheduleSection(
-                onSubmitBeacon: _noop,
-                onOpenNotes: _noop,
-              ),
+              TodaysScheduleSection(onSubmitBeacon: _noop, onOpenNotes: _noop),
               const SizedBox(height: AppTheme.spaceLg),
               const BulletinsSection(),
             ],
@@ -237,11 +230,7 @@ class _BrandHeader extends StatelessWidget {
 }
 
 class _HeaderIconButton extends StatelessWidget {
-  const new({
-    required this.icon,
-    required this.onTap,
-    this.showDot = false,
-  });
+  const new({required this.icon, required this.onTap, this.showDot = false});
 
   final IconData icon;
   final VoidCallback onTap;
@@ -303,11 +292,7 @@ class _HeaderAvatarButton extends StatelessWidget {
             ),
           ),
           alignment: Alignment.center,
-          child: const Icon(
-            Icons.person,
-            color: AppColors.primary,
-            size: 20,
-          ),
+          child: const Icon(Icons.person, color: AppColors.primary, size: 20),
         ),
       ),
     );

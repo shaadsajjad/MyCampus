@@ -33,7 +33,9 @@ class DigitalIdCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final shortId = studentId.isNotEmpty
-        ? (studentId.length > 8 ? studentId.substring(0, 8).toUpperCase() : studentId)
+        ? (studentId.length > 8
+              ? studentId.substring(0, 8).toUpperCase()
+              : studentId)
         : 'STU-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}';
 
     return Stack(
@@ -118,10 +120,8 @@ class DigitalIdCard extends StatelessWidget {
                     ),
                     child: Text(
                       'STU-$shortId',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: Colors.white,
-                        letterSpacing: 0.4,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall
+                          ?.copyWith(color: Colors.white, letterSpacing: 0.4),
                     ),
                   ),
                 ],
@@ -203,9 +203,7 @@ class DigitalIdCard extends StatelessWidget {
                                 namedArgs: {'date': expiry},
                               ),
                               style: Theme.of(context).textTheme.labelSmall
-                                  ?.copyWith(
-                                    color: AppColors.primaryFixedDim,
-                                  ),
+                                  ?.copyWith(color: AppColors.primaryFixedDim),
                             ),
                             const Text(
                               '•',
@@ -337,10 +335,8 @@ class _InitialsAvatar extends StatelessWidget {
     return Center(
       child: Text(
         initials.isEmpty ? '?' : initials,
-        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        ),
+        style: Theme.of(context).textTheme.titleMedium
+            ?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
       ),
     );
   }

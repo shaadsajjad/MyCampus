@@ -20,7 +20,9 @@ abstract class TeacherDashboardRemoteDataSource {
   /// super-admin approval flipping `status` from `pending` → `approved`).
   /// Returns an unsubscribe handle, or null if there's no signed-in account
   /// to watch.
-  Future<void> Function()? watchCurrentUser({required void Function() onChange});
+  Future<void> Function()? watchCurrentUser({
+    required void Function() onChange,
+  });
 }
 
 class TeacherDashboardRemoteDataSourceImpl
@@ -47,7 +49,8 @@ class TeacherDashboardRemoteDataSourceImpl
   String? get currentStatus => _emptyToNull(_record?.getStringValue('status'));
 
   @override
-  String? get currentAvatarFileName => _emptyToNull(_record?.getStringValue('avatar'));
+  String? get currentAvatarFileName =>
+      _emptyToNull(_record?.getStringValue('avatar'));
 
   @override
   String? get currentUserId => _record?.id;
@@ -76,11 +79,7 @@ class TeacherDashboardRemoteDataSourceImpl
   Future<TeacherProfileModel?> getTeacherProfile(String userId) async {
     final result = await _pb
         .collection('teachers')
-        .getList(
-          page: 1,
-          perPage: 1,
-          filter: "user = '$userId'",
-        );
+        .getList(page: 1, perPage: 1, filter: "user = '$userId'");
     if (result.items.isEmpty) return null;
     return TeacherProfileModel.fromRecord(result.items.first);
   }

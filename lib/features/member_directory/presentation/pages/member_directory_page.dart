@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/core/widgets/section_header.dart';
@@ -48,16 +46,6 @@ class _MemberDirectoryView extends StatelessWidget {
                 icon: Icons.groups,
                 title: 'directory.title'.tr(),
                 description: 'directory.desc'.tr(),
-                // Courses live one level down rather than as a 6th
-                // bottom-nav tab (Material's own guidance stops at 5, and
-                // the bar was already full) — both screens are the same
-                // "campus registry" concern, so a link between them reads
-                // naturally.
-                trailing: OutlinedButton.icon(
-                  onPressed: () => context.push(AppRoute.courses),
-                  icon: const Icon(Icons.school, size: 18),
-                  label: Text('directory.manageCourses'.tr()),
-                ),
               ),
               const SizedBox(height: AppTheme.spaceMd),
               _SearchField(onChanged: cubit.search),

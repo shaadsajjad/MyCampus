@@ -1,5 +1,6 @@
 import 'package:mycampus/features/super_admin_dashboard/domain/entities/campus_pass.dart';
-import 'package:mycampus/features/super_admin_dashboard/domain/exceptions/campus_pass_exception.dart' show CampusPassException;
+import 'package:mycampus/features/super_admin_dashboard/domain/exceptions/campus_pass_exception.dart'
+    show CampusPassException;
 
 /// Exports the campus pass as an image. [CampusPassException] is the only
 /// failure type callers need to handle.

@@ -53,8 +53,9 @@ class AcademicTelemetryRow extends StatelessWidget {
                 label: 'teacher.enrolled'.tr(),
                 value: '$enrolledCount',
                 valueColor: AppColors.primary,
-                footer: 'teacher.sections'
-                    .tr(namedArgs: {'count': '$sectionsCount'}),
+                footer: 'teacher.sections'.tr(
+                  namedArgs: {'count': '$sectionsCount'},
+                ),
               ),
             ),
             const SizedBox(width: AppTheme.spaceSm),
@@ -62,7 +63,9 @@ class AcademicTelemetryRow extends StatelessWidget {
               child: _StatTile(
                 label: 'teacher.attendanceRate'.tr(),
                 value: '${attendancePercent.toStringAsFixed(1)}%',
-                footer: 'teacher.trendUp'.tr(namedArgs: {'pct': attendanceDelta}),
+                footer: 'teacher.trendUp'.tr(
+                  namedArgs: {'pct': attendanceDelta},
+                ),
                 footerIcon: Icons.trending_up,
                 footerColor: AppColors.secondary,
               ),
@@ -119,9 +122,8 @@ class _StatTile extends StatelessWidget {
         children: [
           Text(
             label,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: AppColors.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.labelSmall
+                ?.copyWith(color: AppColors.onSurfaceVariant),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),

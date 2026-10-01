@@ -89,9 +89,8 @@ class AcademicToolsBento extends StatelessWidget {
               ),
               titleSuffix: TextSpan(
                 text: 'student.cgpaLabel'.tr(),
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.onSurfaceVariant,
-                ),
+                style: Theme.of(context).textTheme.labelSmall
+                    ?.copyWith(color: AppColors.onSurfaceVariant),
               ),
               subtitle: 'student.deanList'.tr(),
               badgeText: 'student.topPercent'.tr(namedArgs: {'pct': '3'}),
@@ -122,7 +121,12 @@ class _BentoTile extends StatelessWidget {
     required this.icon,
     required this.iconBg,
     required this.iconColor,
-    required this.subtitle, required this.badgeText, required this.badgeColor, required this.badgeTextColor, required this.onTap, this.title,
+    required this.subtitle,
+    required this.badgeText,
+    required this.badgeColor,
+    required this.badgeTextColor,
+    required this.onTap,
+    this.title,
     this.iconFill,
     this.titlePrefix,
     this.titleSuffix,
@@ -184,9 +188,7 @@ class _BentoTile extends StatelessWidget {
                     ),
                     decoration: BoxDecoration(
                       color: badgeColor,
-                      borderRadius: BorderRadius.circular(
-                        AppTheme.radiusFull,
-                      ),
+                      borderRadius: BorderRadius.circular(AppTheme.radiusFull),
                     ),
                     child: Text(
                       badgeText,
@@ -214,19 +216,13 @@ class _BentoTile extends StatelessWidget {
                     ),
                   if (titlePrefix != null || titleSuffix != null)
                     RichText(
-                      text: TextSpan(
-                        children: [
-                          ?titlePrefix,
-                          ?titleSuffix,
-                        ],
-                      ),
+                      text: TextSpan(children: [?titlePrefix, ?titleSuffix]),
                     ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.onSurfaceVariant,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall
+                        ?.copyWith(color: AppColors.onSurfaceVariant),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

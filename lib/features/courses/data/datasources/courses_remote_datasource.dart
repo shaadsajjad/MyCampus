@@ -54,17 +54,19 @@ class CoursesRemoteDataSourceImpl implements CoursesRemoteDataSource {
     required int contactHours,
     String? department,
   }) {
-    return _pb.collection('courses').create(
-      body: {
-        'university': universityId,
-        'code': code,
-        'title': title,
-        'credits': credits,
-        'contactHours': contactHours,
-        if (department != null && department.isNotEmpty)
-          'department': department,
-      },
-    );
+    return _pb
+        .collection('courses')
+        .create(
+          body: {
+            'university': universityId,
+            'code': code,
+            'title': title,
+            'credits': credits,
+            'contactHours': contactHours,
+            if (department != null && department.isNotEmpty)
+              'department': department,
+          },
+        );
   }
 
   @override

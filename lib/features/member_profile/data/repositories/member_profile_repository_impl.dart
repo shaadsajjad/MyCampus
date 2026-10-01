@@ -11,9 +11,8 @@ import 'package:mycampus/features/member_profile/domain/repositories/member_prof
 import 'package:pocketbase/pocketbase.dart';
 
 class MemberProfileRepositoryImpl implements MemberProfileRepository {
-  new({
-    required MemberProfileRemoteDataSource remoteDataSource,
-  }) : _remote = remoteDataSource;
+  new({required MemberProfileRemoteDataSource remoteDataSource})
+    : _remote = remoteDataSource;
 
   final MemberProfileRemoteDataSource _remote;
 

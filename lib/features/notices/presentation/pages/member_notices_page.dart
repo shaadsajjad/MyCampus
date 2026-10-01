@@ -66,7 +66,8 @@ class _MemberNoticesView extends StatelessWidget {
               AppTheme.spaceXl,
             ),
             itemCount: state.notices.length,
-            separatorBuilder: (_, _) => const SizedBox(height: AppTheme.spaceSm),
+            separatorBuilder: (_, _) =>
+                const SizedBox(height: AppTheme.spaceSm),
             itemBuilder: (context, index) {
               // No canDelete / onDelete — members read, admins manage.
               return NoticeCard(notice: state.notices[index]);

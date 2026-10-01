@@ -108,7 +108,9 @@ class MemberProfileCubit extends Cubit<MemberProfileState> {
     final cached = _repository.cachedProfile;
     emit(
       state.copyWith(
-        status: cached == null ? MemberProfileStatus.loading : MemberProfileStatus.ready,
+        status: cached == null
+            ? MemberProfileStatus.loading
+            : MemberProfileStatus.ready,
         profile: cached,
         clearOutcome: true,
       ),
@@ -121,7 +123,10 @@ class MemberProfileCubit extends Cubit<MemberProfileState> {
     } on MemberProfileException catch (e) {
       if (!isClosed && state.profile == null) {
         emit(
-          state.copyWith(status: MemberProfileStatus.error, errorMessage: e.message),
+          state.copyWith(
+            status: MemberProfileStatus.error,
+            errorMessage: e.message,
+          ),
         );
       }
     }

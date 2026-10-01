@@ -27,6 +27,9 @@ import 'package:mycampus/features/notices/domain/repositories/notices_repository
 import 'package:mycampus/features/register/data/datasources/register_remote_datasource.dart';
 import 'package:mycampus/features/register/data/repositories/register_repository_impl.dart';
 import 'package:mycampus/features/register/domain/repositories/register_repository.dart';
+import 'package:mycampus/features/routine/data/datasources/routine_remote_datasource.dart';
+import 'package:mycampus/features/routine/data/repositories/routine_repository_impl.dart';
+import 'package:mycampus/features/routine/domain/repositories/routine_repository.dart';
 import 'package:mycampus/features/student_dashboard/data/datasources/student_dashboard_remote_datasource.dart';
 import 'package:mycampus/features/student_dashboard/data/repositories/student_dashboard_repository_impl.dart';
 import 'package:mycampus/features/student_dashboard/domain/repositories/student_dashboard_repository.dart';
@@ -54,7 +57,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Each feature that talks to PocketBase (`login`, `register`,
 /// `verification`, `dashboard`, `super_admin_dashboard`, `join_requests`,
 /// `super_admin_profile`, `member_profile`, `notices`, `join_university`,
-/// `student_dashboard`, `teacher_dashboard`) owns its own
+/// `student_dashboard`, `teacher_dashboard`, `courses`, `routine`) owns its own
 /// repository/datasource/domain types —
 /// none of them import another feature's. [pocketBase] is the one thing
 /// they all share: a single client so a session started by `login` is
@@ -74,6 +77,7 @@ class DI {
   static late final JoinRequestsRepository joinRequestsRepository;
   static late final MemberDirectoryRepository memberDirectoryRepository;
   static late final CoursesRepository coursesRepository;
+  static late final RoutineRepository routineRepository;
   static late final SuperAdminProfileRepository superAdminProfileRepository;
   static late final NoticesRepository noticesRepository;
   static late final JoinUniversityRepository joinUniversityRepository;
@@ -121,6 +125,9 @@ class DI {
     );
     coursesRepository = CoursesRepositoryImpl(
       remoteDataSource: CoursesRemoteDataSourceImpl(pocketBase),
+    );
+    routineRepository = RoutineRepositoryImpl(
+      remoteDataSource: RoutineRemoteDataSourceImpl(pocketBase),
     );
     superAdminProfileRepository = SuperAdminProfileRepositoryImpl(
       remoteDataSource: SuperAdminProfileRemoteDataSourceImpl(pocketBase),

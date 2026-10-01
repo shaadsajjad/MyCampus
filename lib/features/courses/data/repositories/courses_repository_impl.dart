@@ -97,9 +97,7 @@ class CoursesRepositoryImpl implements CoursesRepository {
       // generic catch-all below.
       rethrow;
     } catch (e) {
-      throw CoursesException(
-        'Something went wrong. Please try again. ($e)',
-      );
+      throw CoursesException('Something went wrong. Please try again. ($e)');
     }
   }
 }

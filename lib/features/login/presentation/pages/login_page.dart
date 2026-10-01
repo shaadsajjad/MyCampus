@@ -79,8 +79,7 @@ class _LoginViewState extends State<LoginView> {
           ),
           BlocListener<LoginCubit, LoginState>(
             listenWhen: (previous, current) =>
-                previous.passwordResetOutcome !=
-                    current.passwordResetOutcome &&
+                previous.passwordResetOutcome != current.passwordResetOutcome &&
                 current.passwordResetOutcome != null,
             listener: (context, state) {
               final isSent =
@@ -102,7 +101,7 @@ class _LoginViewState extends State<LoginView> {
           ),
         ],
         child: AppForm(
-          formKey: _formKey,
+          key: _formKey,
           onSubmit: cubit.submit,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

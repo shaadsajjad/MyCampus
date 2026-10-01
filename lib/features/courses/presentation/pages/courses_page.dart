@@ -9,9 +9,10 @@ import 'package:mycampus/features/courses/presentation/widgets/compose_course_sh
 import 'package:mycampus/features/courses/presentation/widgets/course_card.dart';
 
 /// The super admin's course catalogue, reached by **pushing**
-/// `AppRoute.courses` from the Member Directory tab — unlike `CoursesPage`'s
-/// siblings (Directory, Notices) it's a standalone route, not a tab body, so
-/// it owns its own [AppBar] (back button + title) rather than relying on
+/// `AppRoute.courses` from the Home tab's "Academic Registry" card (see
+/// `AcademicRegistryCard`) — unlike `CoursesPage`'s siblings (Directory,
+/// Notices) it's a standalone route, not a tab body, so it owns its own
+/// [AppBar] (back button + title) rather than relying on
 /// `SuperAdminDashboardPage`'s.
 class CoursesPage extends StatelessWidget {
   const new({super.key});
@@ -49,9 +50,7 @@ class _CoursesView extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           backgroundColor: AppColors.surface,
-          appBar: AppBar(
-            title: Text('courses.title'.tr()),
-          ),
+          appBar: AppBar(title: Text('courses.title'.tr())),
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () async {
               final created = await ComposeCourseSheet.show(context);

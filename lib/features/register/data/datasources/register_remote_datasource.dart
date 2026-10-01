@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
-import 'package:mycampus/features/register/domain/exceptions/register_exception.dart' show RegisterException;
+import 'package:mycampus/features/register/domain/exceptions/register_exception.dart'
+    show RegisterException;
 import 'package:pocketbase/pocketbase.dart';
 
 /// The only file in the `register` feature that talks to the PocketBase

@@ -1,5 +1,6 @@
 import 'package:mycampus/features/notices/domain/entities/notice.dart';
-import 'package:mycampus/features/notices/domain/exceptions/notices_exception.dart' show NoticesException;
+import 'package:mycampus/features/notices/domain/exceptions/notices_exception.dart'
+    show NoticesException;
 
 /// The contract the notices tab codes against. [NoticesException] is the
 /// only failure type it needs to know about — everything else

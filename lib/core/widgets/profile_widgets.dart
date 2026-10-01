@@ -60,11 +60,7 @@ class ProfileErrorState extends StatelessWidget {
 /// section/row rhythm — keeping one implementation is what makes the
 /// tabs look identical across roles.
 class ProfileSection extends StatelessWidget {
-  const new({
-    required this.title,
-    required this.children,
-    super.key,
-  });
+  const new({required this.title, required this.children, super.key});
 
   final String title;
   final List<Widget> children;
@@ -301,9 +297,8 @@ class ProfileBadge extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             label,
-            style: Theme.of(
-              context,
-            ).textTheme.labelSmall?.copyWith(color: Colors.white),
+            style: Theme.of(context).textTheme.labelSmall
+                ?.copyWith(color: Colors.white),
           ),
         ],
       ),

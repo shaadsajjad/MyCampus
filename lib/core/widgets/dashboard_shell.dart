@@ -121,11 +121,7 @@ class _DashboardBottomNav extends StatelessWidget {
 }
 
 class _NavButton extends StatelessWidget {
-  const new({
-    required this.item,
-    required this.isActive,
-    required this.onTap,
-  });
+  const new({required this.item, required this.isActive, required this.onTap});
 
   final DashboardNavItem item;
   final bool isActive;
@@ -146,9 +142,7 @@ class _NavButton extends StatelessWidget {
               width: 48,
               height: 26,
               decoration: BoxDecoration(
-                color: isActive
-                    ? AppColors.primaryFixed
-                    : Colors.transparent,
+                color: isActive ? AppColors.primaryFixed : Colors.transparent,
                 borderRadius: BorderRadius.circular(999),
               ),
               alignment: Alignment.center,

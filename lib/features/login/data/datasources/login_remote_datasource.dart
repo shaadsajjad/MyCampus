@@ -1,4 +1,5 @@
-import 'package:mycampus/features/login/domain/exceptions/login_exception.dart' show LoginException;
+import 'package:mycampus/features/login/domain/exceptions/login_exception.dart'
+    show LoginException;
 import 'package:pocketbase/pocketbase.dart';
 
 /// The only file in the `login` feature that talks to the PocketBase SDK

@@ -1,5 +1,6 @@
 import 'package:mycampus/features/notices/data/models/notice_record_model.dart';
-import 'package:mycampus/features/notices/domain/exceptions/notices_exception.dart' show NoticesException;
+import 'package:mycampus/features/notices/domain/exceptions/notices_exception.dart'
+    show NoticesException;
 import 'package:pocketbase/pocketbase.dart';
 
 /// The only file in the `notices` feature that talks to the PocketBase

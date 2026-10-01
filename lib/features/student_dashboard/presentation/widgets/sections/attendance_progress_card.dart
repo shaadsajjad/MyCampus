@@ -38,9 +38,8 @@ class AttendanceProgressCard extends StatelessWidget {
                     ),
                     Text(
                       'student.minRequirement'.tr(),
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.onSurfaceVariant,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall
+                          ?.copyWith(color: AppColors.onSurfaceVariant),
                     ),
                   ],
                 ),
@@ -177,9 +176,7 @@ class _ProgressBar extends StatelessWidget {
             value: percent / 100,
             minHeight: 8,
             backgroundColor: AppColors.surfaceContainer,
-            valueColor: const AlwaysStoppedAnimation<Color>(
-              AppColors.primary,
-            ),
+            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
           ),
         ),
       ],

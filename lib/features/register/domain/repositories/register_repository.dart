@@ -2,7 +2,8 @@ import 'dart:typed_data';
 
 import 'package:mycampus/features/register/domain/entities/teacher_designation.dart';
 import 'package:mycampus/features/register/domain/entities/university_type.dart';
-import 'package:mycampus/features/register/domain/exceptions/register_exception.dart' show RegisterException;
+import 'package:mycampus/features/register/domain/exceptions/register_exception.dart'
+    show RegisterException;
 
 /// The contract the three registration screens code against;
 /// [RegisterException] is the only failure type they need to know about —

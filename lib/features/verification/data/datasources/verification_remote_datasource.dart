@@ -1,4 +1,5 @@
-import 'package:mycampus/features/verification/domain/exceptions/verification_exception.dart' show VerificationException;
+import 'package:mycampus/features/verification/domain/exceptions/verification_exception.dart'
+    show VerificationException;
 import 'package:pocketbase/pocketbase.dart';
 
 /// The only file in the `verification` feature that talks to the

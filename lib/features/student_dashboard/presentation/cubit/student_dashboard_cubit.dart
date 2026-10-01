@@ -166,25 +166,28 @@ class StudentDashboardCubit extends Cubit<StudentDashboardState> {
   /// flip `justApproved` so the UI can fire a one-shot snackbar.
   void _subscribeToUserUpdates() {
     _lastSeenMembership = _repository.currentMembershipStatus;
-    _unsubscribeUpdates = _repository.watchCurrentUser(onChange: () async {
-      if (isClosed) return;
-      // Refresh the in-memory record from PocketBase first — `load()` reads
-      // off `_pb.authStore.record` for status / university.
-      await _authRefreshService.refreshCurrentUser();
-      if (isClosed) return;
-      final previousMembership = _lastSeenMembership;
-      final nextMembership = _repository.currentMembershipStatus;
-      // Update BEFORE `load()` so that, if `load()` re-enters or another
-      // event arrives mid-await, the next comparison starts from the value
-      // we just observed rather than the stale snapshot.
-      _lastSeenMembership = nextMembership;
-      final justApproved = previousMembership == MembershipStatus.pending &&
-          nextMembership == MembershipStatus.approved;
-      await load();
-      if (justApproved && !isClosed) {
-        _emitReady(justApproved: true);
-      }
-    });
+    _unsubscribeUpdates = _repository.watchCurrentUser(
+      onChange: () async {
+        if (isClosed) return;
+        // Refresh the in-memory record from PocketBase first — `load()` reads
+        // off `_pb.authStore.record` for status / university.
+        await _authRefreshService.refreshCurrentUser();
+        if (isClosed) return;
+        final previousMembership = _lastSeenMembership;
+        final nextMembership = _repository.currentMembershipStatus;
+        // Update BEFORE `load()` so that, if `load()` re-enters or another
+        // event arrives mid-await, the next comparison starts from the value
+        // we just observed rather than the stale snapshot.
+        _lastSeenMembership = nextMembership;
+        final justApproved =
+            previousMembership == MembershipStatus.pending &&
+            nextMembership == MembershipStatus.approved;
+        await load();
+        if (justApproved && !isClosed) {
+          _emitReady(justApproved: true);
+        }
+      },
+    );
   }
 
   /// Acknowledged by the page once it's shown the welcome snackbar so it

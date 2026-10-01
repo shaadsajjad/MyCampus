@@ -22,5 +22,7 @@ abstract class TeacherDashboardRepository {
   /// drives the auto-refresh from "waiting for approval" to the home
   /// dashboard when a super admin approves/rejects. Returns an unsubscribe
   /// handle (or null if no signed-in account to watch).
-  Future<void> Function()? watchCurrentUser({required void Function() onChange});
+  Future<void> Function()? watchCurrentUser({
+    required void Function() onChange,
+  });
 }

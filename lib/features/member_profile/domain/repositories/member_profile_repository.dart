@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:mycampus/features/member_profile/domain/entities/member_profile.dart';
-import 'package:mycampus/features/member_profile/domain/exceptions/member_profile_exception.dart' show MemberProfileException;
+import 'package:mycampus/features/member_profile/domain/exceptions/member_profile_exception.dart'
+    show MemberProfileException;
 
 /// The contract the student/faculty profile screen codes against.
 /// [MemberProfileException] is the only failure type it needs to know

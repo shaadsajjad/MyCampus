@@ -194,8 +194,9 @@ class FacultyIdCard extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                'teacher.facultyId'
-                                    .tr(namedArgs: {'id': facultyId}),
+                                'teacher.facultyId'.tr(
+                                  namedArgs: {'id': facultyId},
+                                ),
                                 style: Theme.of(context).textTheme.labelSmall
                                     ?.copyWith(
                                       color: AppColors.primaryFixedDim,

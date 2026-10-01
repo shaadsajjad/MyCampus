@@ -9,10 +9,7 @@ class TeacherUniversityModel {
     this.logoUrl,
   });
 
-  factory fromRecord(
-    RecordModel record, {
-    String? logoUrl,
-  }) {
+  factory fromRecord(RecordModel record, {String? logoUrl}) {
     return TeacherUniversityModel(
       id: record.id,
       name: record.getStringValue('name'),

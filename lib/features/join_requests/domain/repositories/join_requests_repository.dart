@@ -1,5 +1,6 @@
 import 'package:mycampus/features/join_requests/domain/entities/member_request.dart';
-import 'package:mycampus/features/join_requests/domain/exceptions/join_requests_exception.dart' show JoinRequestsException;
+import 'package:mycampus/features/join_requests/domain/exceptions/join_requests_exception.dart'
+    show JoinRequestsException;
 
 /// The contract the join-requests tab codes against.
 /// [JoinRequestsException] is the only failure type it needs to know

@@ -122,9 +122,8 @@ class _BulletinCard extends StatelessWidget {
               ),
               Text(
                 timeText,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.onSurfaceVariant,
-                ),
+                style: Theme.of(context).textTheme.bodySmall
+                    ?.copyWith(color: AppColors.onSurfaceVariant),
               ),
             ],
           ),
@@ -142,9 +141,8 @@ class _BulletinCard extends StatelessWidget {
           const SizedBox(height: AppTheme.spaceXs),
           Text(
             body,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: AppColors.onSurfaceVariant),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -163,11 +161,10 @@ class _BulletinCard extends StatelessWidget {
                     const SizedBox(width: 4),
                     Text(
                       primaryActionLabelKey!.tr(),
-                      style: Theme.of(context).textTheme.labelMedium
-                          ?.copyWith(
-                            color: AppColors.secondary,
-                            fontWeight: FontWeight.w600,
-                          ),
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                        color: AppColors.secondary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),

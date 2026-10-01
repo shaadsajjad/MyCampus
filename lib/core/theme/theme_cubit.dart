@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeCubit extends Cubit<ThemeMode> {
-
   new() : super(ThemeMode.light);
   static const String _key = 'theme_mode';
 

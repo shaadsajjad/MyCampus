@@ -9,9 +9,8 @@ import 'package:mycampus/features/join_requests/domain/repositories/join_request
 import 'package:pocketbase/pocketbase.dart';
 
 class JoinRequestsRepositoryImpl implements JoinRequestsRepository {
-  new({
-    required JoinRequestsRemoteDataSource remoteDataSource,
-  }) : _remote = remoteDataSource;
+  new({required JoinRequestsRemoteDataSource remoteDataSource})
+    : _remote = remoteDataSource;
 
   final JoinRequestsRemoteDataSource _remote;
 

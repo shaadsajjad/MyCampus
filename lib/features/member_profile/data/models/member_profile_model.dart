@@ -1,4 +1,5 @@
-import 'package:mycampus/features/member_profile/domain/entities/member_profile.dart' show MemberProfile;
+import 'package:mycampus/features/member_profile/domain/entities/member_profile.dart'
+    show MemberProfile;
 
 /// DTOs for the signed-in `users` record plus its expanded relations —
 /// PocketBase's wire format as-is (raw strings for dates and the

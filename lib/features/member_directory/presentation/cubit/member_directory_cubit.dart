@@ -49,8 +49,7 @@ class MemberDirectoryState {
       return member.name.toLowerCase().contains(normalizedQuery) ||
           member.email.toLowerCase().contains(normalizedQuery) ||
           (member.roleId?.toLowerCase().contains(normalizedQuery) ?? false) ||
-          (member.department?.toLowerCase().contains(normalizedQuery) ??
-              false);
+          (member.department?.toLowerCase().contains(normalizedQuery) ?? false);
     }).toList();
   }
 
@@ -101,15 +100,14 @@ class MemberDirectoryCubit extends Cubit<MemberDirectoryState> {
       return;
     }
 
-    emit(state.copyWith(status: MemberDirectoryStatus.loading, clearError: true));
+    emit(
+      state.copyWith(status: MemberDirectoryStatus.loading, clearError: true),
+    );
     try {
       final members = await _repository.getApprovedMembers(universityId);
       if (!isClosed) {
         emit(
-          state.copyWith(
-            status: MemberDirectoryStatus.ready,
-            members: members,
-          ),
+          state.copyWith(status: MemberDirectoryStatus.ready, members: members),
         );
       }
     } on MemberDirectoryException catch (e) {

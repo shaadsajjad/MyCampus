@@ -1,5 +1,6 @@
 import 'package:mycampus/features/courses/domain/entities/course.dart';
-import 'package:mycampus/features/courses/domain/exceptions/courses_exception.dart' show CoursesException;
+import 'package:mycampus/features/courses/domain/exceptions/courses_exception.dart'
+    show CoursesException;
 
 /// The contract the courses tab codes against. [CoursesException] is the
 /// only failure type it needs to know about — everything else (PocketBase,

@@ -19,7 +19,6 @@ academic tools — once a Super Admin approves them.
 - [Features](#features)
 - [Tech stack](#tech-stack)
 - [Packages](#packages)
-- [Screenshots](#screenshots)
 - [Running it locally](#running-it-locally)
   - [1. Prerequisites](#1-prerequisites)
   - [2. Clone and install](#2-clone-and-install)
@@ -69,6 +68,9 @@ academic tools — once a Super Admin approves them.
   approved student and faculty member.
 - **Course catalogue** — full CRUD on courses (code, title, credits,
   contact hours, department).
+- **Routine builder** — compose each course's weekly class schedule (day,
+  time slot, room), instantly reflected on the relevant students' and
+  faculty's "My Routine" tab.
 - **Notices** — compose and delete announcements, targeted at everyone,
   students only, or faculty only.
 - **Profile** — institution identity, account details, dark-mode toggle,
@@ -122,27 +124,12 @@ academic tools — once a Super Admin approves them.
 | [`gal`][gal_pub] | Saving the campus pass image to the photo library |
 | [`share_plus`][share_plus_pub] | Sharing the campus pass via the OS share sheet |
 | [`http`][http_pub] / [`intl`][intl_pub] | HTTP utilities / date formatting |
+| [`device_info_plus`][device_info_plus_pub] | Detects real device vs. emulator, to pick the right default dev PocketBase URL |
 
 Dev-only: [`bloc_lint`][bloc_lint_link] + [`bloc_tools`][bloc_tools_pub] (Cubit
 convention enforcement), [`very_good_analysis`][very_good_analysis_link]
 (lint ruleset), [`bloc_test`][bloc_test_pub] / [`mocktail`][mocktail_pub]
 (testing).
-
----
-
-## Screenshots
-
-> Drop PNGs into `docs/screenshots/` with the file names below and they'll
-> render here automatically — this section is left as labeled placeholders
-> so they're easy to fill in from a real run of the app.
-
-| Onboarding | Login | Super Admin Dashboard |
-|---|---|---|
-| `docs/screenshots/onboarding.png` | `docs/screenshots/login.png` | `docs/screenshots/super_admin_dashboard.png` |
-
-| Student Dashboard | Teacher Dashboard | Campus Pass |
-|---|---|---|
-| `docs/screenshots/student_dashboard.png` | `docs/screenshots/teacher_dashboard.png` | `docs/screenshots/campus_pass.png` |
 
 ---
 
@@ -196,10 +183,13 @@ Invoke-WebRequest https://github.com/pocketbase/pocketbase/releases/download/v0.
 Expand-Archive pb.zip -DestinationPath .; Remove-Item pb.zip
 ```
 
-Run it **from inside the `pocketbase/` directory**:
+Run it **from inside the `pocketbase/` directory**, bound to all interfaces
+(not just `127.0.0.1`) — the Flutter app's dev build defaults to your
+machine's LAN IP for every target except the Android emulator, so this is
+required even for day-to-day local runs, not only for a physical device:
 
 ```sh
-./pocketbase serve
+./pocketbase serve --http=0.0.0.0:8090
 ```
 
 On first launch it will:
@@ -215,8 +205,8 @@ On first launch it will:
    ["Which user is which"](#which-user-is-which) below; this is separate
    from any account you'll use inside the app).
 
-The server is now live at `http://127.0.0.1:8090`. Leave this terminal
-running — the Flutter app talks to it over HTTP.
+The server is now live at `http://127.0.0.1:8090` (and on your LAN IP, same
+port). Leave this terminal running — the Flutter app talks to it over HTTP.
 
 > **Email verification**: the app has a "check your email" screen, but no
 > SMTP server is configured by default, so verification emails won't
@@ -233,11 +223,13 @@ In a **second terminal**, from the repo root:
 flutter run --flavor development --target lib/main_development.dart
 ```
 
-This is the one you want for local development — it points at
-`http://127.0.0.1:8090` (or `http://10.0.2.2:8090` automatically on the
-Android emulator). The `--flavor` flag is required — this project defines
-Android/iOS build flavors for `development`/`staging`/`production`, and
-omitting it will build all three and then fail to find "the" output.
+This is the one you want for local development — it points at your
+machine's LAN IP on port `8090` by default (`http://10.0.2.2:8090`
+automatically on the Android **emulator** instead, detected at runtime via
+`device_info_plus` — see `lib/main_development.dart`). The `--flavor` flag
+is required — this project defines Android/iOS build flavors for
+`development`/`staging`/`production`, and omitting it will build all three
+and then fail to find "the" output.
 
 Other flavors (point at placeholder staging/production URLs — not useful
 until you deploy your own servers there):
@@ -281,21 +273,26 @@ setup — it exists for inspecting the database, not for using the app.
 
 ## Running on a physical device
 
-The Android emulator's special loopback (`10.0.2.2`) is wired up
-automatically — no extra config needed there. For a **physical phone**:
+The Android emulator's special loopback (`10.0.2.2`) is detected and wired
+up automatically — no extra config needed there. For a **physical phone**,
+PocketBase must already be running with `--http=0.0.0.0:8090` (see
+[step 3](#3-start-the-pocketbase-backend)); beyond that:
 
-1. Start PocketBase bound to all interfaces, not just localhost:
+1. The app defaults to the LAN IP hardcoded as `_lanPocketbaseIp` in
+   [`lib/main_development.dart`](./lib/main_development.dart) — update that
+   constant to your own machine's current LAN IP (e.g. `192.168.1.42`) if
+   it doesn't match, then run as usual:
    ```sh
-   ./pocketbase serve --http=0.0.0.0:8090
+   flutter run --flavor development --target lib/main_development.dart
    ```
-2. Find your computer's LAN IP (e.g. `192.168.1.42`) and point the app at
-   it:
+   Alternatively, override it per-run without touching the code:
    ```sh
    flutter run --flavor development --target lib/main_development.dart \
      --dart-define=POCKETBASE_URL=http://192.168.1.42:8090
    ```
-3. Make sure the phone and computer are on the same Wi-Fi network, and
-   that your OS firewall allows inbound connections on port `8090`.
+2. Make sure the phone and computer are on the same Wi-Fi network (not a
+   guest network with client isolation enabled), and that your OS firewall
+   allows inbound connections on port `8090`.
 
 ---
 
@@ -371,7 +368,7 @@ flutter test
 | Symptom | Fix |
 |---|---|
 | `flutter run` fails with a flavor/ambiguous-build error | You omitted `--flavor development` (or `staging`/`production`) — see [step 4](#4-run-the-flutter-app). |
-| App can't reach PocketBase / requests time out | Confirm `./pocketbase serve` is still running in its terminal, and that you're using the right host (`127.0.0.1` on a simulator, `10.0.2.2` on the Android emulator, your LAN IP on a physical device). |
+| App can't reach PocketBase / requests time out | Confirm PocketBase is running with `--http=0.0.0.0:8090` (not the bare `./pocketbase serve`), and that `_lanPocketbaseIp` in `lib/main_development.dart` matches your machine's *current* LAN IP (it changes across networks/DHCP leases) — see [step 3](#3-start-the-pocketbase-backend) and [Running on a physical device](#running-on-a-physical-device). |
 | Migrations didn't apply | They run relative to PocketBase's working directory — always `cd pocketbase` before `./pocketbase serve`. |
 | Stuck on "waiting for approval" as a student/teacher | Log in as the Super Admin who owns that university, go to the **Requests** tab, and approve the account. |
 | No verification email arrives | Expected on a fresh local setup — no SMTP server is configured. It doesn't block login; see the note in [step 3](#3-start-the-pocketbase-backend). |
@@ -412,5 +409,6 @@ flutter test
 [share_plus_pub]: https://pub.dev/packages/share_plus
 [http_pub]: https://pub.dev/packages/http
 [intl_pub]: https://pub.dev/packages/intl
+[device_info_plus_pub]: https://pub.dev/packages/device_info_plus
 [very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
 [very_good_analysis_link]: https://pub.dev/packages/very_good_analysis

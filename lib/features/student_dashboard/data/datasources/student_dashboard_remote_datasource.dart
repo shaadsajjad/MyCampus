@@ -25,7 +25,9 @@ abstract class StudentDashboardRemoteDataSource {
   /// super-admin approval flipping `status` from `pending` → `approved`).
   /// Returns an unsubscribe handle, or null if there's no signed-in account
   /// to watch.
-  Future<void> Function()? watchCurrentUser({required void Function() onChange});
+  Future<void> Function()? watchCurrentUser({
+    required void Function() onChange,
+  });
 }
 
 class StudentDashboardRemoteDataSourceImpl
@@ -52,7 +54,8 @@ class StudentDashboardRemoteDataSourceImpl
   String? get currentStatus => _emptyToNull(_record?.getStringValue('status'));
 
   @override
-  String? get currentAvatarFileName => _emptyToNull(_record?.getStringValue('avatar'));
+  String? get currentAvatarFileName =>
+      _emptyToNull(_record?.getStringValue('avatar'));
 
   @override
   String? get currentUserId => _record?.id;
@@ -81,11 +84,7 @@ class StudentDashboardRemoteDataSourceImpl
   Future<StudentProfileModel?> getStudentProfile(String userId) async {
     final result = await _pb
         .collection('students')
-        .getList(
-          page: 1,
-          perPage: 1,
-          filter: "user = '$userId'",
-        );
+        .getList(page: 1, perPage: 1, filter: "user = '$userId'");
     if (result.items.isEmpty) return null;
     return StudentProfileModel.fromRecord(result.items.first);
   }

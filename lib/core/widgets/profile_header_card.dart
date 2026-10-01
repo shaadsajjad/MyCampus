@@ -2,7 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
-import 'package:mycampus/core/widgets/app_image_picker_field.dart' show AppImagePickerField;
+import 'package:mycampus/core/widgets/app_image_picker_field.dart'
+    show AppImagePickerField;
 import 'package:mycampus/core/widgets/profile_widgets.dart';
 
 /// Top-of-profile identity card shared by every profile screen: avatar,
@@ -95,7 +96,9 @@ class ProfileHeaderCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       email,
-                      style: textTheme.bodySmall?.copyWith(color: Colors.white70),
+                      style: textTheme.bodySmall?.copyWith(
+                        color: Colors.white70,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -126,8 +129,11 @@ class ProfileHeaderCard extends StatelessWidget {
               ),
               ProfileBadge(
                 icon: verified ? Icons.verified : Icons.error_outline,
-                label: (verified ? 'profile.verified' : 'profile.unverified').tr(),
-                color: verified ? Colors.greenAccent : AppColors.onTertiaryContainer,
+                label: (verified ? 'profile.verified' : 'profile.unverified')
+                    .tr(),
+                color: verified
+                    ? Colors.greenAccent
+                    : AppColors.onTertiaryContainer,
               ),
             ],
           ),

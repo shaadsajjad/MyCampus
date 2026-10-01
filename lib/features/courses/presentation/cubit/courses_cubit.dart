@@ -94,17 +94,12 @@ class CoursesCubit extends Cubit<CoursesState> {
     try {
       final courses = await _repository.getCourses(universityId);
       if (!isClosed) {
-        emit(
-          state.copyWith(status: CoursesStatus.ready, courses: courses),
-        );
+        emit(state.copyWith(status: CoursesStatus.ready, courses: courses));
       }
     } on CoursesException catch (e) {
       if (!isClosed) {
         emit(
-          state.copyWith(
-            status: CoursesStatus.error,
-            errorMessage: e.message,
-          ),
+          state.copyWith(status: CoursesStatus.error, errorMessage: e.message),
         );
       }
     }

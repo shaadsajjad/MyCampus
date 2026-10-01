@@ -10,9 +10,8 @@ import 'package:mycampus/features/super_admin_profile/domain/repositories/super_
 import 'package:pocketbase/pocketbase.dart';
 
 class SuperAdminProfileRepositoryImpl implements SuperAdminProfileRepository {
-  new({
-    required SuperAdminProfileRemoteDataSource remoteDataSource,
-  }) : _remote = remoteDataSource;
+  new({required SuperAdminProfileRemoteDataSource remoteDataSource})
+    : _remote = remoteDataSource;
 
   final SuperAdminProfileRemoteDataSource _remote;
 

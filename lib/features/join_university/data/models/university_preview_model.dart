@@ -13,10 +13,7 @@ class UniversityPreviewModel {
     this.logoUrl,
   });
 
-  factory fromRecord(
-    RecordModel record, {
-    String? logoUrl,
-  }) {
+  factory fromRecord(RecordModel record, {String? logoUrl}) {
     return UniversityPreviewModel(
       id: record.id,
       name: record.getStringValue('name'),

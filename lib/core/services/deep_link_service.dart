@@ -7,8 +7,10 @@ import 'package:mycampus/core/di/di.dart';
 import 'package:mycampus/core/router/app_router.dart';
 import 'package:mycampus/features/verification/domain/exceptions/verification_exception.dart';
 import 'package:mycampus/features/verification/domain/repositories/verification_repository.dart';
-import 'package:mycampus/features/verification/presentation/cubit/verification_cubit.dart' show VerificationCubit;
-import 'package:mycampus/features/verification/presentation/pages/verification_page.dart' show VerificationPage;
+import 'package:mycampus/features/verification/presentation/cubit/verification_cubit.dart'
+    show VerificationCubit;
+import 'package:mycampus/features/verification/presentation/pages/verification_page.dart'
+    show VerificationPage;
 
 /// Service that listens for incoming deep links (e.g., mycampus://verify?token=...)
 /// and routes them to the appropriate handler.

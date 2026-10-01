@@ -11,6 +11,7 @@ import 'package:mycampus/features/member_directory/presentation/pages/member_dir
 import 'package:mycampus/features/notices/presentation/pages/notices_page.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/cubit/campus_pass_cubit.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/cubit/super_admin_dashboard_cubit.dart';
+import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/academic_registry_card.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/access_metrics_row.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/campus_pass_card.dart';
 import 'package:mycampus/features/super_admin_dashboard/presentation/widgets/join_requests_banner.dart';
@@ -193,6 +194,8 @@ class _HomeTab extends StatelessWidget {
               onReview: () => cubit.selectTab(SuperAdminDashboardTab.requests),
             ),
           ],
+          const SizedBox(height: AppTheme.spaceLg),
+          const AcademicRegistryCard(),
           const SizedBox(height: AppTheme.spaceLg),
           const SecurityPolicyNote(),
         ],

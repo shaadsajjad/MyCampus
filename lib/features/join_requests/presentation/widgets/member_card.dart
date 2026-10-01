@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mycampus/core/theme/app_colors.dart';
 import 'package:mycampus/core/theme/app_theme.dart';
 import 'package:mycampus/features/join_requests/domain/entities/member_request.dart';
+import 'package:mycampus/features/register/domain/entities/teacher_designation.dart';
 
 class MemberCard extends StatelessWidget {
   const new({
@@ -102,13 +103,16 @@ class MemberCard extends StatelessWidget {
                   child: Text(
                     [
                       member.department,
-                      member.subInfo,
+                      isStudent
+                          ? member.subInfo
+                          : _designationLabel(member.subInfo),
                     ].whereType<String>().join(' • '),
                     style: textTheme.labelSmall,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
+                const SizedBox(width: AppTheme.spaceXs),
                 Text(
                   _relativeTime(member.requestedAt),
                   style: textTheme.labelSmall?.copyWith(
@@ -166,6 +170,14 @@ class MemberCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String? _designationLabel(String? raw) {
+    if (raw == null) return null;
+    for (final designation in TeacherDesignation.values) {
+      if (designation.name == raw) return designation.labelKey.tr();
+    }
+    return raw;
   }
 
   String _relativeTime(DateTime time) {

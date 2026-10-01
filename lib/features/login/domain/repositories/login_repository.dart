@@ -1,4 +1,5 @@
-import 'package:mycampus/features/login/domain/exceptions/login_exception.dart' show LoginException;
+import 'package:mycampus/features/login/domain/exceptions/login_exception.dart'
+    show LoginException;
 
 /// The contract the login screen codes against; [LoginException] is the
 /// only failure type it needs to know about — everything else

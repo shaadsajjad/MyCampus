@@ -170,10 +170,8 @@ class _MemberProfileView extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       showDragHandle: true,
-      builder: (_) => BlocProvider.value(
-        value: cubit,
-        child: const _EditNameSheet(),
-      ),
+      builder: (_) =>
+          BlocProvider.value(value: cubit, child: const _EditNameSheet()),
     );
   }
 
@@ -246,9 +244,10 @@ class _CampusSection extends StatelessWidget {
       );
     }
 
-    final location = [campus!.city, campus!.country]
-        .where((part) => part != null && part.isNotEmpty)
-        .join(', ');
+    final location = [
+      campus!.city,
+      campus!.country,
+    ].where((part) => part != null && part.isNotEmpty).join(', ');
 
     return ProfileSection(
       title: 'profile.campus'.tr(),
@@ -423,7 +422,9 @@ class _PreferencesSection extends StatelessWidget {
             ProfileInfoRow(
               icon: isDark ? Icons.dark_mode : Icons.light_mode,
               label: 'profile.darkModeDesc'.tr(),
-              value: isDark ? 'profile.darkModeOn'.tr() : 'profile.darkModeOff'.tr(),
+              value: isDark
+                  ? 'profile.darkModeOn'.tr()
+                  : 'profile.darkModeOff'.tr(),
               trailing: Switch(
                 value: isDark,
                 onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),

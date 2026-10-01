@@ -59,8 +59,7 @@ class TeachingScheduleSection extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'teacher.nextLectureIn'
-                          .tr(namedArgs: {'minutes': '45'}),
+                      'teacher.nextLectureIn'.tr(namedArgs: {'minutes': '45'}),
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         color: AppColors.onSurface,
                         fontWeight: FontWeight.bold,
@@ -246,9 +245,8 @@ class _LectureCard extends StatelessWidget {
               else if (trailingText != null)
                 Text(
                   trailingText!,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.onSurfaceVariant,
-                  ),
+                  style: Theme.of(context).textTheme.labelSmall
+                      ?.copyWith(color: AppColors.onSurfaceVariant),
                 ),
             ],
           ),
@@ -264,9 +262,8 @@ class _LectureCard extends StatelessWidget {
           ),
           Text(
             subtitle,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: AppColors.onSurfaceVariant,
-            ),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: AppColors.onSurfaceVariant),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
@@ -369,17 +366,12 @@ class _LectureCard extends StatelessWidget {
                 Row(
                   children: [
                     if (footerIcon != null)
-                      Icon(
-                        footerIcon,
-                        color: AppColors.secondary,
-                        size: 16,
-                      ),
+                      Icon(footerIcon, color: AppColors.secondary, size: 16),
                     if (footerIcon != null) const SizedBox(width: 4),
                     Text(
                       footerText!,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.onSurfaceVariant,
-                      ),
+                      style: Theme.of(context).textTheme.labelSmall
+                          ?.copyWith(color: AppColors.onSurfaceVariant),
                     ),
                   ],
                 ),
@@ -463,9 +455,8 @@ class _OfficeHoursCard extends StatelessWidget {
                 ),
                 Text(
                   '03:30 PM – 05:00 PM • Room #304',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.onSurfaceVariant,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall
+                      ?.copyWith(color: AppColors.onSurfaceVariant),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),

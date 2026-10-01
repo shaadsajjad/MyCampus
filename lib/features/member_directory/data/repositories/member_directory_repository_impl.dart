@@ -9,9 +9,8 @@ import 'package:mycampus/features/member_directory/domain/repositories/member_di
 import 'package:pocketbase/pocketbase.dart';
 
 class MemberDirectoryRepositoryImpl implements MemberDirectoryRepository {
-  new({
-    required MemberDirectoryRemoteDataSource remoteDataSource,
-  }) : _remote = remoteDataSource;
+  new({required MemberDirectoryRemoteDataSource remoteDataSource})
+    : _remote = remoteDataSource;
 
   final MemberDirectoryRemoteDataSource _remote;
 

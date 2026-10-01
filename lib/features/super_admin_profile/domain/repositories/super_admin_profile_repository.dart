@@ -1,7 +1,8 @@
 import 'dart:typed_data';
 
 import 'package:mycampus/features/super_admin_profile/domain/entities/super_admin_profile.dart';
-import 'package:mycampus/features/super_admin_profile/domain/exceptions/profile_exception.dart' show ProfileException;
+import 'package:mycampus/features/super_admin_profile/domain/exceptions/profile_exception.dart'
+    show ProfileException;
 
 /// The contract the super admin's profile tab codes against;
 /// [ProfileException] is the only failure type it needs to handle.
